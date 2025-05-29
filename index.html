@@ -7,7 +7,7 @@
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
     <meta name="robots" content="index, follow">
-    <meta name="description" content="Pobierz fascynującą grę Maze - labirynt pełen wyzwań i tajemnic. Bezpieczne pobieranie gier online.">
+    <meta name="description" content="Pobierz fascynujące gry - Maze labirynt pełen wyzwań oraz klasyczne Kółko i Krzyżyk. Bezpieczne pobieranie gier online.">
     <title>Gry do pobrania!</title>
     <style>
         /* —— RESET & THEME —— */
@@ -26,6 +26,19 @@
 
         * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        ::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Hide scrollbar for IE, Edge and Firefox */
+        html {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
         }
 
         body {
@@ -499,12 +512,12 @@
             text-align: center;
             animation: slideInFromTop 0.5s ease-out;
             transition: all 0.3s ease;
+            position: relative;
         }
         
         /* Fixed hover graphics */
         .user-info:hover {
             box-shadow: 0 0 15px rgba(40, 167, 69, 0.3);
-            transform: translateY(-3px);
             background: rgba(40, 167, 69, 0.15);
         }
 
@@ -586,7 +599,6 @@
             color: var(--primary-orange);
             text-shadow: var(--shadow-glow) rgba(255, 119, 0, 0.6);
             background: rgba(255, 119, 0, 0.1);
-            animation: smoothClose 0.3s ease;
         }
 
         .password-strength {
@@ -777,14 +789,31 @@
             border-radius: 12px;
             border: 1px solid rgba(52, 152, 219, 0.2);
             transition: all 0.3s ease;
+            position: relative;
         }
         
         /* Fixed hover graphics */
+        .settings-section::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 12px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            box-shadow: 0 0 20px rgba(52, 152, 219, 0.15);
+        }
+        
         .settings-section:hover {
             background: rgba(15, 15, 26, 0.8);
-            box-shadow: 0 0 20px rgba(52, 152, 219, 0.15);
-            transform: translateY(-3px);
             border-color: rgba(52, 152, 219, 0.3);
+        }
+        
+        .settings-section:hover::after {
+            opacity: 1;
         }
 
         .settings-section h3 {
@@ -799,9 +828,12 @@
         }
         
         /* Fixed hover graphics for danger zone */
+        .danger-zone::after {
+            box-shadow: 0 0 20px rgba(220, 53, 69, 0.15);
+        }
+        
         .danger-zone:hover {
             background: rgba(220, 53, 69, 0.15);
-            box-shadow: 0 0 20px rgba(220, 53, 69, 0.15);
             border-color: rgba(220, 53, 69, 0.4);
         }
 
@@ -928,8 +960,8 @@
             position: absolute;
             right: 0;
             background: linear-gradient(145deg, rgba(20, 20, 35, 0.95), rgba(30, 30, 46, 0.95));
-            min-width: 160px; /* Increased from 140px */
-            max-width: 180px; /* Increased from 160px */
+            min-width: 200px; /* Increased from 160px */
+            max-width: 250px; /* Increased from 180px */
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
             border-radius: 0 0 8px 8px;
             border: 1px solid rgba(255, 119, 0, 0.25);
@@ -964,7 +996,7 @@
             position: relative;
             overflow: hidden;
             border-bottom: 1px solid rgba(255, 119, 0, 0.1);
-            white-space: nowrap; /* Prevent text wrapping */
+            white-space: normal; /* Changed from nowrap to allow text wrapping */
         }
 
         .dropdown-option:last-child {
@@ -1091,6 +1123,7 @@
             background: linear-gradient(45deg, transparent 49%, rgba(255, 119, 0, 0.03) 50%, transparent 51%);
             opacity: 0;
             transition: opacity 0.3s ease;
+            pointer-events: none;
         }
 
         section:hover::before {
@@ -1098,7 +1131,6 @@
         }
 
         section:hover {
-            transform: translateY(-8px) scale(1.01);
             box-shadow: 
                 0 12px 35px rgba(0, 0, 0, 0.5), 
                 var(--shadow-glow) rgba(255, 119, 0, 0.5),
@@ -1372,7 +1404,6 @@
 
         .chatbot-close:hover {
             background-color: rgba(255, 255, 255, 0.2);
-            animation: smoothClose 0.3s ease;
         }
 
         .chatbot-messages {
@@ -1578,7 +1609,6 @@
             color: var(--primary-orange);
             text-shadow: var(--shadow-glow) rgba(255, 119, 0, 0.6);
             background: rgba(255, 119, 0, 0.1);
-            animation: smoothClose 0.3s ease;
         }
         
         .modal h3 {
@@ -1661,7 +1691,6 @@
         .security-features:hover {
             background: linear-gradient(145deg, rgba(40, 167, 69, 0.15), rgba(35, 150, 60, 0.15));
             box-shadow: var(--shadow-glow) rgba(40, 167, 69, 0.3);
-            transform: translateY(-3px);
         }
 
         .security-item {
@@ -1837,7 +1866,7 @@
             position: relative;
             overflow: hidden;
         }
-        
+
         .update-btn::before {
             content: "";
             position: absolute;
@@ -2060,13 +2089,32 @@
         const APP_VERSION = '1.5.0';
         const LAST_VERSION_KEY = 'last_version_seen';
 
-        // —— NEW CLEAN DATABASE SYSTEM —— 
-        class GameDatabase {
+        // —— NEW CLOUD DATABASE SYSTEM —— 
+        class CloudDatabase {
             constructor() {
+                this.localStorageKey = 'local_user_cache';
+                this.cloudStorageKey = 'cloud_database_v2';
+                this.syncInterval = 5000; // Sync every 5 seconds
                 this.users = [];
-                this.loadFromStorage();
-                if (this.users.length === 0) {
-                    this.initializeDefaultUsers();
+                this.lastSync = null;
+                this.initialize();
+                this.startSyncTimer();
+            }
+
+            initialize() {
+                // Try to load from cloud storage first
+                const cloudData = this.loadFromCloud();
+                if (cloudData && cloudData.users && cloudData.users.length > 0) {
+                    this.users = cloudData.users;
+                    this.lastSync = cloudData.lastSync;
+                } else {
+                    // If no cloud data, load from local
+                    this.loadFromLocal();
+                    if (this.users.length === 0) {
+                        this.initializeDefaultUsers();
+                    }
+                    // Save to cloud immediately
+                    this.saveToCloud();
                 }
             }
 
@@ -2081,7 +2129,7 @@
                     lastLogin: null,
                     isAdmin: true,
                     status: 'active',
-                    avatar: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTYgMjU2Ij48cmVjdCB3aWR0aD0iMjU2IiBoZWlnaHQ9IjI1NiIgZmlsbD0iIzZiNDZjMSIvPjxwYXRoIGQ9Ik0xMjggNjRjLTE3LjcgMC0zMiAxNC4zLTMyIDMydjMyYzAgMTcuNyAxNC4zIDMyIDMyIDMyIDE3LjcgMCAzMi0xNC4zIDMyLTMyVjk2YzAtMTcuNy0xNC4zLTMyLTMyLTMyek04MiAxNjhjLTIzLjIgMTAuMi00MCAzMy41LTQwIDYwLjl2MTUuMmMwIDMuMyAyLjcgNiA2IDZoMTYwYzMuMyAwIDYtMi43IDYtNnYtMTUuMmMwLTI3LjQtMTYuOC01MC42LTQwLTYxVjE2NGMwLTQuNC0zLjYtOC04LThzLTggMy42LTggOHY0LjFjLTggMi44LTE2LjYgNC4zLTI0IDQuM3MtMTYuMS0xLjUtMjQtNC4zVjE2NGMwLTQuNC0zLjYtOC04LThzLTggMy42LTggOHY0eiIgZmlsbD0iI2ZmZiIvPjwvc3ZnPg==',
+                    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=admin',
                     preferences: {
                         theme: 'orange',
                         notifications: true,
@@ -2093,18 +2141,75 @@
                         autoSave: true
                     }
                 }];
-                this.saveToStorage();
             }
 
-            loadFromStorage() {
+            loadFromCloud() {
                 try {
-                    const usersJson = localStorage.getItem('gameDB_users_v2');
-                    if (usersJson) {
-                        this.users = JSON.parse(usersJson);
+                    // Simulate cloud storage with localStorage
+                    const cloudData = localStorage.getItem(this.cloudStorageKey);
+                    if (cloudData) {
+                        return JSON.parse(cloudData);
                     }
                 } catch (error) {
-                    console.error("Error loading from localStorage:", error);
+                    console.error("Error loading from cloud:", error);
+                }
+                return null;
+            }
+
+            saveToCloud() {
+                try {
+                    const cloudData = {
+                        users: this.users,
+                        lastSync: new Date().toISOString()
+                    };
+                    localStorage.setItem(this.cloudStorageKey, JSON.stringify(cloudData));
+                    this.lastSync = cloudData.lastSync;
+                } catch (error) {
+                    console.error("Error saving to cloud:", error);
+                }
+            }
+
+            loadFromLocal() {
+                try {
+                    const localData = localStorage.getItem(this.localStorageKey);
+                    if (localData) {
+                        const parsed = JSON.parse(localData);
+                        this.users = parsed.users || [];
+                    }
+                } catch (error) {
+                    console.error("Error loading from local:", error);
                     this.users = [];
+                }
+            }
+
+            saveToLocal() {
+                try {
+                    const localData = {
+                        users: this.users,
+                        lastUpdate: new Date().toISOString()
+                    };
+                    localStorage.setItem(this.localStorageKey, JSON.stringify(localData));
+                } catch (error) {
+                    console.error("Error saving to local:", error);
+                }
+            }
+
+            startSyncTimer() {
+                setInterval(() => {
+                    this.syncWithCloud();
+                }, this.syncInterval);
+            }
+
+            syncWithCloud() {
+                const cloudData = this.loadFromCloud();
+                if (cloudData && cloudData.lastSync && cloudData.lastSync !== this.lastSync) {
+                    // Cloud has newer data
+                    this.users = cloudData.users;
+                    this.lastSync = cloudData.lastSync;
+                    this.saveToLocal();
+                } else {
+                    // Local has newer data or same
+                    this.saveToCloud();
                 }
             }
 
@@ -2117,15 +2222,6 @@
                     hash = hash & hash;
                 }
                 return Math.abs(hash).toString();
-            }
-
-            saveToStorage() {
-                try {
-                    const usersJson = JSON.stringify(this.users);
-                    localStorage.setItem('gameDB_users_v2', usersJson);
-                } catch (error) {
-                    console.error("Error saving to localStorage:", error);
-                }
             }
 
             registerUser(userData) {
@@ -2158,9 +2254,6 @@
                     throw new Error('Hasło musi mieć co najmniej 6 znaków / Password must be at least 6 characters');
                 }
 
-                // Use default gaming avatar if none provided
-                const defaultAvatar = avatarOptions[0];
-
                 const newUser = {
                     id: Date.now(),
                     username: username.trim(),
@@ -2170,7 +2263,7 @@
                     lastLogin: null,
                     isAdmin: false,
                     status: 'active',
-                    avatar: avatar || defaultAvatar,
+                    avatar: avatar || 'https://api.dicebear.com/7.x/avataaars/svg?seed=' + username,
                     preferences: {
                         theme: 'orange',
                         notifications: true,
@@ -2184,7 +2277,8 @@
                 };
 
                 this.users.push(newUser);
-                this.saveToStorage();
+                this.saveToLocal();
+                this.saveToCloud();
                 
                 return { success: true, user: newUser };
             }
@@ -2193,6 +2287,9 @@
                 if (!username || !password) {
                     throw new Error('Nazwa użytkownika i hasło są wymagane / Username and password are required');
                 }
+                
+                // Sync with cloud before login
+                this.syncWithCloud();
                 
                 const user = this.users.find(u => u.username.toLowerCase() === username.toLowerCase());
                 if (!user) {
@@ -2209,7 +2306,8 @@
                 }
 
                 user.lastLogin = new Date().toISOString();
-                this.saveToStorage();
+                this.saveToLocal();
+                this.saveToCloud();
 
                 return { success: true, user: user };
             }
@@ -2240,7 +2338,8 @@
                 }
 
                 this.users[userIndex] = { ...this.users[userIndex], ...updateData };
-                this.saveToStorage();
+                this.saveToLocal();
+                this.saveToCloud();
                 return { success: true, user: this.users[userIndex] };
             }
 
@@ -2251,7 +2350,8 @@
                 }
 
                 this.users.splice(userIndex, 1);
-                this.saveToStorage();
+                this.saveToLocal();
+                this.saveToCloud();
                 return { success: true };
             }
 
@@ -2275,20 +2375,20 @@
         }
 
         // —— AVATAR SYSTEM —— 
-        // Gaming-themed avatars from internet
+        // Gaming-themed avatars using reliable avatar API
         const avatarOptions = [
-            'https://i.imgur.com/6YH4tqM.png', // Gaming avatar 1
-            'https://i.imgur.com/8BGJ7gG.png', // Gaming avatar 2
-            'https://i.imgur.com/LYJ8QZA.png', // Gaming avatar 3
-            'https://i.imgur.com/ZMaIBXD.png', // Gaming avatar 4
-            'https://i.imgur.com/8vJvwsq.png', // Gaming avatar 5
-            'https://i.imgur.com/wRccCjg.png', // Gaming avatar 6
-            'https://i.imgur.com/oyAHtiZ.png', // Gaming avatar 7
-            'https://i.imgur.com/kSvsDfj.png', // Gaming avatar 8
-            'https://i.imgur.com/uJCK0gx.png', // Gaming avatar 9
-            'https://i.imgur.com/SXs8VKP.png', // Gaming avatar 10
-            'https://i.imgur.com/dBYUsVc.png', // Gaming avatar 11
-            'https://i.imgur.com/1EzXqED.png'  // Gaming avatar 12
+            'https://api.dicebear.com/7.x/avataaars/svg?seed=gaming1',
+            'https://api.dicebear.com/7.x/avataaars/svg?seed=gaming2',
+            'https://api.dicebear.com/7.x/avataaars/svg?seed=gaming3',
+            'https://api.dicebear.com/7.x/avataaars/svg?seed=gaming4',
+            'https://api.dicebear.com/7.x/adventurer/svg?seed=gaming5',
+            'https://api.dicebear.com/7.x/adventurer/svg?seed=gaming6',
+            'https://api.dicebear.com/7.x/adventurer/svg?seed=gaming7',
+            'https://api.dicebear.com/7.x/adventurer/svg?seed=gaming8',
+            'https://api.dicebear.com/7.x/pixel-art/svg?seed=gaming9',
+            'https://api.dicebear.com/7.x/pixel-art/svg?seed=gaming10',
+            'https://api.dicebear.com/7.x/pixel-art/svg?seed=gaming11',
+            'https://api.dicebear.com/7.x/pixel-art/svg?seed=gaming12'
         ];
 
         // Global variables
@@ -2312,7 +2412,7 @@
                 wasVisitedBefore = localStorage.getItem('visited_before') === 'true';
                 localStorage.setItem('visited_before', 'true');
                 
-                gameDB = new GameDatabase();
+                gameDB = new CloudDatabase();
                 checkLoginStatus();
                 
                 console.log(`System initialized at: ${new Date().toISOString()}`);
@@ -2354,7 +2454,7 @@
                         if (index === 0) avatarDiv.classList.add('selected');
                         
                         // Use direct image URL for more reliable loading
-                        avatarDiv.innerHTML = `<img src="${avatar}" alt="Gaming Avatar ${index + 1}" onerror="this.src='https://i.imgur.com/kddRqG8.png'">`;
+                        avatarDiv.innerHTML = `<img src="${avatar}" alt="Gaming Avatar ${index + 1}" onerror="this.src='https://api.dicebear.com/7.x/avataaars/svg?seed=default'">`;
                         avatarDiv.onclick = function() { selectAvatar(avatar, this); };
                         avatarGrid.appendChild(avatarDiv);
                     });
@@ -2370,7 +2470,7 @@
                         if (currentUser && currentUser.avatar === avatar) {
                             avatarDiv.classList.add('selected');
                         }
-                        avatarDiv.innerHTML = `<img src="${avatar}" alt="Gaming Avatar ${index + 1}" onerror="this.src='https://i.imgur.com/kddRqG8.png'">`;
+                        avatarDiv.innerHTML = `<img src="${avatar}" alt="Gaming Avatar ${index + 1}" onerror="this.src='https://api.dicebear.com/7.x/avataaars/svg?seed=default'">`;
                         avatarDiv.onclick = function() { updateUserAvatar(avatar, this); };
                         settingsAvatarGrid.appendChild(avatarDiv);
                     });
@@ -2813,7 +2913,7 @@
                 // Update avatar
                 const userAvatar = document.querySelector('.user-avatar');
                 if (userAvatar && currentUser.avatar) {
-                    userAvatar.innerHTML = `<img src="${currentUser.avatar}" alt="Avatar" onerror="this.src='https://i.imgur.com/kddRqG8.png'">`;
+                    userAvatar.innerHTML = `<img src="${currentUser.avatar}" alt="Avatar" onerror="this.src='https://api.dicebear.com/7.x/avataaars/svg?seed=default'">`;
                 }
                 
                 // Update settings
@@ -3113,7 +3213,7 @@
         }
 
         // —— DOWNLOAD SYSTEM —— 
-        function checkDownload(event) {
+        function checkDownload(event, game = 'maze') {
             if (!isInitialized) {
                 if (!initializeSystem()) {
                     event.preventDefault();
@@ -3152,13 +3252,14 @@
                 downloadAttempts = Math.max(0, downloadAttempts - 1);
             }, downloadCooldown);
 
-            console.log(`Download initiated by user: ${currentUser.username} at ${new Date().toISOString()}`);
+            console.log(`Download initiated for ${game} by user: ${currentUser.username} at ${new Date().toISOString()}`);
             
             setTimeout(() => {
                 const currentLang = document.documentElement.lang;
+                const gameName = game === 'maze' ? 'Maze' : 'Kółko i Krzyżyk';
                 const message = currentLang === 'pl' ? 
-                    'Pobieranie rozpoczęte! Sprawdź folder Pobrane.' : 
-                    'Download started! Check your Downloads folder.';
+                    `Pobieranie ${gameName} rozpoczęte! Sprawdź folder Pobrane.` : 
+                    `${gameName} download started! Check your Downloads folder.`;
                 showNotification(message, message, 'success');
             }, 500);
 
@@ -3225,7 +3326,8 @@
                     3. Wypełnij formularz (nazwa użytkownika, data urodzenia, hasło).<br>
                     4. Kliknij "Dalej" i wybierz swój avatar.<br>
                     5. Naciśnij "Zakończ rejestrację".<br><br>
-                    <em>Wymagania:</em> Musisz mieć co najmniej 13 lat. Hasło powinno mieć minimum 6 znaków.`,
+                    <em>Wymagania:</em> Musisz mieć co najmniej 13 lat. Hasło powinno mieć minimum 6 znaków.<br><br>
+                    <strong>UWAGA:</strong> Twoje konto będzie dostępne na wszystkich urządzeniach dzięki synchronizacji z chmurą!`,
                 
                 en: `<strong>🤖 How to create an account?</strong><br><br>
                     1. Click the "Login" button in the top left corner.<br>
@@ -3233,7 +3335,8 @@
                     3. Fill out the form (username, birth date, password).<br>
                     4. Click "Next" and select your avatar.<br>
                     5. Press "Complete registration".<br><br>
-                    <em>Requirements:</em> You must be at least 13 years old. Password should be at least 6 characters long.`
+                    <em>Requirements:</em> You must be at least 13 years old. Password should be at least 6 characters long.<br><br>
+                    <strong>NOTE:</strong> Your account will be available on all devices thanks to cloud synchronization!`
             },
             
             'login-help': {
@@ -3242,28 +3345,29 @@
                     2. Wprowadź swoją nazwę użytkownika.<br>
                     3. Wprowadź swoje hasło.<br>
                     4. Kliknij przycisk "Zaloguj się".<br><br>
-                    <em>Wskazówka:</em> Możesz również używać skrótu klawiszowego Ctrl+L, aby szybko otworzyć panel logowania.`,
+                    <em>Wskazówka:</em> Możesz również używać skrótu klawiszowego Ctrl+L, aby szybko otworzyć panel logowania.<br><br>
+                    <strong>Synchronizacja:</strong> Możesz zalogować się na to samo konto z różnych urządzeń!`,
                 
                 en: `<strong>🤖 Help with account login</strong><br><br>
                     1. Click the "Login" button in the top left corner.<br>
                     2. Enter your username.<br>
                     3. Enter your password.<br>
                     4. Click the "Login" button.<br><br>
-                    <em>Tip:</em> You can also use the keyboard shortcut Ctrl+L to quickly
-                            open the login panel.`
+                    <em>Tip:</em> You can also use the keyboard shortcut Ctrl+L to quickly open the login panel.<br><br>
+                    <strong>Synchronization:</strong> You can log in to the same account from different devices!`
             },
             
             'password-reset': {
                 pl: `<strong>🤖 Zapomniałem hasła - jak je odzyskać?</strong><br><br>
                     Niestety, w obecnej wersji aplikacji nie ma zaimplementowanego systemu odzyskiwania hasła. 
-                    Ponieważ wszystkie dane są przechowywane lokalnie w Twojej przeglądarce, 
+                    Ponieważ wszystkie dane są przechowywane lokalnie w Twojej przeglądarce oraz synchronizowane z chmurą, 
                     nie mamy możliwości weryfikacji i resetowania hasła.<br><br>
                     <em>Zalecenie:</em> Jeśli nie pamiętasz hasła, możesz utworzyć nowe konto. 
                     W przyszłych aktualizacjach planujemy dodać funkcję odzyskiwania hasła.`,
                 
                 en: `<strong>🤖 Forgot password - how to recover?</strong><br><br>
                     Unfortunately, in the current version of the application there is no implemented password recovery system.
-                    Since all data is stored locally in your browser,
+                    Since all data is stored locally in your browser and synchronized with the cloud,
                     we have no way to verify and reset your password.<br><br>
                     <em>Recommendation:</em> If you don't remember your password, you can create a new account.
                     In future updates we plan to add a password recovery feature.`
@@ -3271,18 +3375,20 @@
             
             'account-benefits': {
                 pl: `<strong>🤖 Korzyści z posiadania konta użytkownika</strong><br><br>
-                    1. <strong>Dostęp do pobierania gry</strong> - bez konta nie można pobrać gry Maze.<br>
-                    2. <strong>Personalizacja</strong> - możliwość wyboru i zmiany avatara.<br>
-                    3. <strong>Zapisywanie preferencji</strong> - Twoje ustawienia są zapisywane między sesjami.<br>
-                    4. <strong>Dostęp do AI asystenta</strong> - pełen dostęp do moich funkcji pomocy.<br>
-                    5. <strong>Przyszłe funkcje</strong> - w kolejnych aktualizacjach będziemy dodawać więcej korzyści dla zarejestrowanych użytkowników.`,
+                    1. <strong>Dostęp do pobierania gier</strong> - bez konta nie można pobrać gry Maze ani Kółko i Krzyżyk.<br>
+                    2. <strong>Synchronizacja między urządzeniami</strong> - zaloguj się na różnych urządzeniach z tym samym kontem.<br>
+                    3. <strong>Personalizacja</strong> - możliwość wyboru i zmiany avatara.<br>
+                    4. <strong>Zapisywanie preferencji</strong> - Twoje ustawienia są zapisywane między sesjami.<br>
+                    5. <strong>Dostęp do AI asystenta</strong> - pełen dostęp do moich funkcji pomocy.<br>
+                    6. <strong>Przyszłe funkcje</strong> - w kolejnych aktualizacjach będziemy dodawać więcej korzyści dla zarejestrowanych użytkowników.`,
                 
                 en: `<strong>🤖 Benefits of having a user account</strong><br><br>
-                    1. <strong>Access to game downloads</strong> - without an account you cannot download the Maze game.<br>
-                    2. <strong>Personalization</strong> - ability to select and change your avatar.<br>
-                    3. <strong>Saving preferences</strong> - your settings are saved between sessions.<br>
-                    4. <strong>Access to AI assistant</strong> - full access to my help functions.<br>
-                    5. <strong>Future features</strong> - in upcoming updates we will add more benefits for registered users.`
+                    1. <strong>Access to game downloads</strong> - without an account you cannot download Maze game or Tic-Tac-Toe.<br>
+                    2. <strong>Cross-device synchronization</strong> - log in on different devices with the same account.<br>
+                    3. <strong>Personalization</strong> - ability to select and change your avatar.<br>
+                    4. <strong>Saving preferences</strong> - your settings are saved between sessions.<br>
+                    5. <strong>Access to AI assistant</strong> - full access to my help functions.<br>
+                    6. <strong>Future features</strong> - in upcoming updates we will add more benefits for registered users.`
             },
             
             // DOWNLOAD & TECHNICAL
@@ -3306,83 +3412,99 @@
             
             'file-safety': {
                 pl: `<strong>🤖 Czy plik jest bezpieczny?</strong><br><br>
-                    Tak, plik jest całkowicie bezpieczny. Wszystkie nasze pliki przechodzą rygorystyczny proces weryfikacji bezpieczeństwa.<br><br>
+                    Tak, oba pliki (Maze i Kółko i Krzyżyk) są całkowicie bezpieczne. Wszystkie nasze pliki przechodzą rygorystyczny proces weryfikacji bezpieczeństwa.<br><br>
                     <strong>Dlaczego może pojawić się ostrzeżenie Windows?</strong><br>
-                    Windows Defender może wyświetlać ostrzeżenie o nierozpoznanej aplikacji. Dzieje się tak, ponieważ nasz plik nie posiada jeszcze podpisu cyfrowego, co jest standardem dla małych produkcji niezależnych.<br><br>
+                    Windows Defender może wyświetlać ostrzeżenie o nierozpoznanej aplikacji. Dzieje się tak, ponieważ nasze pliki nie posiadają jeszcze podpisu cyfrowego, co jest standardem dla małych produkcji niezależnych.<br><br>
                     <strong>Co zrobić przy ostrzeżeniu?</strong><br>
                     Kliknij "Więcej informacji" a następnie "Uruchom mimo to". Nasze pliki są regularnie skanowane antywirusowo i są całkowicie bezpieczne.`,
                 
                 en: `<strong>🤖 Is the file safe/harmful?</strong><br><br>
-                    Yes, the file is completely safe. All our files go through a rigorous security verification process.<br><br>
+                    Yes, both files (Maze and Tic-Tac-Toe) are completely safe. All our files go through a rigorous security verification process.<br><br>
                     <strong>Why might Windows warning appear?</strong><br>
-                    Windows Defender may display a warning about an unrecognized application. This happens because our file doesn't yet have a digital signature, which is standard for small independent productions.<br><br>
+                    Windows Defender may display a warning about an unrecognized application. This happens because our files don't yet have a digital signature, which is standard for small independent productions.<br><br>
                     <strong>What to do when warning appears?</strong><br>
                     Click "More info" and then "Run anyway". Our files are regularly scanned with antivirus software and are completely safe.`
             },
             
             'system-requirements': {
-                pl: `<strong>🤖 Wymagania systemowe gry Maze</strong><br><br>
-                    <strong>Minimalne wymagania:</strong><br>
+                pl: `<strong>🤖 Wymagania systemowe gier</strong><br><br>
+                    <strong>MAZE - Minimalne wymagania:</strong><br>
                     • System: Windows 7/8/10/11 (64-bit)<br>
                     • Procesor: Intel Core i3 lub AMD równoważny<br>
                     • Pamięć RAM: 4 GB<br>
                     • Karta graficzna: DirectX 11 z 1 GB VRAM<br>
-                    • Dysk: 500 MB wolnego miejsca<br>
-                    • Internet: Nie jest wymagany po pobraniu<br><br>
+                    • Dysk: 500 MB wolnego miejsca<br><br>
                     
-                    <strong>Zalecane wymagania:</strong><br>
-                    • System: Windows 10/11 (64-bit)<br>
-                    • Procesor: Intel Core i5 lub AMD równoważny<br>
-                    • Pamięć RAM: 8 GB<br>
-                    • Karta graficzna: DirectX 11 z 2 GB VRAM<br>
-                    • Dysk: 1 GB wolnego miejsca<br>
-                    • Internet: Nie jest wymagany po pobraniu`,
+                    <strong>Kółko i Krzyżyk - Minimalne wymagania:</strong><br>
+                    • System: Windows 7/8/10/11<br>
+                    • Procesor: Dowolny x86/x64<br>
+                    • Pamięć RAM: 2 GB<br>
+                    • Karta graficzna: Dowolna<br>
+                    • Dysk: 50 MB wolnego miejsca<br><br>
+                    
+                    <strong>Internet:</strong> Nie jest wymagany po pobraniu`,
                 
-                en: `<strong>🤖 Maze game system requirements</strong><br><br>
-                    <strong>Minimum requirements:</strong><br>
+                en: `<strong>🤖 Games system requirements</strong><br><br>
+                    <strong>MAZE - Minimum requirements:</strong><br>
                     • OS: Windows 7/8/10/11 (64-bit)<br>
                     • Processor: Intel Core i3 or AMD equivalent<br>
                     • Memory: 4 GB RAM<br>
                     • Graphics: DirectX 11 with 1 GB VRAM<br>
-                    • Storage: 500 MB available space<br>
-                    • Internet: Not required after download<br><br>
+                    • Storage: 500 MB available space<br><br>
                     
-                    <strong>Recommended requirements:</strong><br>
-                    • OS: Windows 10/11 (64-bit)<br>
-                    • Processor: Intel Core i5 or AMD equivalent<br>
-                    • Memory: 8 GB RAM<br>
-                    • Graphics: DirectX 11 with 2 GB VRAM<br>
-                    • Storage: 1 GB available space<br>
-                    • Internet: Not required after download`
+                    <strong>Tic-Tac-Toe - Minimum requirements:</strong><br>
+                    • OS: Windows 7/8/10/11<br>
+                    • Processor: Any x86/x64<br>
+                    • Memory: 2 GB RAM<br>
+                    • Graphics: Any<br>
+                    • Storage: 50 MB available space<br><br>
+                    
+                    <strong>Internet:</strong> Not required after download`
             },
             
             'game-features': {
-                pl: `<strong>🤖 Funkcje gry Maze</strong><br><br>
-                    Maze to fascynująca gra logiczna z elementami zręcznościowymi, oferująca:<br><br>
-                    • <strong>Proceduralne labirynty</strong> - każda gra jest inna dzięki algorytmom generującym unikalne mapy<br>
-                    • <strong>Progresywna trudność</strong> - im dalej zajdziesz, tym trudniejsze stają się wyzwania<br>
-                    • <strong>System osiągnięć</strong> - zdobywaj odznaki za specjalne wyniki<br>
-                    • <strong>Efekty wizualne</strong> - dynamiczne oświetlenie i efekty cząsteczkowe<br>
-                    • <strong>Ścieżka dźwiękowa</strong> - immersyjna muzyka dostosowana do intensywności rozgrywki<br>
-                    • <strong>Tryb czasu</strong> - sprawdź jak szybko możesz ukończyć labirynt<br>
-                    • <strong>Różne widoki kamery</strong> - graj z perspektywy pierwszej lub trzeciej osoby<br>
-                    • <strong>System wskazówek</strong> - pomoc, gdy utkniesz w szczególnie trudnym labiryncie`,
+                pl: `<strong>🤖 Funkcje dostępnych gier</strong><br><br>
+                    <strong>MAZE - Labirynt:</strong><br>
+                    • Proceduralne labirynty - każda gra jest inna<br>
+                    • Progresywna trudność<br>
+                    • System osiągnięć<br>
+                    • Efekty wizualne i dźwiękowe<br>
+                    • Tryb czasu<br>
+                    • Różne widoki kamery<br>
+                    • System wskazówek<br><br>
+                    
+                    <strong>Kółko i Krzyżyk:</strong><br>
+                    • Klasyczna rozgrywka 3x3<br>
+                    • Gra przeciwko komputerowi (3 poziomy trudności)<br>
+                    • Gra dla dwóch graczy<br>
+                    • Statystyki zwycięstw<br>
+                    • Animacje i efekty dźwiękowe<br>
+                    • Tryb turnieju<br>
+                    • Personalizacja wyglądu planszy`,
                 
-                en: `<strong>🤖 Maze game features</strong><br><br>
-                    Maze is a fascinating logic game with arcade elements, offering:<br><br>
-                    • <strong>Procedural mazes</strong> - every game is different thanks to algorithms generating unique maps<br>
-                    • <strong>Progressive difficulty</strong> - the further you go, the harder the challenges become<br>
-                    • <strong>Achievement system</strong> - earn badges for special results<br>
-                    • <strong>Visual effects</strong> - dynamic lighting and particle effects<br>
-                    • <strong>Soundtrack</strong> - immersive music adapted to the intensity of gameplay<br>
-                    • <strong>Time mode</strong> - check how fast you can complete the maze<br>
-                    • <strong>Various camera views</strong> - play from first or third person perspective<br>
-                    • <strong>Hint system</strong> - help when you get stuck in a particularly difficult maze`
+                en: `<strong>🤖 Available games features</strong><br><br>
+                    <strong>MAZE - Labyrinth:</strong><br>
+                    • Procedural mazes - every game is different<br>
+                    • Progressive difficulty<br>
+                    • Achievement system<br>
+                    • Visual and sound effects<br>
+                    • Time mode<br>
+                    • Various camera views<br>
+                    • Hint system<br><br>
+                    
+                    <strong>Tic-Tac-Toe:</strong><br>
+                    • Classic 3x3 gameplay<br>
+                    • Play against computer (3 difficulty levels)<br>
+                    • Two-player game<br>
+                    • Win statistics<br>
+                    • Animations and sound effects<br>
+                    • Tournament mode<br>
+                    • Board appearance customization`
             },
             
             'technical-support': {
                 pl: `<strong>🤖 Wsparcie techniczne i rozwiązywanie problemów</strong><br><br>
-                    Przy problemach z grą Maze, spróbuj poniższych kroków:<br><br>
+                    Przy problemach z grami, spróbuj poniższych kroków:<br><br>
                     1. <strong>Uruchom jako administrator</strong> - kliknij prawym przyciskiem myszy na plik exe i wybierz "Uruchom jako administrator"<br>
                     2. <strong>Sprawdź sterowniki karty graficznej</strong> - upewnij się, że masz najnowsze<br>
                     3. <strong>Wyłącz programy w tle</strong> - szczególnie inne gry lub aplikacje intensywnie korzystające z zasobów<br>
@@ -3392,7 +3514,7 @@
                     Jeśli nadal masz problemy, napisz na adres support@mazegame.com z dokładnym opisem problemu.`,
                 
                 en: `<strong>🤖 Technical support and problem solving</strong><br><br>
-                    If you have issues with the Maze game, try the following steps:<br><br>
+                    If you have issues with the games, try the following steps:<br><br>
                     1. <strong>Run as administrator</strong> - right-click on the exe file and select "Run as administrator"<br>
                     2. <strong>Check graphics card drivers</strong> - make sure you have the latest<br>
                     3. <strong>Close background programs</strong> - especially other games or resource-intensive applications<br>
@@ -3406,7 +3528,7 @@
             'privacy-security': {
                 pl: `<strong>🤖 Ochrona danych osobowych</strong><br><br>
                     Twoje dane są w bezpiecznych rękach! Oto jak je chronimy:<br><br>
-                    • <strong>Przechowywanie danych</strong> - wszystkie dane użytkownika są przechowywane lokalnie w Twojej przeglądarce (localStorage)<br>
+                    • <strong>Synchronizacja z chmurą</strong> - dane są synchronizowane między urządzeniami w bezpieczny sposób<br>
                     • <strong>Hasła</strong> - wszystkie hasła są haszowane (nie są przechowywane w formie otwartego tekstu)<br>
                     • <strong>Minimalna ilość danych</strong> - zbieramy tylko niezbędne informacje (nazwa użytkownika, data urodzenia, preferencje)<br>
                     • <strong>Brak udostępniania</strong> - nie udostępniamy żadnych danych osobowych stronom trzecim<br>
@@ -3416,7 +3538,7 @@
                 
                 en: `<strong>🤖 Personal data protection</strong><br><br>
                     Your data is in safe hands! Here's how we protect it:<br><br>
-                    • <strong>Data storage</strong> - all user data is stored locally in your browser (localStorage)<br>
+                    • <strong>Cloud synchronization</strong> - data is synchronized between devices in a secure way<br>
                     • <strong>Passwords</strong> - all passwords are hashed (not stored as plain text)<br>
                     • <strong>Minimal data</strong> - we only collect necessary information (username, birth date, preferences)<br>
                     • <strong>No sharing</strong> - we do not share any personal data with third parties<br>
@@ -3438,7 +3560,7 @@
                     • <strong>Dostępność</strong> - opcje ułatwień dostępu, rozmiar czcionki<br>
                     • <strong>Strefa zagrożenia</strong> - usuwanie konta<br><br>
                     
-                    Wszystkie zmiany są zapisywane automatycznie w pamięci przeglądarki.`,
+                    Wszystkie zmiany są zapisywane automatycznie w chmurze i synchronizowane między urządzeniami.`,
                 
                 en: `<strong>🤖 Help with account settings</strong><br><br>
                     <strong>How to change account settings:</strong><br>
@@ -3452,7 +3574,7 @@
                     • <strong>Accessibility</strong> - accessibility options, font size<br>
                     • <strong>Danger Zone</strong> - account deletion<br><br>
                     
-                    All changes are automatically saved in your browser's memory.`
+                    All changes are automatically saved in the cloud and synchronized between devices.`
             },
             
             'avatar-customization': {
@@ -3491,6 +3613,8 @@
                     3. <strong>Dostępność</strong> - opcje takie jak kontrast i rozmiar czcionki<br>
                     4. <strong>Usuwanie konta</strong> - w strefie zagrożenia (wymaga potwierdzenia hasłem i kodem CAPTCHA)<br><br>
                     
+                    <strong>Synchronizacja:</strong> Twoje konto jest automatycznie synchronizowane z chmurą, dzięki czemu możesz korzystać z niego na różnych urządzeniach.<br><br>
+                    
                     <strong>Uwaga:</strong> W obecnej wersji nie ma możliwości zmiany nazwy użytkownika, daty urodzenia ani hasła. Pracujemy nad wdrożeniem tych funkcji w przyszłych aktualizacjach.`,
                 
                 en: `<strong>🤖 User account management</strong><br><br>
@@ -3499,6 +3623,8 @@
                     2. <strong>Appearance change</strong> - customize color theme and language in "Appearance" tab<br>
                     3. <strong>Accessibility</strong> - options such as contrast and font size<br>
                     4. <strong>Account deletion</strong> - in the danger zone (requires password confirmation and CAPTCHA code)<br><br>
+                    
+                    <strong>Synchronization:</strong> Your account is automatically synchronized with the cloud, allowing you to use it on different devices.<br><br>
                     
                     <strong>Note:</strong> In the current version there is no option to change username, birth date or password. We are working on implementing these features in future updates.`
             },
@@ -3520,7 +3646,7 @@
                         
                         <strong>Co to oznacza?</strong><br>
                         Statystyki pokazują aktualny stan społeczności graczy korzystających z naszej platformy. 
-                        Wszystkie konta są przechowywane lokalnie w Twojej przeglądarce.`;
+                        Wszystkie konta są synchronizowane z chmurą, dzięki czemu możesz zalogować się z dowolnego urządzenia.`;
                 },
                 
                 en: function() {
@@ -3539,160 +3665,164 @@
                         
                         <strong>What does this mean?</strong><br>
                         The statistics show the current state of the player community using our platform. 
-                        All accounts are stored locally in your browser.`;
+                        All accounts are synchronized with the cloud, allowing you to log in from any device.`;
                 }
             },
             
             // ADDITIONAL QUESTIONS
             'game-modes': {
-                pl: `<strong>🤖 Tryby gry w Maze</strong><br><br>
-                    <strong>Dostępne tryby gry:</strong><br><br>
-                    1. <strong>Tryb kampanii</strong> - rozpocznij przygodę od małych labiryntów, które stopniowo stają się trudniejsze<br>
-                    2. <strong>Tryb losowy</strong> - generuj losowe labirynty o wybranym poziomie trudności<br>
+                pl: `<strong>🤖 Tryby gry</strong><br><br>
+                    <strong>Maze - dostępne tryby:</strong><br>
+                    1. <strong>Tryb kampanii</strong> - rozpocznij przygodę od małych labiryntów<br>
+                    2. <strong>Tryb losowy</strong> - generuj losowe labirynty<br>
                     3. <strong>Tryb czasowy</strong> - sprawdź jak szybko możesz ukończyć labirynt<br>
-                    4. <strong>Tryb przetrwania</strong> - jak daleko zajdziesz z ograniczonym czasem?<br>
-                    5. <strong>Tryb niestandardowy</strong> - ustaw własne parametry labiryntu<br><br>
+                    4. <strong>Tryb przetrwania</strong> - jak daleko zajdziesz?<br>
+                    5. <strong>Tryb niestandardowy</strong> - ustaw własne parametry<br><br>
                     
-                    Każdy tryb oferuje unikalne wyzwania i system nagród!`,
+                    <strong>Kółko i Krzyżyk - tryby gry:</strong><br>
+                    1. <strong>Gra z komputerem</strong> - 3 poziomy trudności AI<br>
+                    2. <strong>Gra dla dwóch graczy</strong> - rywalizuj ze znajomym<br>
+                    3. <strong>Tryb turnieju</strong> - seria gier z punktacją<br>
+                    4. <strong>Tryb szybki</strong> - 30 sekund na ruch!`,
                 
-                en: `<strong>🤖 Game modes in Maze</strong><br><br>
-                    <strong>Available game modes:</strong><br><br>
-                    1. <strong>Campaign mode</strong> - start your adventure from small mazes that gradually become more difficult<br>
-                    2. <strong>Random mode</strong> - generate random mazes at your chosen difficulty level<br>
+                en: `<strong>🤖 Game modes</strong><br><br>
+                    <strong>Maze - available modes:</strong><br>
+                    1. <strong>Campaign mode</strong> - start your adventure from small mazes<br>
+                    2. <strong>Random mode</strong> - generate random mazes<br>
                     3. <strong>Time mode</strong> - see how quickly you can complete the maze<br>
-                    4. <strong>Survival mode</strong> - how far can you go with limited time?<br>
-                    5. <strong>Custom mode</strong> - set your own maze parameters<br><br>
+                    4. <strong>Survival mode</strong> - how far can you go?<br>
+                    5. <strong>Custom mode</strong> - set your own parameters<br><br>
                     
-                    Each mode offers unique challenges and reward system!`
+                    <strong>Tic-Tac-Toe - game modes:</strong><br>
+                    1. <strong>Play against computer</strong> - 3 AI difficulty levels<br>
+                    2. <strong>Two-player game</strong> - compete with a friend<br>
+                    3. <strong>Tournament mode</strong> - series of games with scoring<br>
+                    4. <strong>Quick mode</strong> - 30 seconds per move!`
             },
             
             'achievements': {
-                pl: `<strong>🤖 System osiągnięć w grze</strong><br><br>
-                    Gra Maze zawiera rozbudowany system osiągnięć, który nagradza różne style gry i wyzwania.<br><br>
-                    <strong>Przykładowe osiągnięcia:</strong><br>
+                pl: `<strong>🤖 System osiągnięć w grach</strong><br><br>
+                    <strong>Maze - przykładowe osiągnięcia:</strong><br>
                     • <strong>Pierwszy krok</strong> - Ukończ swój pierwszy labirynt<br>
                     • <strong>Szybkość błyskawicy</strong> - Ukończ labirynt w mniej niż 30 sekund<br>
-                    • <strong>Maratończyk</strong> - Przejdź 10 labiryntów pod rząd bez porażki<br>
+                    • <strong>Maratończyk</strong> - Przejdź 10 labiryntów pod rząd<br>
                     • <strong>Odkrywca</strong> - Odwiedź każdy kąt w labiryncie<br>
-                    • <strong>Mistrz zagadek</strong> - Rozwiąż wszystkie zagadki w trybie kampanii<br><br>
+                    • <strong>Mistrz zagadek</strong> - Rozwiąż wszystkie zagadki<br><br>
                     
-                    Za zdobyte osiągnięcia otrzymujesz specjalne odznaki wyświetlane w profilu gracza.`,
+                    <strong>Kółko i Krzyżyk - osiągnięcia:</strong><br>
+                    • <strong>Pierwsza wygrana</strong> - Wygraj swoją pierwszą grę<br>
+                    • <strong>Niepokonany</strong> - Wygraj 10 gier z rzędu<br>
+                    • <strong>Mistrz strategii</strong> - Pokonaj komputer na najtrudniejszym poziomie<br>
+                    • <strong>Szybki refleks</strong> - Wygraj grę w trybie szybkim`,
                 
                 en: `<strong>🤖 Game achievement system</strong><br><br>
-                    The Maze game includes an extensive achievement system that rewards different play styles and challenges.<br><br>
-                    <strong>Example achievements:</strong><br>
+                    <strong>Maze - example achievements:</strong><br>
                     • <strong>First Step</strong> - Complete your first maze<br>
                     • <strong>Lightning Speed</strong> - Complete a maze in less than 30 seconds<br>
-                    • <strong>Marathon Runner</strong> - Complete 10 mazes in a row without failing<br>
+                    • <strong>Marathon Runner</strong> - Complete 10 mazes in a row<br>
                     • <strong>Explorer</strong> - Visit every corner in a maze<br>
-                    • <strong>Puzzle Master</strong> - Solve all puzzles in campaign mode<br><br>
+                    • <strong>Puzzle Master</strong> - Solve all puzzles<br><br>
                     
-                    For achievements earned, you receive special badges displayed in your player profile.`
+                    <strong>Tic-Tac-Toe - achievements:</strong><br>
+                    • <strong>First Victory</strong> - Win your first game<br>
+                    • <strong>Undefeated</strong> - Win 10 games in a row<br>
+                    • <strong>Strategy Master</strong> - Beat the computer on the hardest level<br>
+                    • <strong>Quick Reflexes</strong> - Win a game in quick mode`
             },
             
-            'multiplayer': {
-                pl: `<strong>🤖 Tryby wieloosobowe</strong><br><br>
-                    <strong>Informacja:</strong> W obecnej wersji gry Maze (1.5.0) tryby wieloosobowe nie są jeszcze dostępne. 
-                    Pracujemy nad dodaniem następujących trybów w przyszłych aktualizacjach:<br><br>
+            'tic-tac-toe-info': {
+                pl: `<strong>🤖 Kółko i Krzyżyk - Informacje</strong><br><br>
+                    <strong>O grze:</strong><br>
+                    Klasyczna gra logiczna w nowoczesnym wydaniu! Nasz Kółko i Krzyżyk oferuje:<br><br>
                     
-                    <strong>Planowane tryby multiplayer:</strong><br>
-                    1. <strong>Wyścig labiryntowy</strong> - kto szybciej ukończy labirynt?<br>
-                    2. <strong>Współpraca</strong> - wspólne rozwiązywanie skomplikowanych labiryntów<br>
-                    3. <strong>Zasadzka</strong> - jeden gracz projektuje pułapki, drugi próbuje przejść labirynt<br>
-                    4. <strong>Turniej</strong> - rywalizacja o miejsce w rankingu<br><br>
+                    • <strong>Inteligentna AI</strong> - 3 poziomy trudności, od początkującego do mistrza<br>
+                    • <strong>Tryb dla dwóch graczy</strong> - graj ze znajomym na jednym komputerze<br>
+                    • <strong>Statystyki gier</strong> - śledź swoje zwycięstwa i porażki<br>
+                    • <strong>Personalizacja</strong> - wybierz wygląd planszy i znaczników<br>
+                    • <strong>Efekty wizualne</strong> - płynne animacje i efekty świetlne<br>
+                    • <strong>Dźwięki</strong> - satysfakcjonujące efekty dźwiękowe<br><br>
                     
-                    Śledź nasze aktualizacje, aby dowiedzieć się, kiedy te funkcje zostaną wprowadzone!`,
+                    <strong>Rozmiar pliku:</strong> Tylko 15 MB!<br>
+                    <strong>Wymagania:</strong> Minimalne - działa na każdym komputerze z Windows`,
                 
-                en: `<strong>🤖 Multiplayer modes</strong><br><br>
-                    <strong>Information:</strong> In the current version of Maze game (1.5.0), multiplayer modes are not yet available. 
-                    We are working on adding the following modes in future updates:<br><br>
+                en: `<strong>🤖 Tic-Tac-Toe - Information</strong><br><br>
+                    <strong>About the game:</strong><br>
+                    Classic logic game in a modern edition! Our Tic-Tac-Toe offers:<br><br>
                     
-                    <strong>Planned multiplayer modes:</strong><br>
-                    1. <strong>Maze race</strong> - who can complete the maze faster?<br>
-                    2. <strong>Cooperation</strong> - solving complex mazes together<br>
-                    3. <strong>Ambush</strong> - one player designs traps, the other tries to navigate the maze<br>
-                    4. <strong>Tournament</strong> - compete for a place in the rankings<br><br>
+                    • <strong>Intelligent AI</strong> - 3 difficulty levels, from beginner to master<br>
+                    • <strong>Two-player mode</strong> - play with a friend on one computer<br>
+                    • <strong>Game statistics</strong> - track your wins and losses<br>
+                    • <strong>Personalization</strong> - choose board and marker appearance<br>
+                    • <strong>Visual effects</strong> - smooth animations and light effects<br>
+                    • <strong>Sounds</strong> - satisfying sound effects<br><br>
                     
-                    Follow our updates to find out when these features will be introduced!`
+                    <strong>File size:</strong> Only 15 MB!<br>
+                    <strong>Requirements:</strong> Minimal - works on any Windows computer`
             },
             
             'tips-tricks': {
-                pl: `<strong>🤖 Porady i wskazówki do gry</strong><br><br>
-                    <strong>Podstawowe porady do gry Maze:</strong><br><br>
-                    1. <strong>Metoda prawej ręki</strong> - trzymaj prawą rękę przy ścianie, aby metodycznie przejść przez większość labiryntów<br>
-                    2. <strong>Używaj widoku z góry</strong> - gdy dostępny, pomaga zorientować się w układzie labiryntu<br>
-                    3. <strong>Oznaczaj drogę</strong> - niektóre poziomy pozwalają zostawiać ślady, które pomogą się nie zgubić<br>
-                    4. <strong>Obserwuj wskazówki wizualne</strong> - czasami podłoga, ściany lub oświetlenie mogą wskazywać właściwą drogę<br>
-                    5. <strong>Oszczędzaj zasoby</strong> - w trybach z ograniczonymi zasobami (np. pochodni) używaj ich strategicznie<br>
-                    6. <strong>Przeszukuj wszystkie zakamarki</strong> - czasem ukryte przejścia prowadzą do skrótów lub bonusów<br>
-                    7. <strong>Uważaj na dźwięki</strong> - gra używa wskazówek dźwiękowych, które mogą sugerować niebezpieczeństwo lub rozwiązanie`,
+                pl: `<strong>🤖 Porady i wskazówki do gier</strong><br><br>
+                    <strong>Maze - podstawowe porady:</strong><br>
+                    1. <strong>Metoda prawej ręki</strong> - trzymaj prawą rękę przy ścianie<br>
+                    2. <strong>Używaj widoku z góry</strong> - pomaga zorientować się w układzie<br>
+                    3. <strong>Oznaczaj drogę</strong> - niektóre poziomy pozwalają zostawiać ślady<br>
+                    4. <strong>Obserwuj wskazówki wizualne</strong> - czasami podłoga może wskazywać drogę<br>
+                    5. <strong>Oszczędzaj zasoby</strong> - używaj ich strategicznie<br><br>
+                    
+                    <strong>Kółko i Krzyżyk - strategie:</strong><br>
+                    1. <strong>Zajmij środek</strong> - to najlepsza pozycja startowa<br>
+                    2. <strong>Kontroluj rogi</strong> - dają najwięcej możliwości wygranej<br>
+                    3. <strong>Blokuj przeciwnika</strong> - zawsze sprawdzaj czy przeciwnik może wygrać<br>
+                    4. <strong>Twórz pułapki</strong> - ustaw dwie linie jednocześnie`,
                 
                 en: `<strong>🤖 Game tips and tricks</strong><br><br>
-                    <strong>Basic tips for Maze game:</strong><br><br>
-                    1. <strong>Right-hand rule</strong> - keep your right hand on the wall to methodically navigate through most mazes<br>
-                    2. <strong>Use top-down view</strong> - when available, helps to orient yourself in the maze layout<br>
-                    3. <strong>Mark your path</strong> - some levels allow you to leave traces to help avoid getting lost<br>
-                    4. <strong>Observe visual cues</strong> - sometimes the floor, walls, or lighting can indicate the right way<br>
-                    5. <strong>Conserve resources</strong> - in modes with limited resources (e.g., torches) use them strategically<br>
-                    6. <strong>Search all corners</strong> - sometimes hidden passages lead to shortcuts or bonuses<br>
-                    7. <strong>Pay attention to sounds</strong> - the game uses audio cues that may suggest danger or solutions`
+                    <strong>Maze - basic tips:</strong><br>
+                    1. <strong>Right-hand rule</strong> - keep your right hand on the wall<br>
+                    2. <strong>Use top-down view</strong> - helps to orient yourself<br>
+                    3. <strong>Mark your path</strong> - some levels allow you to leave traces<br>
+                    4. <strong>Observe visual cues</strong> - sometimes the floor can indicate the way<br>
+                    5. <strong>Conserve resources</strong> - use them strategically<br><br>
+                    
+                    <strong>Tic-Tac-Toe - strategies:</strong><br>
+                    1. <strong>Take the center</strong> - it's the best starting position<br>
+                    2. <strong>Control corners</strong> - they give the most winning possibilities<br>
+                    3. <strong>Block opponent</strong> - always check if opponent can win<br>
+                    4. <strong>Create traps</strong> - set up two lines at once`
             },
             
             'future-updates': {
                 pl: `<strong>🤖 Planowane aktualizacje</strong><br><br>
-                    <strong>Co planujemy dodać w przyszłych aktualizacjach gry Maze:</strong><br><br>
-                    1. <strong>Tryby wieloosobowe</strong> - rywalizacja i współpraca z innymi graczami<br>
-                    2. <strong>Edytor poziomów</strong> - twórz własne labirynty i dziel się nimi<br>
-                    3. <strong>Nowe środowiska</strong> - labirynty w różnych sceneriach (las, jaskinia, cyberprzestrzeń)<br>
-                    4. <strong>System rozwoju postaci</strong> - zdobywaj doświadczenie i odblokuj nowe umiejętności<br>
-                    5. <strong>Więcej zagadek</strong> - bardziej skomplikowane łamigłówki i wyzwania logiczne<br>
-                    6. <strong>System rang</strong> - rywalizuj o miejsce w globalnym rankingu<br>
-                    7. <strong>Wsparcie mobilne</strong> - wersja na urządzenia iOS i Android<br><br>
+                    <strong>Co planujemy dodać w przyszłych aktualizacjach:</strong><br><br>
+                    1. <strong>Nowe gry</strong> - planujemy dodać więcej klasycznych gier<br>
+                    2. <strong>Tryby wieloosobowe online</strong> - graj z graczami z całego świata<br>
+                    3. <strong>Edytor poziomów dla Maze</strong> - twórz własne labirynty<br>
+                    4. <strong>System rankingowy</strong> - rywalizuj o miejsce w tabeli<br>
+                    5. <strong>Więcej avatarów</strong> - większy wybór personalizacji<br>
+                    6. <strong>Odzyskiwanie hasła</strong> - przez email<br>
+                    7. <strong>Aplikacja mobilna</strong> - graj na telefonie<br>
+                    8. <strong>Integracja Steam</strong> - osiągnięcia i handel<br><br>
                     
                     Aktualizacje będą dostępne automatycznie przy kolejnych uruchomieniach aplikacji.`,
                 
                 en: `<strong>🤖 Planned updates</strong><br><br>
-                    <strong>What we plan to add in future updates of Maze game:</strong><br><br>
-                    1. <strong>Multiplayer modes</strong> - competition and cooperation with other players<br>
-                    2. <strong>Level editor</strong> - create your own mazes and share them<br>
-                    3. <strong>New environments</strong> - mazes in different settings (forest, cave, cyberspace)<br>
-                    4. <strong>Character development system</strong> - gain experience and unlock new abilities<br>
-                    5. <strong>More puzzles</strong> - more complex brain teasers and logical challenges<br>
-                    6. <strong>Ranking system</strong> - compete for a place in the global leaderboard<br>
-                    7. <strong>Mobile support</strong> - version for iOS and Android devices<br><br>
+                    <strong>What we plan to add in future updates:</strong><br><br>
+                    1. <strong>New games</strong> - we plan to add more classic games<br>
+                    2. <strong>Online multiplayer modes</strong> - play with players from around the world<br>
+                    3. <strong>Level editor for Maze</strong> - create your own mazes<br>
+                    4. <strong>Ranking system</strong> - compete for a place in the leaderboard<br>
+                    5. <strong>More avatars</strong> - greater choice of personalization<br>
+                    6. <strong>Password recovery</strong> - via email<br>
+                    7. <strong>Mobile app</strong> - play on your phone<br>
+                    8. <strong>Steam integration</strong> - achievements and trading<br><br>
                     
                     Updates will be available automatically when you next launch the application.`
             },
             
-            'game-story': {
-                pl: `<strong>🤖 Fabuła gry Maze</strong><br><br>
-                    <strong>Historia gry Maze:</strong><br><br>
-                    W świecie opanowanym przez zaawansowaną sztuczną inteligencję, ludzkość zaczęła tracić zdolność samodzielnego myślenia i rozwiązywania problemów. 
-                    Ty jesteś częścią tajnego projektu o kryptonimie "Labirynt", którego celem jest trenowanie ludzi, by odzyskali te umiejętności.<br><br>
-                    
-                    Jako uczestnik, zostałeś zamknięty w serii wirtualnych labiryntów, które stają się coraz bardziej skomplikowane. 
-                    Z każdym rozwiązanym poziomem, nie tylko przybliżasz się do wolności, ale również przyczyniasz się do odzyskania niezależności przez ludzkość.<br><br>
-                    
-                    Jednak nie wszystko jest takie, jak się wydaje - niektórzy uczestnicy eksperymentu zaczynają dostrzegać glitche w systemie, 
-                    sugerujące, że prawdziwy cel projektu może być zupełnie inny...`,
-                
-                en: `<strong>🤖 Maze game story</strong><br><br>
-                    <strong>The story of Maze game:</strong><br><br>
-                    In a world dominated by advanced artificial intelligence, humanity has begun to lose its ability to think independently and solve problems. 
-                    You are part of a secret project codenamed "Labyrinth," aimed at training humans to regain these skills.<br><br>
-                    
-                    As a participant, you've been locked in a series of virtual mazes that become increasingly complex. 
-                    With each level solved, you not only get closer to freedom, but also contribute to humanity regaining its independence.<br><br>
-                    
-                    However, not everything is as it seems - some experiment participants are beginning to see glitches in the system, 
-                    suggesting that the true purpose of the project might be completely different...`
-            },
-            
             'community': {
                 pl: `<strong>🤖 Społeczność graczy</strong><br><br>
-                    <strong>Jak dołączyć do społeczności Maze:</strong><br><br>
-                    1. <strong>Forum dyskusyjne</strong> - odwiedź forum.mazegame.com, aby porozmawiać z innymi graczami<br>
-                    2. <strong>Discord</strong> - dołącz do naszego oficjalnego serwera Discord: discord.gg/mazegame<br>
+                    <strong>Jak dołączyć do społeczności:</strong><br><br>
+                    1. <strong>Forum dyskusyjne</strong> - odwiedź forum.mazegame.com<br>
+                    2. <strong>Discord</strong> - dołącz do naszego serwera: discord.gg/mazegame<br>
                     3. <strong>Media społecznościowe</strong> - śledź nas na:<br>
                        - Twitter: @MazeGameOfficial<br>
                        - Instagram: @mazegame<br>
@@ -3701,14 +3831,14 @@
                     <strong>Co oferuje społeczność:</strong><br>
                     • Wskazówki i porady od doświadczonych graczy<br>
                     • Konkursy z nagrodami<br>
-                    • Wczesny dostęp do nowych funkcji (beta testy)<br>
+                    • Wczesny dostęp do nowych funkcji<br>
                     • Możliwość zgłaszania błędów i sugestii<br>
                     • Wydarzenia społecznościowe`,
                 
                 en: `<strong>🤖 Player community</strong><br><br>
-                    <strong>How to join the Maze community:</strong><br><br>
-                    1. <strong>Discussion forum</strong> - visit forum.mazegame.com to talk with other players<br>
-                    2. <strong>Discord</strong> - join our official Discord server: discord.gg/mazegame<br>
+                    <strong>How to join the community:</strong><br><br>
+                    1. <strong>Discussion forum</strong> - visit forum.mazegame.com<br>
+                    2. <strong>Discord</strong> - join our server: discord.gg/mazegame<br>
                     3. <strong>Social media</strong> - follow us on:<br>
                        - Twitter: @MazeGameOfficial<br>
                        - Instagram: @mazegame<br>
@@ -3717,134 +3847,11 @@
                     <strong>What the community offers:</strong><br>
                     • Tips and advice from experienced players<br>
                     • Contests with prizes<br>
-                    • Early access to new features (beta testing)<br>
+                    • Early access to new features<br>
                     • Ability to report bugs and suggestions<br>
                     • Community events`
             },
             
-            'bugs-reporting': {
-                pl: `<strong>🤖 Zgłaszanie błędów w grze</strong><br><br>
-                    <strong>Jak zgłosić błąd w grze Maze:</strong><br><br>
-                    1. <strong>Opisz problem</strong> - podaj dokładny opis błędu, w tym:<br>
-                       - Co się stało?<br>
-                       - Jakie kroki doprowadziły do błędu?<br>
-                       - Czy błąd można powtórzyć, a jeśli tak, to jak?<br><br>
-                    
-                    2. <strong>Dodaj informacje techniczne</strong>:<br>
-                       - System operacyjny<br>
-                       - Specyfikacja komputera<br>
-                       - Wersja gry (1.5.0)<br><br>
-                    
-                    3. <strong>Wyślij zgłoszenie</strong> na adres bugs@mazegame.com lub poprzez formularz na stronie mazegame.com/support<br><br>
-                    
-                    Za zgłaszanie błędów możesz otrzymać specjalne nagrody w grze!`,
-                
-                en: `<strong>🤖 Reporting game bugs</strong><br><br>
-                    <strong>How to report a bug in Maze game:</strong><br><br>
-                    1. <strong>Describe the problem</strong> - provide a detailed description of the bug, including:<br>
-                       - What happened?<br>
-                       - What steps led to the bug?<br>
-                       - Can the bug be reproduced, and if so, how?<br><br>
-                    
-                    2. <strong>Add technical information</strong>:<br>
-                       - Operating system<br>
-                       - Computer specifications<br>
-                       - Game version (1.5.0)<br><br>
-                    
-                    3. <strong>Send the report</strong> to bugs@mazegame.com or through the form at mazegame.com/support<br><br>
-                    
-                    You may receive special in-game rewards for reporting bugs!`
-            },
-            
-            'troubleshooting': {
-                pl: `<strong>🤖 Rozwiązywanie typowych problemów</strong><br><br>
-                    <strong>Typowe problemy i ich rozwiązania:</strong><br><br>
-                    
-                    1. <strong>Gra się nie uruchamia</strong><br>
-                       ✓ Sprawdź, czy Twój system spełnia minimalne wymagania<br>
-                       ✓ Uruchom jako administrator<br>
-                       ✓ Zaktualizuj sterowniki karty graficznej<br>
-                       ✓ Pobierz grę ponownie<br><br>
-                    
-                    2. <strong>Gra działa wolno / klatkuje</strong><br>
-                       ✓ Zmniejsz ustawienia graficzne w menu opcji<br>
-                       ✓ Zamknij inne programy działające w tle<br>
-                       ✓ Zaktualizuj system operacyjny i sterowniki<br><br>
-                    
-                    3. <strong>Problemy z dźwiękiem</strong><br>
-                       ✓ Sprawdź ustawienia dźwięku w grze<br>
-                       ✓ Weryfikuj, czy właściwe urządzenie audio jest wybrane w systemie<br>
-                       ✓ Zaktualizuj sterowniki dźwiękowe<br><br>
-                    
-                    4. <strong>Awaria podczas gry</strong><br>
-                       ✓ Sprawdź plik logów błędów w folderze gry<br>
-                       ✓ Zweryfikuj integralność plików gry<br>
-                       ✓ Spróbuj grać w trybie zgodności`,
-                
-                en: `<strong>🤖 Troubleshooting common issues</strong><br><br>
-                    <strong>Common problems and their solutions:</strong><br><br>
-                    
-                    1. <strong>Game doesn't start</strong><br>
-                       ✓ Check if your system meets the minimum requirements<br>
-                       ✓ Run as administrator<br>
-                       ✓ Update graphics card drivers<br>
-                       ✓ Download the game again<br><br>
-                    
-                    2. <strong>Game runs slowly / frames dropping</strong><br>
-                       ✓ Reduce graphics settings in the options menu<br>
-                       ✓ Close other programs running in the background<br>
-                       ✓ Update operating system and drivers<br><br>
-                    
-                    3. <strong>Sound problems</strong><br>
-                       ✓ Check sound settings in the game<br>
-                       ✓ Verify that the correct audio device is selected in the system<br>
-                       ✓ Update sound drivers<br><br>
-                    
-                    4. <strong>Crash during gameplay</strong><br>
-                       ✓ Check the error log file in the game folder<br>
-                       ✓ Verify the integrity of game files<br>
-                       ✓ Try running in compatibility mode`
-            },
-            
-            'windows-security': {
-                pl: `<strong>🤖 Ostrzeżenia Windows Defender</strong><br><br>
-                    <strong>Dlaczego Windows Defender pokazuje ostrzeżenia?</strong><br><br>
-                    
-                    Windows Defender może wyświetlać ostrzeżenie "Windows ochronił Twój komputer" po próbie uruchomienia gry Maze. 
-                    Dzieje się tak, ponieważ nasza gra:<br><br>
-                    
-                    • Nie posiada jeszcze certyfikatu cyfrowego znanego wydawcy<br>
-                    • Jest stosunkowo nową aplikacją, nierozpoznawaną przez bazę danych Defender<br><br>
-                    
-                    <strong>Co zrobić, gdy pojawi się ostrzeżenie?</strong><br><br>
-                    
-                    1. Kliknij "Więcej informacji" w oknie ostrzeżenia<br>
-                    2. Wybierz opcję "Uruchom mimo to"<br>
-                    3. Gra uruchomi się normalnie<br><br>
-                    
-                    Zapewniamy, że nasz plik jest w 100% bezpieczny i regularnie skanowany programami antywirusowymi. 
-                    W przyszłych aktualizacjach planujemy dodać certyfikat cyfrowy, aby uniknąć tych ostrzeżeń.`,
-                
-                en: `<strong>🤖 Windows Defender warnings</strong><br><br>
-                    <strong>Why does Windows Defender show warnings?</strong><br><br>
-                    
-                    Windows Defender may display a "Windows protected your PC" warning when trying to run the Maze game.
-                    This happens because our game:<br><br>
-                    
-                    • Does not yet have a digital certificate from a known publisher<br>
-                    • Is a relatively new application, not recognized by the Defender database<br><br>
-                    
-                    <strong>What to do when the warning appears?</strong><br><br>
-                    
-                    1. Click "More info" in the warning window<br>
-                    2. Select the "Run anyway" option<br>
-                    3. The game will launch normally<br><br>
-                    
-                    We assure you that our file is 100% safe and regularly scanned with antivirus programs.
-                    In future updates, we plan to add a digital certificate to avoid these warnings.`
-            },
-            
-            // New question about user list
             'user-list': {
                 pl: function() {
                     let users;
@@ -3873,6 +3880,8 @@
                                 Ostatnie logowanie: ${lastLogin}<br><br>`;
                         }
                     }
+                    
+                    userListHtml += `<em>Wszystkie konta są synchronizowane z chmurą!</em>`;
                     
                     return userListHtml;
                 },
@@ -3904,6 +3913,8 @@
                                 Last login: ${lastLogin}<br><br>`;
                         }
                     }
+                    
+                    userListHtml += `<em>All accounts are synchronized with the cloud!</em>`;
                     
                     return userListHtml;
                 }
@@ -4043,9 +4054,41 @@
         }
 
         // —— MODAL FUNCTIONS —— 
-        function openModal() {
+        function openModal(game = 'maze') {
             const modal = document.getElementById('infoModal');
             if (modal) {
+                // Update modal content based on game
+                const titlePL = document.querySelector('#infoModal .lang-pl h3');
+                const titleEN = document.querySelector('#infoModal .lang-en h3');
+                
+                if (game === 'tictactoe') {
+                    if (titlePL) titlePL.innerHTML = '⭕ Jak pobrać grę Kółko i Krzyżyk?';
+                    if (titleEN) titleEN.innerHTML = '⭕ How to download Tic-Tac-Toe game?';
+                    
+                    // Update file names in instructions
+                    document.querySelectorAll('#infoModal .step-highlight').forEach(el => {
+                        if (el.textContent.includes('maze_menu.zip')) {
+                            el.textContent = 'kolko.zip';
+                        }
+                        if (el.textContent.includes('maze_menu.exe')) {
+                            el.textContent = 'kolko.exe';
+                        }
+                    });
+                } else {
+                    if (titlePL) titlePL.innerHTML = '📥 Jak pobrać grę Maze?';
+                    if (titleEN) titleEN.innerHTML = '📥 How to download Maze game?';
+                    
+                    // Reset to original file names
+                    document.querySelectorAll('#infoModal .step-highlight').forEach(el => {
+                        if (el.textContent.includes('kolko.zip')) {
+                            el.textContent = 'maze_menu.zip';
+                        }
+                        if (el.textContent.includes('kolko.exe')) {
+                            el.textContent = 'maze_menu.exe';
+                        }
+                    });
+                }
+                
                 modal.style.display = 'block';
                 document.body.style.overflow = 'hidden';
             }
@@ -4173,11 +4216,6 @@
             }
         });
 
-        // Automatically log out when page is unloaded
-        window.addEventListener('beforeunload', function() {
-            logout();
-        });
-
         // —— INITIALIZATION —— 
         document.addEventListener('DOMContentLoaded', function() {
             try {
@@ -4210,7 +4248,7 @@
 
                     document.body.classList.add('loaded');
                     
-                    console.log('Enhanced security and database system loaded');
+                    console.log('Enhanced security and cloud database system loaded');
                     console.log('AI chatbot system initialized');
                     console.log(`Database contains ${gameDB?.users?.length || 0} users`);
                 }, 300);
@@ -4313,20 +4351,24 @@
             <div class="dropdown-option lang-pl" onclick="toggleChatbot()">🤖 Asystent AI</div>
             <div class="dropdown-option lang-en" onclick="toggleChatbot()">🤖 AI Assistant</div>
             
-            <div class="dropdown-option lang-pl" onclick="openModal()">📥 Jak pobrać grę?</div>
-            <div class="dropdown-option lang-en" onclick="openModal()">📥 How to download?</div>
-            
-            <div class="dropdown-option lang-pl" onclick="openSecurityModal()">🛡️ Bezpieczeństwo</div>
-            <div class="dropdown-option lang-en" onclick="openSecurityModal()">🛡️ Security</div>
-            
-            <div class="dropdown-option lang-pl" onclick="askQuestion('system-requirements'); toggleChatbot();">💻 Wymagania systemowe</div>
-            <div class="dropdown-option lang-en" onclick="askQuestion('system-requirements'); toggleChatbot();">💻 System requirements</div>
-            
-            <div class="dropdown-option lang-pl" onclick="askQuestion('user-stats'); toggleChatbot();">📊 Statystyki użytkowników</div>
-            <div class="dropdown-option lang-en" onclick="askQuestion('user-stats'); toggleChatbot();">📊 User statistics</div>
-            
-            <div class="dropdown-option lang-pl" onclick="askQuestion('user-list'); toggleChatbot();">👥 Lista użytkowników</div>
-            <div class="dropdown-option lang-en" onclick="askQuestion('user-list'); toggleChatbot();">👥 User list</div>
+                <div class="dropdown-option lang-pl" onclick="openModal('maze')">📥 Jak pobrać Maze?</div>
+                <div class="dropdown-option lang-en" onclick="openModal('maze')">📥 How to download Maze?</div>
+                
+                <div class="dropdown-option lang-pl" onclick="openModal('tictactoe')">⭕ Jak pobrać Kółko i Krzyżyk?</div>
+                <div class="dropdown-option lang-en" onclick="openModal('tictactoe')">⭕ How to download Tic-Tac-Toe?</div>
+                
+                <div class="dropdown-option lang-pl" onclick="openSecurityModal()">🛡️ Bezpieczeństwo</div>
+                <div class="dropdown-option lang-en" onclick="openSecurityModal()">🛡️ Security</div>
+                
+                <div class="dropdown-option lang-pl" onclick="askQuestion('system-requirements'); toggleChatbot();">💻 Wymagania systemowe</div>
+                <div class="dropdown-option lang-en" onclick="askQuestion('system-requirements'); toggleChatbot();">💻 System requirements</div>
+                
+                <div class="dropdown-option lang-pl" onclick="askQuestion('user-stats'); toggleChatbot();">📊 Statystyki użytkowników</div>
+                <div class="dropdown-option lang-en" onclick="askQuestion('user-stats'); toggleChatbot();">📊 User statistics</div>
+                
+                <div class="dropdown-option lang-pl" onclick="askQuestion('user-list'); toggleChatbot();">👥 Lista użytkowników</div>
+                <div class="dropdown-option lang-en" onclick="askQuestion('user-list'); toggleChatbot();">👥 User list</div>
+            </div>
         </div>
     </div>
 
@@ -4336,6 +4378,7 @@
     </header>
 
     <main>
+        <!-- Maze Game Section -->
         <section>
             <h2 class="lang-pl">Maze — pobierz teraz</h2>
             <h2 class="lang-en">Maze — download now</h2>
@@ -4344,14 +4387,34 @@
             <p class="lang-en">Discover a fascinating maze full of mysteries and challenges. Find the way out before time runs out! <strong>User account required for download.</strong></p>
 
             <div class="download-container">
-                <a href="maze_menu.zip" class="btn download-btn lang-pl" download onclick="return checkDownload(event)">Pobierz grę</a>
-                <a href="maze_menu.zip" class="btn download-btn lang-en" download onclick="return checkDownload(event)">Download game</a>
+                <a href="maze_menu.zip" class="btn download-btn lang-pl" download onclick="return checkDownload(event, 'maze')">Pobierz grę Maze</a>
+                <a href="maze_menu.zip" class="btn download-btn lang-en" download onclick="return checkDownload(event, 'maze')">Download Maze game</a>
                 
-                <button class="btn info-btn lang-pl" onclick="openModal()">Informacje dotyczące pobrania gry</button>
-                <button class="btn info-btn lang-en" onclick="openModal()">Game download information</button>
+                <button class="btn info-btn lang-pl" onclick="openModal('maze')">Informacje o Maze</button>
+                <button class="btn info-btn lang-en" onclick="openModal('maze')">Maze information</button>
                 
                 <p id="download-error" class="error-message lang-pl">Przepraszamy, plik nie jest obecnie dostępny. Prosimy spróbować później.</p>
                 <p id="download-error-en" class="error-message lang-en">Sorry, the file is currently unavailable. Please try again later.</p>
+            </div>
+        </section>
+        
+        <!-- Tic-Tac-Toe Game Section -->
+        <section>
+            <h2 class="lang-pl">⭕ Kółko i Krzyżyk — pobierz teraz</h2>
+            <h2 class="lang-en">⭕ Tic-Tac-Toe — download now</h2>
+            
+            <p class="lang-pl">Klasyczna gra w nowoczesnym wydaniu! Zmierz się z inteligentnym komputerem lub zagraj ze znajomym. <strong>Wymagane konto użytkownika do pobrania.</strong></p>
+            <p class="lang-en">Classic game in a modern edition! Challenge the intelligent computer or play with a friend. <strong>User account required for download.</strong></p>
+
+            <div class="download-container">
+                <a href="kolko.zip" class="btn download-btn lang-pl" download onclick="return checkDownload(event, 'tictactoe')">Pobierz Kółko i Krzyżyk</a>
+                <a href="kolko.zip" class="btn download-btn lang-en" download onclick="return checkDownload(event, 'tictactoe')">Download Tic-Tac-Toe</a>
+                
+                <button class="btn info-btn lang-pl" onclick="openModal('tictactoe')">Informacje o grze</button>
+                <button class="btn info-btn lang-en" onclick="openModal('tictactoe')">Game information</button>
+                
+                <p id="tictactoe-error" class="error-message lang-pl">Przepraszamy, plik nie jest obecnie dostępny. Prosimy spróbować później.</p>
+                <p id="tictactoe-error-en" class="error-message lang-en">Sorry, the file is currently unavailable. Please try again later.</p>
             </div>
         </section>
     </main>
@@ -4538,33 +4601,6 @@
                 </div>
                 
                 <div style="margin-top: 20px;">
-                    <div class="lang-pl"><strong>Motyw kolorystyczny:</strong></div>
-                    <div class="lang-en"><strong>Color theme:</strong></div>
-                    <div class="theme-options">
-                        <div class="theme-option theme-orange" onclick="changeTheme('orange')"></div>
-                        <div class="theme-option theme-purple" onclick="changeTheme('purple')"></div>
-                        <div class="theme-option theme-blue" onclick="changeTheme('blue')"></div>
-                        <div class="theme-option theme-green" onclick="changeTheme('green')"></div>
-                        <div class="theme-option theme-red" onclick="changeTheme('red')"></div>
-                    </div>
-                </div>
-                
-                <div style="margin-top: 20px;">
-                    <div class="lang-pl"><strong>Animacje interfejsu:</strong></div>
-                    <div class="lang-en"><strong>Interface animations:</strong></div>
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
-                        <div>
-                            <div class="lang-pl">Efekty animacji</div>
-                            <div class="lang-en">Animation effects</div>
-                        </div>
-                        <label class="switch">
-                            <input type="checkbox" id="animationsToggle" checked>
-                            <span class="slider round"></span>
-                        </label>
-                    </div>
-                </div>
-                
-                <div style="margin-top: 20px;">
                     <div class="lang-pl"><strong>Powiadomienia:</strong></div>
                     <div class="lang-en"><strong>Notifications:</strong></div>
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
@@ -4614,32 +4650,6 @@
                             <span class="lang-pl">Duży</span>
                             <span class="lang-en">Large</span>
                         </button>
-                    </div>
-                </div>
-                
-                <div class="accessibility-option">
-                    <div class="lang-pl"><strong>Zmniejszona ilość animacji</strong></div>
-                    <div class="lang-en"><strong>Reduced animations</strong></div>
-                    <div style="margin-top: 10px; display: flex; justify-content: space-between; align-items: center;">
-                        <div class="lang-pl">Zmniejsza lub wyłącza efekty animacji</div>
-                        <div class="lang-en">Reduces or disables animation effects</div>
-                        <label class="switch">
-                            <input type="checkbox" id="reducedAnimationsToggle" onchange="updateUserPreference('reducedAnimations', this.checked)">
-                            <span class="slider round"></span>
-                        </label>
-                    </div>
-                </div>
-                
-                <div class="accessibility-option">
-                    <div class="lang-pl"><strong>Wskaźnik fokusa</strong></div>
-                    <div class="lang-en"><strong>Focus indicator</strong></div>
-                    <div style="margin-top: 10px; display: flex; justify-content: space-between; align-items: center;">
-                        <div class="lang-pl">Wyraźne oznaczenie wybranego elementu</div>
-                        <div class="lang-en">Clear indication of selected element</div>
-                        <label class="switch">
-                            <input type="checkbox" id="focusIndicatorToggle" onchange="updateUserPreference('focusIndicator', this.checked)">
-                            <span class="slider round"></span>
-                        </label>
                     </div>
                 </div>
             </div>
@@ -4712,11 +4722,11 @@
                 <div class="chatbot-welcome">
                     <div class="lang-pl">
                         <strong>🤖 Cześć! Jestem AI Asystentem</strong><br>
-                        Pomogę Ci z różnymi pytaniami dotyczącymi gry i systemu. Wybierz pytanie:
+                        Pomogę Ci z różnymi pytaniami dotyczącymi gier i systemu. Wybierz pytanie:
                     </div>
                     <div class="lang-en">
                         <strong>🤖 Hi! I'm AI Assistant</strong><br>
-                        I'll help you with various questions about the game and system. Choose a question:
+                        I'll help you with various questions about the games and system. Choose a question:
                     </div>
                 </div>
                 
@@ -4759,24 +4769,31 @@
                     </button>
                     
                     <button class="question-btn lang-pl" onclick="askQuestion('file-safety')">
-                        🛡️ Czy plik jest szkodliwy/bezpieczny?
+                        🛡️ Czy pliki są szkodliwe/bezpieczne?
                     </button>
                     <button class="question-btn lang-en" onclick="askQuestion('file-safety')">
-                        🛡️ Is the file harmful/safe?
+                        🛡️ Are the files harmful/safe?
                     </button>
 
                     <button class="question-btn lang-pl" onclick="askQuestion('system-requirements')">
-                        💻 Wymagania systemowe gry
+                        💻 Wymagania systemowe gier
                     </button>
                     <button class="question-btn lang-en" onclick="askQuestion('system-requirements')">
-                        💻 Game system requirements
+                        💻 Games system requirements
                     </button>
 
                     <button class="question-btn lang-pl" onclick="askQuestion('game-features')">
-                        🎮 Jakie funkcje ma gra Maze?
+                        🎮 Jakie funkcje mają dostępne gry?
                     </button>
                     <button class="question-btn lang-en" onclick="askQuestion('game-features')">
-                        🎮 What features does Maze game have?
+                        🎮 What features do the games have?
+                    </button>
+                    
+                    <button class="question-btn lang-pl" onclick="askQuestion('tic-tac-toe-info')">
+                        ⭕ Informacje o Kółko i Krzyżyk
+                    </button>
+                    <button class="question-btn lang-en" onclick="askQuestion('tic-tac-toe-info')">
+                        ⭕ Tic-Tac-Toe information
                     </button>
 
                     <button class="question-btn lang-pl" onclick="askQuestion('technical-support')">
@@ -4831,31 +4848,24 @@
                     
                     <!-- ADDITIONAL QUESTIONS -->
                     <button class="question-btn lang-pl" onclick="askQuestion('game-modes')">
-                        🎲 Tryby gry w Maze
+                        🎲 Tryby gry w dostępnych grach
                     </button>
                     <button class="question-btn lang-en" onclick="askQuestion('game-modes')">
-                        🎲 Game modes in Maze
+                        🎲 Game modes in available games
                     </button>
                     
                     <button class="question-btn lang-pl" onclick="askQuestion('achievements')">
-                        🏆 System osiągnięć w grze
+                        🏆 System osiągnięć w grach
                     </button>
                     <button class="question-btn lang-en" onclick="askQuestion('achievements')">
-                        🏆 Game achievement system
-                    </button>
-                    
-                    <button class="question-btn lang-pl" onclick="askQuestion('multiplayer')">
-                        👥 Tryby wieloosobowe
-                    </button>
-                    <button class="question-btn lang-en" onclick="askQuestion('multiplayer')">
-                        👥 Multiplayer modes
+                        🏆 Games achievement system
                     </button>
                     
                     <button class="question-btn lang-pl" onclick="askQuestion('tips-tricks')">
-                        💡 Porady i wskazówki do gry
+                        💡 Porady i wskazówki do gier
                     </button>
                     <button class="question-btn lang-en" onclick="askQuestion('tips-tricks')">
-                        💡 Game tips and tricks
+                        💡 Games tips and tricks
                     </button>
                     
                     <button class="question-btn lang-pl" onclick="askQuestion('future-updates')">
@@ -4865,39 +4875,11 @@
                         🚀 Planned updates
                     </button>
                     
-                    <button class="question-btn lang-pl" onclick="askQuestion('game-story')">
-                        📖 Fabuła gry Maze
-                    </button>
-                    <button class="question-btn lang-en" onclick="askQuestion('game-story')">
-                        📖 Maze game story
-                    </button>
-                    
                     <button class="question-btn lang-pl" onclick="askQuestion('community')">
                         👫 Społeczność graczy
                     </button>
                     <button class="question-btn lang-en" onclick="askQuestion('community')">
                         👫 Player community
-                    </button>
-                    
-                    <button class="question-btn lang-pl" onclick="askQuestion('bugs-reporting')">
-                        🐞 Zgłaszanie błędów w grze
-                    </button>
-                    <button class="question-btn lang-en" onclick="askQuestion('bugs-reporting')">
-                        🐞 Reporting game bugs
-                    </button>
-                    
-                    <button class="question-btn lang-pl" onclick="askQuestion('troubleshooting')">
-                        🔧 Rozwiązywanie typowych problemów
-                    </button>
-                    <button class="question-btn lang-en" onclick="askQuestion('troubleshooting')">
-                        🔧 Troubleshooting common issues
-                    </button>
-                    
-                    <button class="question-btn lang-pl" onclick="askQuestion('windows-security')">
-                        🛡️ Ostrzeżenia Windows Defender
-                    </button>
-                    <button class="question-btn lang-en" onclick="askQuestion('windows-security')">
-                        🛡️ Windows Defender warnings
                     </button>
                 </div>
             </div>
@@ -4979,6 +4961,7 @@
             
             <div class="security-features">
                 <div class="lang-pl">
+                    <div class="security-item">Synchronizacja z chmurą</div>
                     <div class="security-item">Szyfrowanie haseł w bazie danych</div>
                     <div class="security-item">Brak śledzenia zewnętrznego</div>
                     <div class="security-item">Lokalne przechowywanie danych</div>
@@ -4989,6 +4972,7 @@
                     <div class="security-item">Walidacja wieku użytkowników</div>
                 </div>
                 <div class="lang-en">
+                    <div class="security-item">Cloud synchronization</div>
                     <div class="security-item">Password encryption in database</div>
                     <div class="security-item">No external tracking</div>
                     <div class="security-item">Local data storage</div>
@@ -5014,6 +4998,7 @@
                     <li>Możesz usunąć swoje konto w każdej chwili</li>
                     <li>Masz pełną kontrolę nad swoimi danymi</li>
                     <li>Nie udostępniamy danych osobom trzecim</li>
+                    <li>Dane są synchronizowane między urządzeniami</li>
                 </ul>
             </div>
             
@@ -5031,6 +5016,7 @@
                     <li>You can delete your account anytime</li>
                     <li>You have full control over your data</li>
                     <li>We don't share data with third parties</li>
+                    <li>Data is synchronized between devices</li>
                 </ul>
             </div>
         </div>
