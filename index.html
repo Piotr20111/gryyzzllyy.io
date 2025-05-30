@@ -2298,12 +2298,10 @@
             }
 
             async initializeGoogleSignIn() {
-                // ##################
-                // TUTAJ WSTAW SWÓJ GOOGLE CLIENT ID
-                const GOOGLE_CLIENT_ID = 'YOUR_GOOGLE_CLIENT_ID_HERE.apps.googleusercontent.com';
-                // ##################
+                // TWÓJ GOOGLE CLIENT ID
+                const GOOGLE_CLIENT_ID = '139779237819-u0v0k1s72a83dmcv7lh9oce9r8d9vaqk.apps.googleusercontent.com';
                 
-                if (window.google && GOOGLE_CLIENT_ID !== 'YOUR_GOOGLE_CLIENT_ID_HERE.apps.googleusercontent.com') {
+                if (window.google) {
                     try {
                         google.accounts.id.initialize({
                             client_id: GOOGLE_CLIENT_ID,
@@ -2326,32 +2324,7 @@
                         );
                     } catch (error) {
                         console.error("Google Sign-In initialization error:", error);
-                        // Show demo button as fallback
-                        this.showDemoButton();
                     }
-                } else {
-                    // Show demo button when no valid client ID
-                    this.showDemoButton();
-                }
-            }
-
-            showDemoButton() {
-                const googleDiv = document.getElementById("googleSignInDiv");
-                if (googleDiv) {
-                    googleDiv.innerHTML = `
-                        <button class="manual-google-btn" onclick="simulateGoogleLogin()">
-                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <g transform="matrix(1, 0, 0, 1, 27.009001, -39.238998)">
-                                    <path fill="#4285F4" d="M -3.264 51.509 C -3.264 50.719 -3.334 49.969 -3.454 49.239 L -14.754 49.239 L -14.754 53.749 L -8.284 53.749 C -8.574 55.229 -9.424 56.479 -10.684 57.329 L -10.684 60.329 L -6.824 60.329 C -4.564 58.239 -3.264 55.159 -3.264 51.509 Z"/>
-                                    <path fill="#34A853" d="M -14.754 63.239 C -11.514 63.239 -8.804 62.159 -6.824 60.329 L -10.684 57.329 C -11.764 58.049 -13.134 58.489 -14.754 58.489 C -17.884 58.489 -20.534 56.379 -21.484 53.529 L -25.464 53.529 L -25.464 56.619 C -23.494 60.539 -19.444 63.239 -14.754 63.239 Z"/>
-                                    <path fill="#FBBC05" d="M -21.484 53.529 C -21.734 52.809 -21.864 52.039 -21.864 51.239 C -21.864 50.439 -21.724 49.669 -21.484 48.949 L -21.484 45.859 L -25.464 45.859 C -26.284 47.479 -26.754 49.299 -26.754 51.239 C -26.754 53.179 -26.284 54.999 -25.464 56.619 L -21.484 53.529 Z"/>
-                                    <path fill="#EA4335" d="M -14.754 43.989 C -12.984 43.989 -11.404 44.599 -10.154 45.789 L -6.734 42.369 C -8.804 40.429 -11.514 39.239 -14.754 39.239 C -19.444 39.239 -23.494 41.939 -25.464 45.859 L -21.484 48.949 C -20.534 46.099 -17.884 43.989 -14.754 43.989 Z"/>
-                                </g>
-                            </svg>
-                            <span class="lang-pl">Zaloguj się przez Google</span>
-                            <span class="lang-en">Sign in with Google</span>
-                        </button>
-                    `;
                 }
             }
 
@@ -2483,42 +2456,6 @@
                 
                 return stats;
             }
-        }
-
-        // Simulate Google login for demo
-        function simulateGoogleLogin() {
-            const demoUser = {
-                id: 'demo_' + Date.now(),
-                username: 'Demo User',
-                email: 'demo@example.com',
-                avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=DemoUser',
-                isGoogleUser: true,
-                registrationDate: new Date().toISOString(),
-                lastLogin: new Date().toISOString(),
-                downloadedGames: [],
-                premiumAvatarsUnlocked: false,
-                status: 'active',
-                preferences: {
-                    theme: 'orange',
-                    notifications: true,
-                    highContrast: false,
-                    fontSize: 'medium',
-                    autoSave: true
-                }
-            };
-
-            gameDB.saveGoogleUser(demoUser);
-            gameDB.currentUser = demoUser;
-            gameDB.isGoogleUser = true;
-            currentUser = demoUser;
-            
-            updateUserInterface();
-            closeAuthModal();
-            showNotification(
-                'Witaj Demo User! (Tryb demonstracyjny)',
-                'Welcome Demo User! (Demo mode)',
-                'success'
-            );
         }
 
         // —— AVATAR SYSTEM WITH PREMIUM AVATARS —— 
@@ -4328,8 +4265,8 @@
             <p class="lang-en">Discover a fascinating maze full of mysteries and challenges. Find the way out before time runs out! <strong>Sign in with Google to download.</strong></p>
 
             <div class="download-container">
-                <a href="maze_menu.zip" class="btn download-btn lang-pl" download onclick="return checkDownload(event, 'maze')">Pobierz grę</a>
-                <a href="maze_menu.zip" class="btn download-btn lang-en" download onclick="return checkDownload(event, 'maze')">Download game</a>
+                <a href="https://piotr20111.github.io/gryyzzllyy.io/maze_menu.zip" class="btn download-btn lang-pl" download onclick="return checkDownload(event, 'maze')">Pobierz grę</a>
+                <a href="https://piotr20111.github.io/gryyzzllyy.io/maze_menu.zip" class="btn download-btn lang-en" download onclick="return checkDownload(event, 'maze')">Download game</a>
                 
                 <button class="btn info-btn lang-pl" onclick="openModal()">Informacje dotyczące pobrania gry</button>
                 <button class="btn info-btn lang-en" onclick="openModal()">Game download information</button>
@@ -4348,8 +4285,8 @@
             <p class="lang-en">Classic game in a modern edition! Play against computer or friends. <strong>Sign in with Google to download.</strong></p>
 
             <div class="download-container">
-                <a href="kolko.zip" class="btn download-btn lang-pl" download onclick="return checkDownload(event, 'tictactoe')">Pobierz grę</a>
-                <a href="kolko.zip" class="btn download-btn lang-en" download onclick="return checkDownload(event, 'tictactoe')">Download game</a>
+                <a href="https://piotr20111.github.io/gryyzzllyy.io/kolko.zip" class="btn download-btn lang-pl" download onclick="return checkDownload(event, 'tictactoe')">Pobierz grę</a>
+                <a href="https://piotr20111.github.io/gryyzzllyy.io/kolko.zip" class="btn download-btn lang-en" download onclick="return checkDownload(event, 'tictactoe')">Download game</a>
                 
                 <button class="btn info-btn lang-pl" onclick="askQuestion('game-features'); toggleChatbot();">Informacje o grze</button>
                 <button class="btn info-btn lang-en" onclick="askQuestion('game-features'); toggleChatbot();">Game information</button>
@@ -4455,7 +4392,6 @@
                     <div class="lang-pl"><strong>Język:</strong></div>
                     <div class="lang-en"><strong>Language:</strong></div>
                     <div style="margin-top: 10px; display: flex; gap: 10px;">
-                        <button class="auth-btn" style="padding: 8px 15px; font-size: 14px;" onclick="changeLanguage('pl')">Polski</button>
                         <button class="auth-btn" style="padding: 8px 15px; font-size: 14px;" onclick="changeLanguage('en')">English</button>
                     </div>
                 </div>
@@ -4751,7 +4687,7 @@
                 <div style="margin-top: 20px; padding: 15px; background: rgba(255, 215, 0, 0.1); border-radius: 8px; border: 1px solid rgba(255, 215, 0, 0.3); animation: premiumGlow 2s ease-in-out infinite;">
                     <strong>👑 BONUS! Pobierz obie gry = 5 Premium Avatarów!</strong><br>
                     Po pobraniu Labiryntu i Kółko i krzyżyk otrzymasz dostęp do ekskluzywnych avatarów:<br>
-                    ⚔️ Cyber Warrior, 🐉 Dragon Master, 🚀 Space Commander, 🧙 Mystic Wizard, 🥷 Shadow Ninja
+                    ⚔️ Cyber Warrior, 🐉 Dragon Master, 🚀 Space Commander, 🧙 Mystic Wizard, 🥷 Shadow Ninjahttp://127.0.0.1:3000/index.html
                 </div>
             </div>
             
@@ -4853,5 +4789,4 @@
         </div>
     </div>
 </body>
-</html>
-                    
+</html>                       
