@@ -22,6 +22,7 @@
             --primary-green: #28a745;
             --primary-gold: #FFD700;
             --primary-premium: #E91E63;
+            --primary-ultra-vip: #FF0080;
             --bg-dark: #0f0f1a;
             --bg-section: rgba(30, 30, 46, 0.92);
             --text-light: #ffffff;
@@ -92,6 +93,30 @@
                 box-shadow: 0 0 30px rgba(255, 215, 0, 0.8),
                             0 0 60px rgba(255, 215, 0, 0.5),
                             inset 0 0 30px rgba(255, 215, 0, 0.2);
+            }
+        }
+
+        @keyframes ultraVipGlow {
+            0% {
+                box-shadow: 0 0 30px rgba(255, 0, 128, 0.6),
+                            0 0 60px rgba(255, 0, 128, 0.4),
+                            0 0 90px rgba(255, 0, 128, 0.2),
+                            inset 0 0 30px rgba(255, 0, 128, 0.1);
+                transform: scale(1) rotate(0deg);
+            }
+            50% {
+                box-shadow: 0 0 40px rgba(255, 0, 128, 0.8),
+                            0 0 80px rgba(255, 0, 128, 0.6),
+                            0 0 120px rgba(255, 0, 128, 0.4),
+                            inset 0 0 40px rgba(255, 0, 128, 0.2);
+                transform: scale(1.05) rotate(5deg);
+            }
+            100% {
+                box-shadow: 0 0 30px rgba(255, 0, 128, 0.6),
+                            0 0 60px rgba(255, 0, 128, 0.4),
+                            0 0 90px rgba(255, 0, 128, 0.2),
+                            inset 0 0 30px rgba(255, 0, 128, 0.1);
+                transform: scale(1) rotate(0deg);
             }
         }
 
@@ -212,78 +237,91 @@
             }
         }
 
-        /* —— ADVANCED ANIMATIONS (continued from previous) —— */
+        /* Enhanced smooth animations */
         @keyframes slideInFromTop {
             0% {
-                transform: translateY(-100px);
+                transform: translateY(-100px) scale(0.9);
                 opacity: 0;
             }
+            50% {
+                transform: translateY(-20px) scale(0.95);
+            }
             100% {
-                transform: translateY(0);
+                transform: translateY(0) scale(1);
                 opacity: 1;
             }
         }
 
         @keyframes slideInFromLeft {
             0% {
-                transform: translateX(-100px);
+                transform: translateX(-100px) rotate(-5deg);
                 opacity: 0;
             }
             100% {
-                transform: translateX(0);
+                transform: translateX(0) rotate(0deg);
                 opacity: 1;
             }
         }
 
         @keyframes slideInFromRight {
             0% {
-                transform: translateX(100px);
+                transform: translateX(100px) rotate(5deg);
                 opacity: 0;
             }
             100% {
-                transform: translateX(0);
+                transform: translateX(0) rotate(0deg);
                 opacity: 1;
             }
         }
 
         @keyframes scaleIn {
             0% {
-                transform: scale(0.8);
+                transform: scale(0.8) rotate(-10deg);
                 opacity: 0;
             }
+            50% {
+                transform: scale(1.05) rotate(5deg);
+            }
             100% {
-                transform: scale(1);
+                transform: scale(1) rotate(0deg);
                 opacity: 1;
             }
         }
 
         @keyframes glowPulse {
             0%, 100% {
-                box-shadow: var(--shadow-glow) rgba(255, 119, 0, 0.4);
+                box-shadow: var(--shadow-glow) rgba(255, 119, 0, 0.4),
+                           0 0 40px rgba(255, 119, 0, 0.2);
             }
             50% {
-                box-shadow: 0 0 30px rgba(255, 119, 0, 0.8), 0 0 40px rgba(255, 119, 0, 0.4);
+                box-shadow: 0 0 40px rgba(255, 119, 0, 0.8), 
+                           0 0 60px rgba(255, 119, 0, 0.4),
+                           0 0 80px rgba(255, 119, 0, 0.2);
             }
         }
 
         @keyframes float {
             0%, 100% {
-                transform: translateY(0px);
+                transform: translateY(0px) rotate(0deg);
             }
-            50% {
-                transform: translateY(-10px);
+            25% {
+                transform: translateY(-5px) rotate(-2deg);
+            }
+            75% {
+                transform: translateY(-10px) rotate(2deg);
             }
         }
 
         @keyframes rotateHue {
-            0% { filter: hue-rotate(0deg); }
-            100% { filter: hue-rotate(360deg); }
+            0% { filter: hue-rotate(0deg) brightness(1); }
+            50% { filter: hue-rotate(180deg) brightness(1.2); }
+            100% { filter: hue-rotate(360deg) brightness(1); }
         }
 
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
         }
 
         @keyframes typing {
@@ -336,6 +374,7 @@
         /* Smooth close animation */
         @keyframes smoothClose {
             0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(90deg) scale(0.9); }
             100% { transform: rotate(180deg) scale(1.1); }
         }
 
@@ -356,11 +395,11 @@
         /* Element slide in stagger animation */
         @keyframes elementSlideIn {
             0% {
-                transform: translateY(30px);
+                transform: translateY(30px) scale(0.9);
                 opacity: 0;
             }
             100% {
-                transform: translateY(0);
+                transform: translateY(0) scale(1);
                 opacity: 1;
             }
         }
@@ -377,33 +416,45 @@
 
         /* FIXED: Subtle hover animation for sections */
         @keyframes subtleHover {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(-5px); }
+            0% { transform: translateY(0) scale(1); }
+            100% { transform: translateY(-5px) scale(1.02); }
         }
 
         /* Modal slide in animation */
         @keyframes modalSlideIn {
             from {
                 opacity: 0;
-                transform: scale(0.7) translateY(-50px);
+                transform: scale(0.7) translateY(-50px) rotate(-5deg);
             }
             to {
                 opacity: 1;
-                transform: scale(1) translateY(0);
+                transform: scale(1) translateY(0) rotate(0deg);
             }
         }
 
         /* Premium popup animation */
         @keyframes premiumPopup {
-            to {
-                transform: translate(-50%, -50%) scale(1);
+            0% {
+                transform: translate(-50%, -50%) scale(0) rotate(-180deg);
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.1) rotate(5deg);
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1) rotate(0deg);
             }
         }
 
         /* Fade in animation */
         @keyframes fadeIn {
-            from {opacity: 0;}
-            to {opacity: 1;}
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         /* Spin animation */
@@ -426,8 +477,14 @@
 
         /* Pulse animation */
         @keyframes pulse {
-            0%, 100% { opacity: 0.7; }
-            50% { opacity: 1; }
+            0%, 100% { 
+                opacity: 0.7;
+                transform: scale(1);
+            }
+            50% { 
+                opacity: 1;
+                transform: scale(1.05);
+            }
         }
 
         /* Typing dots animation */
@@ -461,11 +518,11 @@
         @keyframes robotPulse {
             0%, 100% { 
                 box-shadow: 0 8px 25px rgba(107, 70, 193, 0.4), var(--shadow-glow) rgba(147, 51, 234, 0.3);
-                transform: scale(1);
+                transform: scale(1) rotate(0deg);
             }
             50% { 
                 box-shadow: 0 12px 35px rgba(107, 70, 193, 0.6), var(--shadow-glow) rgba(147, 51, 234, 0.5);
-                transform: scale(1.05);
+                transform: scale(1.05) rotate(5deg);
             }
         }
 
@@ -530,6 +587,21 @@
             z-index: 10;
         }
 
+        .ultra-vip-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: linear-gradient(135deg, var(--primary-ultra-vip), #FF1493);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: bold;
+            box-shadow: 0 2px 20px rgba(255, 0, 128, 0.7);
+            animation: ultraVipGlow 3s ease-in-out infinite;
+            z-index: 10;
+        }
+
         .avatar-option.premium {
             border: 3px solid transparent;
             background: linear-gradient(white, white) padding-box,
@@ -540,13 +612,25 @@
             overflow: visible;
         }
 
-        .avatar-option.premium.locked {
+        .avatar-option.ultra-vip {
+            border: 3px solid transparent;
+            background: linear-gradient(white, white) padding-box,
+                        linear-gradient(45deg, #FF0080, #FF1493, #FF69B4, #FF0080) border-box;
+            background-size: 100% 100%, 400% 400%;
+            animation: rainbowBorder 2s linear infinite, ultraVipGlow 3s ease-in-out infinite;
+            position: relative;
+            overflow: visible;
+        }
+
+        .avatar-option.premium.locked,
+        .avatar-option.ultra-vip.locked {
             filter: grayscale(1) brightness(0.5);
             cursor: not-allowed;
             position: relative;
         }
 
-        .avatar-option.premium.locked::after {
+        .avatar-option.premium.locked::after,
+        .avatar-option.ultra-vip.locked::after {
             content: '🔒';
             position: absolute;
             top: 50%;
@@ -569,6 +653,20 @@
             font-weight: bold;
             margin-left: 10px;
             animation: premiumGlow 2s ease-in-out infinite;
+        }
+
+        .ultra-vip-user-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: linear-gradient(135deg, var(--primary-ultra-vip), #FF1493);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 10px;
+            animation: ultraVipGlow 2s ease-in-out infinite;
         }
 
         /* Floating particles effect */
@@ -2276,7 +2374,7 @@
     </style>
     <script>
         // Version control
-        const APP_VERSION = '2.1.0';
+        const APP_VERSION = '2.2.0';
         const LAST_VERSION_KEY = 'last_version_seen';
 
         // Premium avatar names as constant
@@ -2287,6 +2385,9 @@
             '🧙 Mystic Wizard',
             '🥷 Shadow Ninja'
         ];
+
+        // Ultra VIP avatar
+        const ultraVipAvatarName = '💎 Ultra VIP Champion';
 
         // —— NEW CLOUD DATABASE SYSTEM WITH GOOGLE AUTH —— 
         class GameDatabase {
@@ -2342,6 +2443,7 @@
                     lastLogin: new Date().toISOString(),
                     downloadedGames: [],
                     premiumAvatarsUnlocked: false,
+                    ultraVipUnlocked: false,
                     status: 'active',
                     preferences: {
                         theme: 'orange',
@@ -2357,6 +2459,7 @@
                 if (existingUser) {
                     googleUser.downloadedGames = existingUser.downloadedGames || [];
                     googleUser.premiumAvatarsUnlocked = existingUser.premiumAvatarsUnlocked || false;
+                    googleUser.ultraVipUnlocked = existingUser.ultraVipUnlocked || false;
                     googleUser.preferences = existingUser.preferences || googleUser.preferences;
                 }
 
@@ -2445,13 +2548,15 @@
                     totalUsers: this.users.size,
                     activeUsers: 0,
                     googleUsers: 0,
-                    premiumUsers: 0
+                    premiumUsers: 0,
+                    ultraVipUsers: 0
                 };
                 
                 this.users.forEach(user => {
                     if (user.status === 'active') stats.activeUsers++;
                     if (user.isGoogleUser) stats.googleUsers++;
                     if (user.premiumAvatarsUnlocked) stats.premiumUsers++;
+                    if (user.ultraVipUnlocked) stats.ultraVipUsers++;
                 });
                 
                 return stats;
@@ -2479,6 +2584,9 @@
             'https://api.dicebear.com/7.x/pixel-art-neutral/svg?seed=MysticWizard&backgroundColor=b6e3f4,ffdfbf&mood=happy',
             'https://api.dicebear.com/7.x/adventurer-neutral/svg?seed=ShadowNinja&backgroundColor=1a1a1a,2a2a2a,3a3a3a&eyes=variant02&mouth=variant02'
         ];
+
+        // Ultra VIP avatar
+        const ultraVipAvatar = 'https://api.dicebear.com/7.x/lorelei-neutral/svg?seed=UltraVIPChampion&backgroundColor=ff0080,ff1493,ff69b4&eyes=variant01&mouth=variant01';
 
         // Global variables
         let gameDB = null;
@@ -2601,6 +2709,29 @@
                         };
                         avatarGrid.appendChild(avatarDiv);
                     });
+
+                    // Add Ultra VIP avatar
+                    const ultraVipDiv = document.createElement('div');
+                    ultraVipDiv.className = 'avatar-option ultra-vip';
+                    
+                    const isUltraUnlocked = currentUser?.ultraVipUnlocked || false;
+                    if (!isUltraUnlocked) {
+                        ultraVipDiv.classList.add('locked');
+                    }
+                    
+                    ultraVipDiv.innerHTML = `
+                        <img src="${ultraVipAvatar}" alt="${ultraVipAvatarName}" onerror="this.src='https://api.dicebear.com/7.x/lorelei-neutral/svg?seed=default'">
+                        <div class="ultra-vip-badge">ULTRA VIP</div>
+                    `;
+                    
+                    ultraVipDiv.onclick = function() { 
+                        if (isUltraUnlocked) {
+                            selectAvatar(ultraVipAvatar, this);
+                        } else {
+                            showUltraVipAvatarInfo();
+                        }
+                    };
+                    avatarGrid.appendChild(ultraVipDiv);
                 }
                 
                 // Also initialize settings avatar grid
@@ -2609,8 +2740,9 @@
                     settingsAvatarGrid.innerHTML = '';
                     
                     // Add all avatars to settings
-                    [...standardAvatars, ...premiumAvatars].forEach((avatar, index) => {
-                        const isPremium = index >= standardAvatars.length;
+                    [...standardAvatars, ...premiumAvatars, ultraVipAvatar].forEach((avatar, index) => {
+                        const isPremium = index >= standardAvatars.length && index < standardAvatars.length + premiumAvatars.length;
+                        const isUltraVip = index === standardAvatars.length + premiumAvatars.length;
                         const avatarDiv = document.createElement('div');
                         avatarDiv.className = 'avatar-option';
                         
@@ -2619,23 +2751,42 @@
                             if (!currentUser?.premiumAvatarsUnlocked) {
                                 avatarDiv.classList.add('locked');
                             }
+                        } else if (isUltraVip) {
+                            avatarDiv.classList.add('ultra-vip');
+                            if (!currentUser?.ultraVipUnlocked) {
+                                avatarDiv.classList.add('locked');
+                            }
                         }
                         
                         if (currentUser && currentUser.avatar === avatar) {
                             avatarDiv.classList.add('selected');
                         }
                         
+                        let badgeHtml = '';
+                        let altText = '';
+                        if (isPremium) {
+                            badgeHtml = '<div class="premium-badge">PREMIUM</div>';
+                            altText = premiumAvatarNames[index - standardAvatars.length];
+                        } else if (isUltraVip) {
+                            badgeHtml = '<div class="ultra-vip-badge">ULTRA VIP</div>';
+                            altText = ultraVipAvatarName;
+                        } else {
+                            altText = 'Gaming Avatar ' + (index + 1);
+                        }
+                        
                         avatarDiv.innerHTML = `
-                            <img src="${avatar}" alt="${isPremium ? premiumAvatarNames[index - standardAvatars.length] : 'Gaming Avatar ' + (index + 1)}" 
+                            <img src="${avatar}" alt="${altText}" 
                                  onerror="this.src='https://api.dicebear.com/7.x/avataaars/svg?seed=default'">
-                            ${isPremium ? '<div class="premium-badge">PREMIUM</div>' : ''}
+                            ${badgeHtml}
                         `;
                         
                         avatarDiv.onclick = function() { 
-                            if (!isPremium || currentUser?.premiumAvatarsUnlocked) {
-                                updateUserAvatar(avatar, this);
-                            } else {
+                            if (isPremium && !currentUser?.premiumAvatarsUnlocked) {
                                 showPremiumAvatarInfo();
+                            } else if (isUltraVip && !currentUser?.ultraVipUnlocked) {
+                                showUltraVipAvatarInfo();
+                            } else {
+                                updateUserAvatar(avatar, this);
                             }
                         };
                         settingsAvatarGrid.appendChild(avatarDiv);
@@ -2663,6 +2814,34 @@
                     ✅ Maze<br>
                     ✅ Tic-tac-toe<br><br>
                     After downloading both games, you'll automatically get access to 5 unique avatars!
+                </p>
+                <button class="close-btn" onclick="this.parentElement.remove()">
+                    <span class="lang-pl">Rozumiem</span>
+                    <span class="lang-en">Got it</span>
+                </button>
+            `;
+            document.body.appendChild(notification);
+        }
+
+        function showUltraVipAvatarInfo() {
+            const notification = document.createElement('div');
+            notification.className = 'premium-notification';
+            notification.innerHTML = `
+                <h3 class="lang-pl">💎 Ultra VIP Avatar</h3>
+                <h3 class="lang-en">💎 Ultra VIP Avatar</h3>
+                <p class="lang-pl">
+                    Aby odblokować ekskluzywny Ultra VIP Avatar, musisz:<br><br>
+                    1. Przejść wszystkie poziomy w grze Labirynt<br>
+                    2. Zrobić screenshot z ekranu końcowego<br>
+                    3. Wysłać screenshot na email: <strong>quatar2022@o2.pl</strong><br><br>
+                    Po weryfikacji otrzymasz dostęp do najbardziej ekskluzywnego avatara!
+                </p>
+                <p class="lang-en">
+                    To unlock the exclusive Ultra VIP Avatar, you need to:<br><br>
+                    1. Complete all levels in the Maze game<br>
+                    2. Take a screenshot of the final screen<br>
+                    3. Send the screenshot to: <strong>quatar2022@o2.pl</strong><br><br>
+                    After verification, you'll get access to the most exclusive avatar!
                 </p>
                 <button class="close-btn" onclick="this.parentElement.remove()">
                     <span class="lang-pl">Rozumiem</span>
@@ -2722,8 +2901,8 @@
                 
                 if (title) title.textContent = currentLang === 'pl' ? 'Nowa wersja dostępna!' : 'New version available!';
                 if (text) text.textContent = currentLang === 'pl' 
-                    ? `Dostępna jest nowa wersja (${APP_VERSION}) z ulepszonym logowaniem Google!`
-                    : `A new version (${APP_VERSION}) is available with improved Google login!`;
+                    ? `Dostępna jest nowa wersja (${APP_VERSION}) z ulepszonym logowaniem Google i Ultra VIP Avatarem!`
+                    : `A new version (${APP_VERSION}) is available with improved Google login and Ultra VIP Avatar!`;
                 if (button) button.textContent = currentLang === 'pl' ? 'Odśwież stronę' : 'Refresh page';
                 
                 updateOverlay.style.display = 'flex';
@@ -2831,12 +3010,17 @@
                 if (usernameDisplay) {
                     usernameDisplay.textContent = currentUser.username;
                     
-                    // Remove existing premium badge if any
-                    const existingBadge = usernameDisplay.parentNode.querySelector('.premium-user-badge');
+                    // Remove existing badges if any
+                    const existingBadge = usernameDisplay.parentNode.querySelector('.premium-user-badge, .ultra-vip-user-badge');
                     if (existingBadge) existingBadge.remove();
                     
-                    // Add premium badge if user has unlocked premium avatars
-                    if (currentUser.premiumAvatarsUnlocked) {
+                    // Add appropriate badge
+                    if (currentUser.ultraVipUnlocked) {
+                        const ultraVipBadge = document.createElement('span');
+                        ultraVipBadge.className = 'ultra-vip-user-badge';
+                        ultraVipBadge.innerHTML = '💎 Ultra VIP';
+                        usernameDisplay.parentNode.appendChild(ultraVipBadge);
+                    } else if (currentUser.premiumAvatarsUnlocked) {
                         const premiumBadge = document.createElement('span');
                         premiumBadge.className = 'premium-user-badge';
                         premiumBadge.innerHTML = '👑 Premium';
@@ -2955,7 +3139,22 @@
             }
             
             // Add premium status if applicable
-            if (currentUser.premiumAvatarsUnlocked) {
+            if (currentUser.ultraVipUnlocked) {
+                const profileSection = document.getElementById('profileSection');
+                if (profileSection && !profileSection.querySelector('.ultra-vip-status')) {
+                    const existingStatus = profileSection.querySelector('.premium-status');
+                    if (existingStatus) existingStatus.remove();
+                    
+                    const ultraVipStatus = document.createElement('div');
+                    ultraVipStatus.className = 'ultra-vip-status';
+                    ultraVipStatus.innerHTML = `
+                        <div class="ultra-vip-user-badge" style="margin: 15px 0;">
+                            💎 Status Ultra VIP - Masz dostęp do najbardziej ekskluzywnego avatara!
+                        </div>
+                    `;
+                    profileSection.insertBefore(ultraVipStatus, profileSection.querySelector('h4'));
+                }
+            } else if (currentUser.premiumAvatarsUnlocked) {
                 const profileSection = document.getElementById('profileSection');
                 if (profileSection && !profileSection.querySelector('.premium-status')) {
                     const premiumStatus = document.createElement('div');
@@ -3210,22 +3409,176 @@
                     return;
                 }
             }
-
-            if (!currentUser) {
-                const currentLang = document.documentElement.lang;
-                const message = currentLang === 'pl' ? 
-                    'Musisz się zalogować aby korzystać z AI!' : 
-                    'You must login to use AI assistant!';
-                showNotification(message, message, 'error');
-                openAuthModal();
-                return;
-            }
             
             const container = document.getElementById('chatbotContainer');
             if (!container) return;
             
             const isVisible = container.style.display === 'flex';
             container.style.display = isVisible ? 'none' : 'flex';
+            
+            // Show login required message if not logged in
+            if (!isVisible && !currentUser) {
+                const messagesContainer = document.getElementById('chatbotMessages');
+                if (messagesContainer) {
+                    messagesContainer.innerHTML = `
+                        <div class="ai-login-required">
+                            <div class="lang-pl">
+                                <strong>🔒 Wymagane logowanie</strong><br><br>
+                                Aby korzystać z AI Asystenta, musisz się zalogować przez Google.
+                            </div>
+                            <div class="lang-en">
+                                <strong>🔒 Login Required</strong><br><br>
+                                To use AI Assistant, you need to sign in with Google.
+                            </div>
+                            <button class="auth-btn" style="margin-top: 15px;" onclick="openAuthModal(); closeChatbot();">
+                                <span class="lang-pl">Zaloguj się przez Google</span>
+                                <span class="lang-en">Sign in with Google</span>
+                            </button>
+                        </div>
+                    `;
+                }
+            } else if (!isVisible && currentUser) {
+                // Reset chatbot to welcome state when logged in
+                const messagesContainer = document.getElementById('chatbotMessages');
+                if (messagesContainer) {
+                    messagesContainer.innerHTML = `
+                        <div class="chatbot-welcome">
+                            <div class="lang-pl">
+                                <strong>🤖 Cześć ${currentUser.username}!</strong><br>
+                                Pomogę Ci z pytaniami dotyczącymi gier, logowania i Premium Avatarów!
+                            </div>
+                            <div class="lang-en">
+                                <strong>🤖 Hi ${currentUser.username}!</strong><br>
+                                I'll help you with questions about games, login and Premium Avatars!
+                            </div>
+                        </div>
+                        <div class="chatbot-questions">
+                            <!-- GOOGLE LOGIN -->
+                            <button class="question-btn lang-pl" onclick="askQuestion('google-signin-help')">
+                                🔐 Jak zalogować się przez Google?
+                            </button>
+                            <button class="question-btn lang-en" onclick="askQuestion('google-signin-help')">
+                                🔐 How to sign in with Google?
+                            </button>
+                            
+                            <button class="question-btn lang-pl" onclick="askQuestion('google-signin-benefits')">
+                                🌐 Korzyści z logowania przez Google
+                            </button>
+                            <button class="question-btn lang-en" onclick="askQuestion('google-signin-benefits')">
+                                🌐 Benefits of Google Sign-In
+                            </button>
+
+                            <button class="question-btn lang-pl" onclick="askQuestion('premium-avatars')">
+                                👑 Premium Avatary - jak odblokować?
+                            </button>
+                            <button class="question-btn lang-en" onclick="askQuestion('premium-avatars')">
+                                👑 Premium Avatars - how to unlock?
+                            </button>
+                            
+                            <button class="question-btn lang-pl" onclick="askQuestion('ultra-vip-avatar')">
+                                💎 Ultra VIP Avatar - jak zdobyć?
+                            </button>
+                            <button class="question-btn lang-en" onclick="askQuestion('ultra-vip-avatar')">
+                                💎 Ultra VIP Avatar - how to get?
+                            </button>
+
+                            <button class="question-btn lang-pl" onclick="askQuestion('account-benefits')">
+                                ✨ Jakie korzyści daje konto?
+                            </button>
+                            <button class="question-btn lang-en" onclick="askQuestion('account-benefits')">
+                                ✨ What benefits does account provide?
+                            </button>
+
+                            <!-- DOWNLOAD & TECHNICAL -->
+                            <button class="question-btn lang-pl" onclick="askQuestion('download-not-started')">
+                                🔧 Co zrobić gdy pobieranie się nie zaczęło?
+                            </button>
+                            <button class="question-btn lang-en" onclick="askQuestion('download-not-started')">
+                                🔧 What to do when download doesn't start?
+                            </button>
+                            
+                            <button class="question-btn lang-pl" onclick="askQuestion('file-safety')">
+                                🛡️ Czy pliki są bezpieczne?
+                            </button>
+                            <button class="question-btn lang-en" onclick="askQuestion('file-safety')">
+                                🛡️ Are the files safe?
+                            </button>
+
+                            <button class="question-btn lang-pl" onclick="askQuestion('system-requirements')">
+                                💻 Wymagania systemowe gier
+                            </button>
+                            <button class="question-btn lang-en" onclick="askQuestion('system-requirements')">
+                                💻 Game system requirements
+                            </button>
+
+                            <button class="question-btn lang-pl" onclick="askQuestion('game-features')">
+                                🎮 Jakie funkcje mają gry?
+                            </button>
+                            <button class="question-btn lang-en" onclick="askQuestion('game-features')">
+                                🎮 What features do games have?
+                            </button>
+
+                            <button class="question-btn lang-pl" onclick="askQuestion('technical-support')">
+                                🔧 Wsparcie techniczne
+                            </button>
+                            <button class="question-btn lang-en" onclick="askQuestion('technical-support')">
+                                🔧 Technical support
+                            </button>
+
+                            <!-- PRIVACY & SETTINGS -->
+                            <button class="question-btn lang-pl" onclick="askQuestion('privacy-security')">
+                                🔐 Jak chronicie moje dane?
+                            </button>
+                            <button class="question-btn lang-en" onclick="askQuestion('privacy-security')">
+                                🔐 How do you protect my data?
+                            </button>
+
+                            <button class="question-btn lang-pl" onclick="askQuestion('settings-help')">
+                                ⚙️ Pomoc z ustawieniami
+                            </button>
+                            <button class="question-btn lang-en" onclick="askQuestion('settings-help')">
+                                ⚙️ Help with settings
+                            </button>
+
+                            <button class="question-btn lang-pl" onclick="askQuestion('avatar-customization')">
+                                🎭 Jak zmienić avatar?
+                            </button>
+                            <button class="question-btn lang-en" onclick="askQuestion('avatar-customization')">
+                                🎭 How to change avatar?
+                            </button>
+
+                            <button class="question-btn lang-pl" onclick="askQuestion('user-stats')">
+                                📊 Statystyki społeczności
+                            </button>
+                            <button class="question-btn lang-en" onclick="askQuestion('user-stats')">
+                                📊 Community statistics
+                            </button>
+                            
+                            <!-- ADDITIONAL QUESTIONS -->
+                            <button class="question-btn lang-pl" onclick="askQuestion('game-modes')">
+                                🎲 Tryby gry
+                            </button>
+                            <button class="question-btn lang-en" onclick="askQuestion('game-modes')">
+                                🎲 Game modes
+                            </button>
+                            
+                            <button class="question-btn lang-pl" onclick="askQuestion('achievements')">
+                                🏆 System osiągnięć
+                            </button>
+                            <button class="question-btn lang-en" onclick="askQuestion('achievements')">
+                                🏆 Achievement system
+                            </button>
+                            
+                            <button class="question-btn lang-pl" onclick="askQuestion('future-updates')">
+                                🚀 Planowane aktualizacje
+                            </button>
+                            <button class="question-btn lang-en" onclick="askQuestion('future-updates')">
+                                🚀 Planned updates
+                            </button>
+                        </div>
+                    `;
+                }
+            }
             
             const helpDropdown = document.getElementById('helpDropdownContent');
             const helpBtn = document.getElementById('helpDropdownBtn');
@@ -3325,6 +3678,44 @@
                     • Premium status next to username`
             },
             
+            'ultra-vip-avatar': {
+                pl: `<strong>🤖 Ultra VIP Avatar - Jak zdobyć?</strong><br><br>
+                    <strong>💎 Co to jest Ultra VIP Avatar?</strong><br>
+                    Ultra VIP Avatar to najbardziej ekskluzywny avatar w całej kolekcji!<br>
+                    Tylko najbardziej oddani gracze mogą go odblokować.<br><br>
+                    
+                    <strong>🏆 Jak odblokować:</strong><br>
+                    1. Pobierz i zainstaluj grę Labirynt<br>
+                    2. Przejdź WSZYSTKIE poziomy w grze<br>
+                    3. Zrób screenshot ekranu końcowego<br>
+                    4. Wyślij screenshot na: <strong>quatar2022@o2.pl</strong><br>
+                    5. Po weryfikacji otrzymasz dostęp!<br><br>
+                    
+                    <strong>✨ Co otrzymujesz:</strong><br>
+                    • Ekskluzywny avatar Ultra VIP Champion<br>
+                    • Specjalną odznakę przy nazwie użytkownika<br>
+                    • Dołączasz do elitarnego grona graczy<br>
+                    • Szacunek całej społeczności!`,
+                
+                en: `<strong>🤖 Ultra VIP Avatar - How to get it?</strong><br><br>
+                    <strong>💎 What is Ultra VIP Avatar?</strong><br>
+                    Ultra VIP Avatar is the most exclusive avatar in the entire collection!<br>
+                    Only the most dedicated players can unlock it.<br><br>
+                    
+                    <strong>🏆 How to unlock:</strong><br>
+                    1. Download and install the Maze game<br>
+                    2. Complete ALL levels in the game<br>
+                    3. Take a screenshot of the final screen<br>
+                    4. Send screenshot to: <strong>quatar2022@o2.pl</strong><br>
+                    5. After verification you'll get access!<br><br>
+                    
+                    <strong>✨ What you get:</strong><br>
+                    • Exclusive Ultra VIP Champion avatar<br>
+                    • Special badge next to username<br>
+                    • Join the elite group of players<br>
+                    • Respect from the entire community!`
+            },
+            
             'google-signin-benefits': {
                 pl: `<strong>🤖 Korzyści z logowania przez Google</strong><br><br>
                     <strong>🌐 Główne zalety:</strong><br><br>
@@ -3367,20 +3758,22 @@
                 pl: `<strong>🤖 Korzyści z posiadania konta</strong><br><br>
                     1. <strong>Dostęp do pobierania gier</strong> - tylko zalogowani użytkownicy mogą pobierać<br>
                     2. <strong>Premium Avatary</strong> - odblokuj 5 ekskluzywnych avatarów!<br>
-                    3. <strong>Zapisywanie preferencji</strong> - Twoje ustawienia są zawsze zachowane<br>
-                    4. <strong>Dostęp do AI asystenta</strong> - korzystaj z mojej pomocy<br>
-                    5. <strong>Bezpieczne logowanie przez Google</strong> - wygoda i bezpieczeństwo<br>
-                    6. <strong>Synchronizacja</strong> - dostęp z każdego urządzenia<br>
-                    7. <strong>Aktualizacje</strong> - bądź na bieżąco z nowościami`,
+                    3. <strong>Ultra VIP Avatar</strong> - zdobądź najbardziej ekskluzywny avatar!<br>
+                    4. <strong>Zapisywanie preferencji</strong> - Twoje ustawienia są zawsze zachowane<br>
+                    5. <strong>Dostęp do AI asystenta</strong> - korzystaj z mojej pomocy<br>
+                    6. <strong>Bezpieczne logowanie przez Google</strong> - wygoda i bezpieczeństwo<br>
+                    7. <strong>Synchronizacja</strong> - dostęp z każdego urządzenia<br>
+                    8. <strong>Aktualizacje</strong> - bądź na bieżąco z nowościami`,
                 
                 en: `<strong>🤖 Benefits of having an account</strong><br><br>
                     1. <strong>Access to game downloads</strong> - only logged users can download<br>
                     2. <strong>Premium Avatars</strong> - unlock 5 exclusive avatars!<br>
-                    3. <strong>Saving preferences</strong> - your settings are always saved<br>
-                    4. <strong>Access to AI assistant</strong> - use my help<br>
-                    5. <strong>Secure Google Sign-In</strong> - convenience and security<br>
-                    6. <strong>Synchronization</strong> - access from any device<br>
-                    7. <strong>Updates</strong> - stay up to date with news`
+                    3. <strong>Ultra VIP Avatar</strong> - get the most exclusive avatar!<br>
+                    4. <strong>Saving preferences</strong> - your settings are always saved<br>
+                    5. <strong>Access to AI assistant</strong> - use my help<br>
+                    6. <strong>Secure Google Sign-In</strong> - convenience and security<br>
+                    7. <strong>Synchronization</strong> - access from any device<br>
+                    8. <strong>Updates</strong> - stay up to date with news`
             },
             
             // DOWNLOAD & TECHNICAL
@@ -3458,7 +3851,8 @@
                     • Karta graficzna: Dowolna z obsługą DirectX 9<br>
                     • Dysk: 100 MB wolnego miejsca<br><br>
                     
-                    <em>💡 Pobierz obie gry = Premium Avatary GRATIS!</em>`,
+                    <em>💡 Pobierz obie gry = Premium Avatary GRATIS!</em><br>
+                    <em>💎 Ukończ Labirynt = Ultra VIP Avatar!</em>`,
                 
                 en: `<strong>🤖 Game system requirements</strong><br><br>
                     <strong>Maze - Minimum requirements:</strong><br>
@@ -3475,7 +3869,8 @@
                     • Graphics: Any with DirectX 9 support<br>
                     • Storage: 100 MB available space<br><br>
                     
-                    <em>💡 Download both games = Premium Avatars FREE!</em>`
+                    <em>💡 Download both games = Premium Avatars FREE!</em><br>
+                    <em>💎 Complete Maze = Ultra VIP Avatar!</em>`
             },
             
             'game-features': {
@@ -3486,7 +3881,8 @@
                     • Efekty wizualne i dźwiękowe<br>
                     • System osiągnięć<br>
                     • Tryb czasowy i przetrwania<br>
-                    • Różne widoki kamery<br><br>
+                    • Różne widoki kamery<br>
+                    • <strong>💎 Nagroda końcowa: Ultra VIP Avatar!</strong><br><br>
                     
                     <strong>🎯 Kółko i krzyżyk - klasyka w nowym wydaniu:</strong><br>
                     • AI z 3 poziomami trudności<br>
@@ -3496,7 +3892,9 @@
                     • Różne motywy graficzne<br>
                     • Możliwość cofania ruchów<br><br>
                     
-                    <strong>🎁 BONUS:</strong> Pobierz obie = 5 Premium Avatarów!`,
+                    <strong>🎁 BONUSY:</strong><br>
+                    • Pobierz obie = 5 Premium Avatarów!<br>
+                    • Ukończ Labirynt = Ultra VIP Avatar!`,
                 
                 en: `<strong>🤖 Available game features</strong><br><br>
                     <strong>🎮 Maze - fascinating 3D game:</strong><br>
@@ -3505,7 +3903,8 @@
                     • Visual and sound effects<br>
                     • Achievement system<br>
                     • Time and survival modes<br>
-                    • Various camera views<br><br>
+                    • Various camera views<br>
+                    • <strong>💎 Final reward: Ultra VIP Avatar!</strong><br><br>
                     
                     <strong>🎯 Tic-tac-toe - classic in new edition:</strong><br>
                     • AI with 3 difficulty levels<br>
@@ -3515,7 +3914,9 @@
                     • Various graphic themes<br>
                     • Undo moves option<br><br>
                     
-                    <strong>🎁 BONUS:</strong> Download both = 5 Premium Avatars!`
+                    <strong>🎁 BONUSES:</strong><br>
+                    • Download both = 5 Premium Avatars!<br>
+                    • Complete Maze = Ultra VIP Avatar!`
             },
             
             'technical-support': {
@@ -3535,6 +3936,9 @@
                     • Wyczyść ciasteczka<br>
                     • Sprawdź połączenie internetowe<br><br>
                     
+                    4. <strong>Ultra VIP Avatar</strong><br>
+                    • Wyślij screenshot na: quatar2022@o2.pl<br><br>
+                    
                     <strong>💬 Kontakt:</strong> Użyj tego czatu AI do pomocy!`,
                 
                 en: `<strong>🤖 Technical support</strong><br><br>
@@ -3552,6 +3956,9 @@
                     • Use Google Chrome<br>
                     • Clear cookies<br>
                     • Check internet connection<br><br>
+                    
+                    4. <strong>Ultra VIP Avatar</strong><br>
+                    • Send screenshot to: quatar2022@o2.pl<br><br>
                     
                     <strong>💬 Contact:</strong> Use this AI chat for help!`
             },
@@ -3611,7 +4018,8 @@
                     • <strong>Zagrożenia</strong> - usuwanie konta<br><br>
                     
                     <strong>💡 Premium funkcje:</strong><br>
-                    Pobierz obie gry → Odblokuj 5 Premium Avatarów!`,
+                    • Pobierz obie gry → Odblokuj 5 Premium Avatarów!<br>
+                    • Ukończ Labirynt → Odblokuj Ultra VIP Avatar!`,
                 
                 en: `<strong>🤖 Help with account settings</strong><br><br>
                     <strong>How to change settings:</strong><br>
@@ -3626,7 +4034,8 @@
                     • <strong>Danger Zone</strong> - account deletion<br><br>
                     
                     <strong>💡 Premium features:</strong><br>
-                    Download both games → Unlock 5 Premium Avatars!`
+                    • Download both games → Unlock 5 Premium Avatars!<br>
+                    • Complete Maze → Unlock Ultra VIP Avatar!`
             },
             
             'avatar-customization': {
@@ -3640,12 +4049,17 @@
                     
                     <strong>Dostępne avatary:</strong><br>
                     • 8 standardowych - dostępne od razu<br>
-                    • 5 Premium - po pobraniu obu gier!<br><br>
+                    • 5 Premium - po pobraniu obu gier!<br>
+                    • 1 Ultra VIP - po ukończeniu Labiryntu!<br><br>
                     
                     <strong>🌟 Premium Avatary:</strong><br>
                     ${premiumAvatarNames.join('<br>')}<br><br>
                     
-                    <em>Pobierz Labirynt + Kółko i krzyżyk = Premium!</em>`,
+                    <strong>💎 Ultra VIP Avatar:</strong><br>
+                    ${ultraVipAvatarName}<br><br>
+                    
+                    <em>Pobierz Labirynt + Kółko i krzyżyk = Premium!</em><br>
+                    <em>Ukończ Labirynt = Ultra VIP!</em>`,
                 
                 en: `<strong>🤖 How to change avatar</strong><br><br>
                     <strong>Changing avatar:</strong><br>
@@ -3657,12 +4071,17 @@
                     
                     <strong>Available avatars:</strong><br>
                     • 8 standard - available immediately<br>
-                    • 5 Premium - after downloading both games!<br><br>
+                    • 5 Premium - after downloading both games!<br>
+                    • 1 Ultra VIP - after completing Maze!<br><br>
                     
                     <strong>🌟 Premium Avatars:</strong><br>
                     ${premiumAvatarNames.join('<br>')}<br><br>
                     
-                    <em>Download Maze + Tic-tac-toe = Premium!</em>`
+                    <strong>💎 Ultra VIP Avatar:</strong><br>
+                    ${ultraVipAvatarName}<br><br>
+                    
+                    <em>Download Maze + Tic-tac-toe = Premium!</em><br>
+                    <em>Complete Maze = Ultra VIP!</em>`
             },
             
             'user-stats': {
@@ -3679,12 +4098,14 @@
                         • Łączna liczba użytkowników: ${stats.totalUsers}<br>
                         • Aktywni użytkownicy: ${stats.activeUsers}<br>
                         • Użytkownicy Google: ${stats.googleUsers}<br>
-                        • Użytkownicy Premium: ${stats.premiumUsers}<br><br>
+                        • Użytkownicy Premium: ${stats.premiumUsers}<br>
+                        • Użytkownicy Ultra VIP: ${stats.ultraVipUsers}<br><br>
                         
                         <strong>Co to znaczy?</strong><br>
-                        Premium = pobrali obie gry i mają ekskluzywne avatary!<br><br>
+                        • Premium = pobrali obie gry<br>
+                        • Ultra VIP = ukończyli Labirynt!<br><br>
                         
-                        <em>Dołącz do elity - pobierz obie gry!</em>`;
+                        <em>Dołącz do elity - zdobądź Ultra VIP Avatar!</em>`;
                 },
                 
                 en: function() {
@@ -3700,12 +4121,14 @@
                         • Total users: ${stats.totalUsers}<br>
                         • Active users: ${stats.activeUsers}<br>
                         • Google users: ${stats.googleUsers}<br>
-                        • Premium users: ${stats.premiumUsers}<br><br>
+                        • Premium users: ${stats.premiumUsers}<br>
+                        • Ultra VIP users: ${stats.ultraVipUsers}<br><br>
                         
                         <strong>What does it mean?</strong><br>
-                        Premium = downloaded both games and have exclusive avatars!<br><br>
+                        • Premium = downloaded both games<br>
+                        • Ultra VIP = completed Maze!<br><br>
                         
-                        <em>Join the elite - download both games!</em>`;
+                        <em>Join the elite - get Ultra VIP Avatar!</em>`;
                 }
             },
             
@@ -3719,13 +4142,17 @@
                     4. <strong>Przetrwanie</strong> - jak długo wytrzymasz?<br>
                     5. <strong>Niestandardowy</strong> - twórz własne wyzwania<br><br>
                     
+                    <strong>💎 WAŻNE:</strong> Ukończ WSZYSTKIE poziomy kampanii,<br>
+                    aby odblokować Ultra VIP Avatar!<br><br>
+                    
                     <strong>🎯 Kółko i krzyżyk - 4 tryby:</strong><br>
                     1. <strong>VS Komputer</strong> - 3 poziomy AI<br>
                     2. <strong>2 Graczy</strong> - graj ze znajomym<br>
                     3. <strong>Turniej</strong> - seria gier o punkty<br>
                     4. <strong>Trening</strong> - ćwicz strategie<br><br>
                     
-                    <em>🎁 Pobierz obie = Premium Avatary!</em>`,
+                    <em>🎁 Pobierz obie = Premium Avatary!</em><br>
+                    <em>💎 Ukończ Labirynt = Ultra VIP Avatar!</em>`,
                 
                 en: `<strong>🤖 Game modes</strong><br><br>
                     <strong>🎮 Maze - 5 modes:</strong><br>
@@ -3735,13 +4162,17 @@
                     4. <strong>Survival</strong> - how long can you last?<br>
                     5. <strong>Custom</strong> - create your own challenges<br><br>
                     
+                    <strong>💎 IMPORTANT:</strong> Complete ALL campaign levels<br>
+                    to unlock Ultra VIP Avatar!<br><br>
+                    
                     <strong>🎯 Tic-tac-toe - 4 modes:</strong><br>
                     1. <strong>VS Computer</strong> - 3 AI levels<br>
                     2. <strong>2 Players</strong> - play with friend<br>
                     3. <strong>Tournament</strong> - series for points<br>
                     4. <strong>Training</strong> - practice strategies<br><br>
                     
-                    <em>🎁 Download both = Premium Avatars!</em>`
+                    <em>🎁 Download both = Premium Avatars!</em><br>
+                    <em>💎 Complete Maze = Ultra VIP Avatar!</em>`
             },
             
             'achievements': {
@@ -3751,7 +4182,8 @@
                     • Prędkość światła - ukończ w <30 sekund<br>
                     • Maratończyk - 10 labiryntów pod rząd<br>
                     • Odkrywca - odwiedź każdy zakątek<br>
-                    • Mistrz - ukończ całą kampanię<br><br>
+                    • Mistrz - ukończ całą kampanię<br>
+                    • <strong>💎 CHAMPION - ukończ WSZYSTKIE poziomy!</strong><br><br>
                     
                     <strong>🏆 Kółko i krzyżyk - osiągnięcia:</strong><br>
                     • Pierwsze zwycięstwo - wygraj pierwszą grę<br>
@@ -3760,8 +4192,9 @@
                     • David vs Goliat - pokonaj trudne AI<br>
                     • Legenda - 100 wygranych<br><br>
                     
-                    <strong>🌟 MEGA OSIĄGNIĘCIE:</strong><br>
-                    Premium Kolekcjoner - pobierz obie gry!`,
+                    <strong>🌟 MEGA OSIĄGNIĘCIA:</strong><br>
+                    • Premium Kolekcjoner - pobierz obie gry!<br>
+                    • <strong>💎 Ultra VIP Champion - ukończ Labirynt!</strong>`,
                 
                 en: `<strong>🤖 Achievement system</strong><br><br>
                     <strong>🏆 Maze - achievements:</strong><br>
@@ -3769,7 +4202,8 @@
                     • Light Speed - complete in <30 seconds<br>
                     • Marathon Runner - 10 mazes in row<br>
                     • Explorer - visit every corner<br>
-                    • Master - complete entire campaign<br><br>
+                    • Master - complete entire campaign<br>
+                    • <strong>💎 CHAMPION - complete ALL levels!</strong><br><br>
                     
                     <strong>🏆 Tic-tac-toe - achievements:</strong><br>
                     • First Victory - win first game<br>
@@ -3778,8 +4212,9 @@
                     • David vs Goliath - beat hard AI<br>
                     • Legend - 100 wins<br><br>
                     
-                    <strong>🌟 MEGA ACHIEVEMENT:</strong><br>
-                    Premium Collector - download both games!`
+                    <strong>🌟 MEGA ACHIEVEMENTS:</strong><br>
+                    • Premium Collector - download both games!<br>
+                    • <strong>💎 Ultra VIP Champion - complete Maze!</strong>`
             },
             
             'future-updates': {
@@ -3788,7 +4223,8 @@
                     
                     1. <strong>Więcej Premium Avatarów</strong><br>
                     • 10 nowych ekskluzywnych postaci<br>
-                    • Animowane avatary<br><br>
+                    • Animowane avatary<br>
+                    • Specjalne avatary sezonowe<br><br>
                     
                     2. <strong>Nowe gry</strong><br>
                     • Szachy online<br>
@@ -3797,11 +4233,17 @@
                     
                     3. <strong>System poziomów</strong><br>
                     • Zdobywaj XP grając<br>
-                    • Odblokuj nagrody<br><br>
+                    • Odblokuj nagrody<br>
+                    • Rangi graczy<br><br>
                     
                     4. <strong>Tryb online</strong><br>
                     • Graj z przyjaciółmi<br>
-                    • Globalne rankingi<br><br>
+                    • Globalne rankingi<br>
+                    • Turnieje z nagrodami<br><br>
+                    
+                    5. <strong>Więcej Ultra VIP nagród</strong><br>
+                    • Ekskluzywne avatary za osiągnięcia<br>
+                    • Specjalne odznaki<br><br>
                     
                     <em>Bądź na bieżąco - loguj się przez Google!</em>`,
                 
@@ -3810,7 +4252,8 @@
                     
                     1. <strong>More Premium Avatars</strong><br>
                     • 10 new exclusive characters<br>
-                    • Animated avatars<br><br>
+                    • Animated avatars<br>
+                    • Special seasonal avatars<br><br>
                     
                     2. <strong>New games</strong><br>
                     • Online Chess<br>
@@ -3819,11 +4262,17 @@
                     
                     3. <strong>Level system</strong><br>
                     • Earn XP by playing<br>
-                    • Unlock rewards<br><br>
+                    • Unlock rewards<br>
+                    • Player ranks<br><br>
                     
                     4. <strong>Online mode</strong><br>
                     • Play with friends<br>
-                    • Global rankings<br><br>
+                    • Global rankings<br>
+                    • Tournaments with prizes<br><br>
+                    
+                    5. <strong>More Ultra VIP rewards</strong><br>
+                    • Exclusive avatars for achievements<br>
+                    • Special badges<br><br>
                     
                     <em>Stay updated - sign in with Google!</em>`
             }
@@ -4132,6 +4581,7 @@
                     
                     console.log('Enhanced Google Sign-In system loaded');
                     console.log('Premium avatars system ready');
+                    console.log('Ultra VIP avatar system ready');
                     console.log(`Current date and time: ${new Date().toISOString()}`);
                     console.log(`Database contains ${gameDB?.users?.size || 0} users`);
                     console.log(`Current user: ${currentUser?.username || 'Not logged in'}`);
@@ -4244,6 +4694,9 @@
             
             <div class="dropdown-option lang-pl" onclick="askQuestion('premium-avatars'); toggleChatbot();">👑 Premium Avatary</div>
             <div class="dropdown-option lang-en" onclick="askQuestion('premium-avatars'); toggleChatbot();">👑 Premium Avatars</div>
+            
+            <div class="dropdown-option lang-pl" onclick="askQuestion('ultra-vip-avatar'); toggleChatbot();">💎 Ultra VIP Avatar</div>
+            <div class="dropdown-option lang-en" onclick="askQuestion('ultra-vip-avatar'); toggleChatbot();">💎 Ultra VIP Avatar</div>
             
             <div class="dropdown-option lang-pl" onclick="askQuestion('user-stats'); toggleChatbot();">📊 Statystyki użytkowników</div>
             <div class="dropdown-option lang-en" onclick="askQuestion('user-stats'); toggleChatbot();">📊 User statistics</div>
@@ -4392,6 +4845,7 @@
                     <div class="lang-pl"><strong>Język:</strong></div>
                     <div class="lang-en"><strong>Language:</strong></div>
                     <div style="margin-top: 10px; display: flex; gap: 10px;">
+                        <button class="auth-btn" style="padding: 8px 15px; font-size: 14px;" onclick="changeLanguage('pl')">Polski</button>
                         <button class="auth-btn" style="padding: 8px 15px; font-size: 14px;" onclick="changeLanguage('en')">English</button>
                     </div>
                 </div>
@@ -4523,134 +4977,7 @@
             </div>
             
             <div id="chatbotMessages" class="chatbot-messages">
-                <div class="chatbot-welcome">
-                    <div class="lang-pl">
-                        <strong>🤖 Cześć! Jestem AI Asystentem</strong><br>
-                        Pomogę Ci z pytaniami dotyczącymi gier, logowania i Premium Avatarów!
-                    </div>
-                    <div class="lang-en">
-                        <strong>🤖 Hi! I'm AI Assistant</strong><br>
-                        I'll help you with questions about games, login and Premium Avatars!
-                    </div>
-                </div>
-                
-                <div class="chatbot-questions">
-                    <!-- GOOGLE LOGIN -->
-                    <button class="question-btn lang-pl" onclick="askQuestion('google-signin-help')">
-                        🔐 Jak zalogować się przez Google?
-                    </button>
-                    <button class="question-btn lang-en" onclick="askQuestion('google-signin-help')">
-                        🔐 How to sign in with Google?
-                    </button>
-                    
-                    <button class="question-btn lang-pl" onclick="askQuestion('google-signin-benefits')">
-                        🌐 Korzyści z logowania przez Google
-                    </button>
-                    <button class="question-btn lang-en" onclick="askQuestion('google-signin-benefits')">
-                        🌐 Benefits of Google Sign-In
-                    </button>
-
-                    <button class="question-btn lang-pl" onclick="askQuestion('premium-avatars')">
-                        👑 Premium Avatary - jak odblokować?
-                    </button>
-                    <button class="question-btn lang-en" onclick="askQuestion('premium-avatars')">
-                        👑 Premium Avatars - how to unlock?
-                    </button>
-
-                    <button class="question-btn lang-pl" onclick="askQuestion('account-benefits')">
-                        ✨ Jakie korzyści daje konto?
-                    </button>
-                    <button class="question-btn lang-en" onclick="askQuestion('account-benefits')">
-                        ✨ What benefits does account provide?
-                    </button>
-
-                    <!-- DOWNLOAD & TECHNICAL -->
-                    <button class="question-btn lang-pl" onclick="askQuestion('download-not-started')">
-                        🔧 Co zrobić gdy pobieranie się nie zaczęło?
-                    </button>
-                    <button class="question-btn lang-en" onclick="askQuestion('download-not-started')">
-                        🔧 What to do when download doesn't start?
-                    </button>
-                    
-                    <button class="question-btn lang-pl" onclick="askQuestion('file-safety')">
-                        🛡️ Czy pliki są bezpieczne?
-                    </button>
-                    <button class="question-btn lang-en" onclick="askQuestion('file-safety')">
-                        🛡️ Are the files safe?
-                    </button>
-
-                    <button class="question-btn lang-pl" onclick="askQuestion('system-requirements')">
-                        💻 Wymagania systemowe gier
-                    </button>
-                    <button class="question-btn lang-en" onclick="askQuestion('system-requirements')">
-                        💻 Game system requirements
-                    </button>
-
-                    <button class="question-btn lang-pl" onclick="askQuestion('game-features')">
-                        🎮 Jakie funkcje mają gry?
-                    </button>
-                    <button class="question-btn lang-en" onclick="askQuestion('game-features')">
-                        🎮 What features do games have?
-                    </button>
-
-                    <button class="question-btn lang-pl" onclick="askQuestion('technical-support')">
-                        🔧 Wsparcie techniczne
-                    </button>
-                    <button class="question-btn lang-en" onclick="askQuestion('technical-support')">
-                        🔧 Technical support
-                    </button>
-
-                    <!-- PRIVACY & SETTINGS -->
-                    <button class="question-btn lang-pl" onclick="askQuestion('privacy-security')">
-                        🔐 Jak chronicie moje dane?
-                    </button>
-                    <button class="question-btn lang-en" onclick="askQuestion('privacy-security')">
-                        🔐 How do you protect my data?
-                    </button>
-
-                    <button class="question-btn lang-pl" onclick="askQuestion('settings-help')">
-                        ⚙️ Pomoc z ustawieniami
-                    </button>
-                    <button class="question-btn lang-en" onclick="askQuestion('settings-help')">
-                        ⚙️ Help with settings
-                    </button>
-
-                    <button class="question-btn lang-pl" onclick="askQuestion('avatar-customization')">
-                        🎭 Jak zmienić avatar?
-                    </button>
-                    <button class="question-btn lang-en" onclick="askQuestion('avatar-customization')">
-                        🎭 How to change avatar?
-                    </button>
-
-                    <button class="question-btn lang-pl" onclick="askQuestion('user-stats')">
-                        📊 Statystyki społeczności
-                    </button>
-                    <button class="question-btn lang-en" onclick="askQuestion('user-stats')">
-                        📊 Community statistics
-                    </button>
-                    
-                    <!-- ADDITIONAL QUESTIONS -->
-                    <button class="question-btn lang-pl" onclick="askQuestion('game-modes')">
-                        🎲 Tryby gry
-                    </button>
-                    <button class="question-btn lang-en" onclick="askQuestion('game-modes')">
-                        🎲 Game modes
-                    </button>
-                    
-                    <button class="question-btn lang-pl" onclick="askQuestion('achievements')">
-                        🏆 System osiągnięć
-                    </button>
-                    <button class="question-btn lang-en" onclick="askQuestion('achievements')">
-                        🏆 Achievement system
-                    </button>
-                    
-                    <button class="question-btn lang-pl" onclick="askQuestion('future-updates')">
-                        🚀 Planowane aktualizacje
-                    </button>
-                    <button class="question-btn lang-en" onclick="askQuestion('future-updates')">
-                        🚀 Planned updates
-                    </button>
-                </div>
+                <!-- Content will be dynamically loaded based on login status -->
             </div>
             
             <div class="chatbot-footer">
@@ -4687,7 +5014,12 @@
                 <div style="margin-top: 20px; padding: 15px; background: rgba(255, 215, 0, 0.1); border-radius: 8px; border: 1px solid rgba(255, 215, 0, 0.3); animation: premiumGlow 2s ease-in-out infinite;">
                     <strong>👑 BONUS! Pobierz obie gry = 5 Premium Avatarów!</strong><br>
                     Po pobraniu Labiryntu i Kółko i krzyżyk otrzymasz dostęp do ekskluzywnych avatarów:<br>
-                    ⚔️ Cyber Warrior, 🐉 Dragon Master, 🚀 Space Commander, 🧙 Mystic Wizard, 🥷 Shadow Ninjahttp://127.0.0.1:3000/index.html
+                    ⚔️ Cyber Warrior, 🐉 Dragon Master, 🚀 Space Commander, 🧙 Mystic Wizard, 🥷 Shadow Ninja
+                </div>
+                
+                <div style="margin-top: 20px; padding: 15px; background: rgba(255, 0, 128, 0.1); border-radius: 8px; border: 1px solid rgba(255, 0, 128, 0.3); animation: ultraVipGlow 3s ease-in-out infinite;">
+                    <strong>💎 ULTRA VIP! Ukończ Labirynt = Ultra VIP Avatar!</strong><br>
+                    Przejdź wszystkie poziomy gry Labirynt i wyślij screenshot na: quatar2022@o2.pl
                 </div>
             </div>
             
@@ -4712,6 +5044,11 @@
                     <strong>👑 BONUS! Download both games = 5 Premium Avatars!</strong><br>
                     After downloading Maze and Tic-tac-toe you'll get access to exclusive avatars:<br>
                     ⚔️ Cyber Warrior, 🐉 Dragon Master, 🚀 Space Commander, 🧙 Mystic Wizard, 🥷 Shadow Ninja
+                </div>
+                
+                <div style="margin-top: 20px; padding: 15px; background: rgba(255, 0, 128, 0.1); border-radius: 8px; border: 1px solid rgba(255, 0, 128, 0.3); animation: ultraVipGlow 3s ease-in-out infinite;">
+                    <strong>💎 ULTRA VIP! Complete Maze = Ultra VIP Avatar!</strong><br>
+                    Complete all levels in Maze game and send screenshot to: quatar2022@o2.pl
                 </div>
             </div>
         </div>
@@ -4789,4 +5126,4 @@
         </div>
     </div>
 </body>
-</html>                       
+</html>
