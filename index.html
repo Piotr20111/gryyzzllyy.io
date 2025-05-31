@@ -13,6 +13,10 @@
     <!-- Google Sign-In -->
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     
+    <!-- Firebase SDK for cloud sync -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+    
     <style>
         /* —— RESET & THEME —— */
         :root {
@@ -532,6 +536,16 @@
             100% { transform: rotate(360deg); }
         }
 
+        /* Avatar shine animation */
+        @keyframes avatarShine {
+            0% {
+                background-position: -100% 0;
+            }
+            100% {
+                background-position: 200% 0;
+            }
+        }
+
         /* —— GOOGLE SIGN-IN STYLES —— */
         .google-signin-section {
             margin: 20px 0;
@@ -544,31 +558,25 @@
             margin: 20px 0;
         }
 
-        .manual-google-btn {
-            background: #4285f4;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 4px;
-            font-size: 16px;
-            font-weight: 500;
-            cursor: pointer;
-            display: inline-flex;
+        .stay-logged-in {
+            margin: 15px 0;
+            display: flex;
             align-items: center;
-            gap: 12px;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+            justify-content: center;
+            gap: 10px;
+            font-size: 14px;
+            color: rgba(255,255,255,0.8);
         }
 
-        .manual-google-btn:hover {
-            background: #357ae8;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-            transform: translateY(-1px);
+        .stay-logged-in input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
         }
 
-        .manual-google-btn svg {
-            width: 24px;
-            height: 24px;
+        .stay-logged-in label {
+            cursor: pointer;
+            user-select: none;
         }
 
         /* —— PREMIUM AVATARS STYLES —— */
@@ -638,6 +646,86 @@
             transform: translate(-50%, -50%);
             font-size: 24px;
             filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.8));
+        }
+
+        /* Enhanced avatar option styling */
+        .avatar-option {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            position: relative;
+            background: linear-gradient(145deg, #1a1a2e, #16213e);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .avatar-option::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            background-size: 200% 200%;
+            animation: avatarShine 3s linear infinite;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .avatar-option:hover::before {
+            opacity: 1;
+        }
+
+        .avatar-option img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        .avatar-option:hover {
+            border-color: var(--primary-orange);
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: var(--shadow-glow) rgba(255, 119, 0, 0.5);
+            z-index: 10;
+        }
+
+        .avatar-option:hover img {
+            transform: scale(1.1);
+            filter: brightness(1.2) contrast(1.1);
+        }
+
+        .avatar-option.selected {
+            border-color: var(--primary-orange);
+            box-shadow: var(--shadow-glow) rgba(255, 119, 0, 0.7);
+            transform: scale(1.05);
+        }
+
+        .avatar-option.selected::after {
+            content: '✓';
+            position: absolute;
+            bottom: -5px;
+            right: -5px;
+            background: var(--primary-orange);
+            color: white;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            box-shadow: 0 2px 10px rgba(255, 119, 0, 0.5);
+            z-index: 15;
         }
 
         /* Premium user status */
@@ -939,57 +1027,6 @@
 
         .avatar-grid::-webkit-scrollbar-thumb:hover {
             background: linear-gradient(135deg, rgba(147, 51, 234, 0.7), rgba(107, 70, 193, 0.7));
-        }
-
-        .avatar-option {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            cursor: pointer;
-            border: 3px solid transparent;
-            transition: all 0.3s ease;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .avatar-option img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 50%;
-            transition: all 0.3s ease;
-        }
-
-        .avatar-option:hover {
-            border-color: var(--primary-orange);
-            transform: scale(1.1);
-            box-shadow: var(--shadow-glow) rgba(255, 119, 0, 0.5);
-            z-index: 1;
-        }
-        
-        /* Glow effect on hover */
-        .avatar-option::after {
-            content: '';
-            position: absolute;
-            top: -5px;
-            left: -5px;
-            right: -5px;
-            bottom: -5px;
-            background: radial-gradient(circle, rgba(255, 119, 0, 0.7) 0%, rgba(255, 119, 0, 0) 70%);
-            z-index: -1;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            border-radius: 50%;
-        }
-        
-        .avatar-option:hover::after {
-            opacity: 1;
-        }
-
-        .avatar-option.selected {
-            border-color: var(--primary-orange);
-            box-shadow: var(--shadow-glow) rgba(255, 119, 0, 0.7);
-            transform: scale(1.05);
         }
 
         /* —— SETTINGS MODAL —— */
@@ -2373,8 +2410,22 @@
         }
     </style>
     <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBzXqVa5cYC6BkT7PKZQ_TvZH5jIGKRi5o",
+            authDomain: "game-portal-sync.firebaseapp.com",
+            projectId: "game-portal-sync",
+            storageBucket: "game-portal-sync.appspot.com",
+            messagingSenderId: "139779237819",
+            appId: "1:139779237819:web:8e4c6f5d8a9c3f5d6a9c3f"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
         // Version control
-        const APP_VERSION = '2.2.0';
+        const APP_VERSION = '2.3.0';
         const LAST_VERSION_KEY = 'last_version_seen';
 
         // Premium avatar names as constant
@@ -2389,7 +2440,7 @@
         // Ultra VIP avatar
         const ultraVipAvatarName = '💎 Ultra VIP Champion';
 
-        // —— NEW CLOUD DATABASE SYSTEM WITH GOOGLE AUTH —— 
+        // —— CLOUD DATABASE SYSTEM WITH GOOGLE AUTH AND FIREBASE SYNC —— 
         class GameDatabase {
             constructor() {
                 this.users = new Map();
@@ -2429,9 +2480,12 @@
                 }
             }
 
-            handleGoogleSignIn(response) {
+            async handleGoogleSignIn(response) {
                 // Decode JWT token to get user info
                 const userInfo = this.parseJwt(response.credential);
+                
+                // Check if user wants to stay logged in for 24h
+                const stayLoggedIn = document.getElementById('stayLoggedIn')?.checked || false;
                 
                 const googleUser = {
                     id: userInfo.sub,
@@ -2445,6 +2499,8 @@
                     premiumAvatarsUnlocked: false,
                     ultraVipUnlocked: false,
                     status: 'active',
+                    stayLoggedIn: stayLoggedIn,
+                    sessionExpiry: stayLoggedIn ? new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() : null,
                     preferences: {
                         theme: 'orange',
                         notifications: true,
@@ -2454,14 +2510,18 @@
                     }
                 };
 
-                // Check if user exists and preserve their progress
-                const existingUser = this.users.get(googleUser.id);
-                if (existingUser) {
-                    googleUser.downloadedGames = existingUser.downloadedGames || [];
-                    googleUser.premiumAvatarsUnlocked = existingUser.premiumAvatarsUnlocked || false;
-                    googleUser.ultraVipUnlocked = existingUser.ultraVipUnlocked || false;
-                    googleUser.preferences = existingUser.preferences || googleUser.preferences;
-                    googleUser.registrationDate = existingUser.registrationDate || googleUser.registrationDate;
+                // Load user data from Firebase first
+                const cloudData = await this.loadUserFromCloud(googleUser.id);
+                if (cloudData) {
+                    // Merge cloud data with local data
+                    googleUser.downloadedGames = cloudData.downloadedGames || [];
+                    googleUser.premiumAvatarsUnlocked = cloudData.premiumAvatarsUnlocked || false;
+                    googleUser.ultraVipUnlocked = cloudData.ultraVipUnlocked || false;
+                    googleUser.preferences = cloudData.preferences || googleUser.preferences;
+                    googleUser.registrationDate = cloudData.registrationDate || googleUser.registrationDate;
+                    if (cloudData.avatar && cloudData.avatar !== userInfo.picture) {
+                        googleUser.avatar = cloudData.avatar; // Preserve custom avatar
+                    }
                 }
 
                 // Save or update user
@@ -2469,15 +2529,16 @@
                 this.currentUser = googleUser;
                 this.isGoogleUser = true;
                 
-                // Save to global variables
-                currentUser = googleUser;
-                gameDB.currentUser = googleUser;
+                // Save to cloud
+                await this.saveUserToCloud(googleUser);
                 
                 // Save current user to localStorage
                 localStorage.setItem('currentUser', JSON.stringify({
                     id: googleUser.id,
                     username: googleUser.username,
-                    loginTime: new Date().toISOString()
+                    loginTime: new Date().toISOString(),
+                    stayLoggedIn: stayLoggedIn,
+                    sessionExpiry: googleUser.sessionExpiry
                 }));
                 
                 // Update UI
@@ -2508,6 +2569,42 @@
                 return JSON.parse(jsonPayload);
             }
 
+            async saveUserToCloud(user) {
+                if (!user.isGoogleUser) return;
+                
+                try {
+                    await db.collection('users').doc(user.id).set({
+                        id: user.id,
+                        username: user.username,
+                        email: user.email,
+                        avatar: user.avatar,
+                        downloadedGames: user.downloadedGames || [],
+                        premiumAvatarsUnlocked: user.premiumAvatarsUnlocked || false,
+                        ultraVipUnlocked: user.ultraVipUnlocked || false,
+                        registrationDate: user.registrationDate,
+                        lastLogin: user.lastLogin,
+                        preferences: user.preferences || {},
+                        lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    console.log("User data synced to cloud");
+                } catch (error) {
+                    console.error("Error saving to cloud:", error);
+                }
+            }
+
+            async loadUserFromCloud(userId) {
+                try {
+                    const doc = await db.collection('users').doc(userId).get();
+                    if (doc.exists) {
+                        console.log("User data loaded from cloud");
+                        return doc.data();
+                    }
+                } catch (error) {
+                    console.error("Error loading from cloud:", error);
+                }
+                return null;
+            }
+
             saveGoogleUser(user) {
                 this.users.set(user.id, user);
                 this.saveToStorage();
@@ -2536,7 +2633,7 @@
                 }
             }
 
-            trackGameDownload(gameType) {
+            async trackGameDownload(gameType) {
                 if (!this.currentUser) return;
                 
                 if (!this.currentUser.downloadedGames) {
@@ -2547,18 +2644,24 @@
                     this.currentUser.downloadedGames.push(gameType);
                     this.saveToStorage();
                     
+                    // Save to cloud
+                    await this.saveUserToCloud(this.currentUser);
+                    
                     // Check if user should unlock premium avatars
                     if (this.currentUser.downloadedGames.length >= 2) {
-                        this.unlockPremiumAvatars();
+                        await this.unlockPremiumAvatars();
                     }
                 }
             }
 
-            unlockPremiumAvatars() {
+            async unlockPremiumAvatars() {
                 if (!this.currentUser) return;
                 
                 this.currentUser.premiumAvatarsUnlocked = true;
                 this.saveToStorage();
+                
+                // Save to cloud
+                await this.saveUserToCloud(this.currentUser);
                 
                 // Show premium notification
                 showPremiumUnlockNotification();
@@ -2584,30 +2687,30 @@
             }
         }
 
-        // —— AVATAR SYSTEM WITH PREMIUM AVATARS —— 
-        // Standard gaming-themed avatars
+        // —— AVATAR SYSTEM WITH ENHANCED PREMIUM AVATARS —— 
+        // Enhanced standard avatars with better variety
         const standardAvatars = [
-            'https://api.dicebear.com/7.x/avataaars/svg?seed=Felix',
-            'https://api.dicebear.com/7.x/avataaars/svg?seed=Aneka',
-            'https://api.dicebear.com/7.x/avataaars/svg?seed=Garfield',
-            'https://api.dicebear.com/7.x/avataaars/svg?seed=Leo',
-            'https://api.dicebear.com/7.x/avataaars/svg?seed=Nala',
-            'https://api.dicebear.com/7.x/avataaars/svg?seed=Simba',
-            'https://api.dicebear.com/7.x/avataaars/svg?seed=Milo',
-            'https://api.dicebear.com/7.x/avataaars/svg?seed=Sassy'
+            'https://api.dicebear.com/7.x/avataaars/svg?seed=Felix&backgroundColor=b6e3f4,c0aede&accessories=prescription02&clothesColor=3c4f5c',
+            'https://api.dicebear.com/7.x/avataaars/svg?seed=Aneka&backgroundColor=ffd5dc,ffdfbf&accessories=sunglasses&clothesColor=ff5c5c',
+            'https://api.dicebear.com/7.x/avataaars/svg?seed=Garfield&backgroundColor=d1d4f9,c0aede&accessories=wayfarers&clothesColor=5199e4',
+            'https://api.dicebear.com/7.x/avataaars/svg?seed=Leo&backgroundColor=ffd5dc,ffe0bd&facialHair=beardMedium&clothesColor=e6e6e6',
+            'https://api.dicebear.com/7.x/avataaars/svg?seed=Nala&backgroundColor=b6e3f4,ffd5dc&accessories=round&clothesColor=ff5c5c',
+            'https://api.dicebear.com/7.x/avataaars/svg?seed=Simba&backgroundColor=ffdfbf,d1d4f9&facialHair=moustacheFancy&clothesColor=3c4f5c',
+            'https://api.dicebear.com/7.x/avataaars/svg?seed=Milo&backgroundColor=c0aede,ffe0bd&accessories=kurt&clothesColor=929598',
+            'https://api.dicebear.com/7.x/avataaars/svg?seed=Sassy&backgroundColor=ffd5dc,b6e3f4&accessories=prescription01&clothesColor=65c9ff'
         ];
 
-        // Premium gaming avatars - ENHANCED AND BEAUTIFUL
+        // Enhanced premium avatars - more vibrant and unique
         const premiumAvatars = [
-            'https://api.dicebear.com/7.x/adventurer-neutral/svg?seed=CyberWarrior&backgroundColor=b6e3f4,c0aede,d1d4f9&eyes=variant01&mouth=variant01&eyebrows=variant01',
-            'https://api.dicebear.com/7.x/big-ears-neutral/svg?seed=DragonMaster&backgroundColor=ffd5dc,ffdfbf,d1d4f9&eyes=variant01&mouth=variant01',
-            'https://api.dicebear.com/7.x/adventurer/svg?seed=SpaceCommander&backgroundColor=c0aede,d1d4f9,ffd5dc&eyes=variant04&mouth=variant03',
-            'https://api.dicebear.com/7.x/pixel-art-neutral/svg?seed=MysticWizard&backgroundColor=b6e3f4,ffdfbf&mood=happy',
-            'https://api.dicebear.com/7.x/adventurer-neutral/svg?seed=ShadowNinja&backgroundColor=1a1a1a,2a2a2a,3a3a3a&eyes=variant02&mouth=variant02'
+            'https://api.dicebear.com/7.x/adventurer-neutral/svg?seed=CyberWarrior&backgroundColor=b6e3f4,c0aede,d1d4f9&eyes=variant26&mouth=variant24&eyebrows=variant13&glassesProbability=100',
+            'https://api.dicebear.com/7.x/big-ears-neutral/svg?seed=DragonMaster&backgroundColor=ffd5dc,ffdfbf,d1d4f9&eyes=variant24&mouth=variant19&hair=variant02',
+            'https://api.dicebear.com/7.x/adventurer/svg?seed=SpaceCommander&backgroundColor=c0aede,d1d4f9,ffd5dc&eyes=variant17&mouth=variant28&hair=long16&skinColor=f2d3b1',
+            'https://api.dicebear.com/7.x/pixel-art-neutral/svg?seed=MysticWizard&backgroundColor=b6e3f4,ffdfbf&mood=happy&glassesProbability=100&accessories=sunglasses',
+            'https://api.dicebear.com/7.x/adventurer-neutral/svg?seed=ShadowNinja&backgroundColor=1a1a1a,2a2a2a,3a3a3a&eyes=variant04&mouth=variant30&eyebrows=variant10&skinColor=614335'
         ];
 
-        // Ultra VIP avatar
-        const ultraVipAvatar = 'https://api.dicebear.com/7.x/lorelei-neutral/svg?seed=UltraVIPChampion&backgroundColor=ff0080,ff1493,ff69b4&eyes=variant01&mouth=variant01';
+        // Enhanced Ultra VIP avatar
+        const ultraVipAvatar = 'https://api.dicebear.com/7.x/lorelei-neutral/svg?seed=UltraVIPChampion&backgroundColor=ff0080,ff1493,ff69b4&eyes=variant24&mouth=happy01&flip=true';
 
         // Global variables
         let gameDB = null;
@@ -2922,8 +3025,8 @@
                 
                 if (title) title.textContent = currentLang === 'pl' ? 'Nowa wersja dostępna!' : 'New version available!';
                 if (text) text.textContent = currentLang === 'pl' 
-                    ? `Dostępna jest nowa wersja (${APP_VERSION}) z ulepszonym logowaniem Google i Ultra VIP Avatarem!`
-                    : `A new version (${APP_VERSION}) is available with improved Google login and Ultra VIP Avatar!`;
+                    ? `Dostępna jest nowa wersja (${APP_VERSION}) z synchronizacją w chmurze i ulepszonymi avatarami!`
+                    : `A new version (${APP_VERSION}) is available with cloud sync and enhanced avatars!`;
                 if (button) button.textContent = currentLang === 'pl' ? 'Odśwież stronę' : 'Refresh page';
                 
                 updateOverlay.style.display = 'flex';
@@ -2935,13 +3038,43 @@
             window.location.reload(true);
         }
 
-        function checkLoginStatus() {
+        async function checkLoginStatus() {
             const savedUser = localStorage.getItem('currentUser');
             if (savedUser) {
                 try {
                     const userData = JSON.parse(savedUser);
+                    
+                    // Check if session should expire
+                    if (userData.stayLoggedIn && userData.sessionExpiry) {
+                        const expiryDate = new Date(userData.sessionExpiry);
+                        if (new Date() > expiryDate) {
+                            // Session expired
+                            localStorage.removeItem('currentUser');
+                            showNotification(
+                                'Sesja wygasła. Zaloguj się ponownie.',
+                                'Session expired. Please login again.',
+                                'info'
+                            );
+                            return;
+                        }
+                    }
+                    
                     const dbUser = gameDB.users.get(userData.id);
                     if (dbUser && dbUser.status === 'active') {
+                        // Load fresh data from cloud if Google user
+                        if (dbUser.isGoogleUser) {
+                            const cloudData = await gameDB.loadUserFromCloud(userData.id);
+                            if (cloudData) {
+                                // Update local user with cloud data
+                                dbUser.downloadedGames = cloudData.downloadedGames || dbUser.downloadedGames;
+                                dbUser.premiumAvatarsUnlocked = cloudData.premiumAvatarsUnlocked || dbUser.premiumAvatarsUnlocked;
+                                dbUser.ultraVipUnlocked = cloudData.ultraVipUnlocked || dbUser.ultraVipUnlocked;
+                                dbUser.avatar = cloudData.avatar || dbUser.avatar;
+                                dbUser.preferences = cloudData.preferences || dbUser.preferences;
+                                gameDB.saveGoogleUser(dbUser);
+                            }
+                        }
+                        
                         currentUser = dbUser;
                         gameDB.currentUser = dbUser;
                         gameDB.isGoogleUser = dbUser.isGoogleUser || false;
@@ -2968,7 +3101,7 @@
                 }
             }
             
-            const authModal = document.getElementById('authModal');
+                const authModal = document.getElementById('authModal');
             if (authModal) {
                 authModal.style.display = 'block';
                 document.body.style.overflow = 'hidden';
@@ -3237,13 +3370,19 @@
             }
         }
 
-        function updateUserAvatar(newAvatar, element) {
+        async function updateUserAvatar(newAvatar, element) {
             if (!currentUser || !gameDB) return;
             
             try {
                 currentUser.avatar = newAvatar;
                 gameDB.users.set(currentUser.id, currentUser);
                 gameDB.saveToStorage();
+                
+                // Save to cloud if Google user
+                if (currentUser.isGoogleUser) {
+                    await gameDB.saveUserToCloud(currentUser);
+                }
+                
                 updateUserInterface();
                 
                 // Update selection in settings
@@ -3268,13 +3407,19 @@
         }
         
         // Update user preferences
-        function updateUserPreference(key, value) {
+        async function updateUserPreference(key, value) {
             if (!currentUser || !gameDB) return;
             
             try {
                 currentUser.preferences[key] = value;
                 gameDB.users.set(currentUser.id, currentUser);
                 gameDB.saveToStorage();
+                
+                // Save to cloud if Google user
+                if (currentUser.isGoogleUser) {
+                    await gameDB.saveUserToCloud(currentUser);
+                }
+                
                 updateSettingsInfo();
                 
                 showNotification(
@@ -3330,7 +3475,7 @@
             return code;
         }
         
-        function confirmDeleteAccount() {
+        async function confirmDeleteAccount() {
             if (!currentUser || !gameDB) {
                 if (!initializeSystem()) {
                     showNotification(
@@ -3357,6 +3502,11 @@
             }
             
             try {
+                // Delete from cloud if Google user
+                if (currentUser.isGoogleUser) {
+                    await db.collection('users').doc(currentUser.id).delete();
+                }
+                
                 gameDB.users.delete(currentUser.id);
                 gameDB.saveToStorage();
                 logout();
@@ -3372,7 +3522,7 @@
         }
 
         // —— DOWNLOAD SYSTEM WITH PREMIUM AVATAR TRACKING —— 
-        function checkDownload(event, gameType = 'maze') {
+        async function checkDownload(event, gameType = 'maze') {
             if (!isInitialized) {
                 if (!initializeSystem()) {
                     event.preventDefault();
@@ -3412,7 +3562,7 @@
             }, downloadCooldown);
 
             // Track game download for premium avatars
-            gameDB.trackGameDownload(gameType);
+            await gameDB.trackGameDownload(gameType);
 
             const gameName = gameType === 'maze' ? 'Labirynt' : 'Kółko i krzyżyk';
             console.log(`Download initiated for ${gameName} by user: ${currentUser.username} at ${new Date().toISOString()}`);
@@ -3489,7 +3639,21 @@
                             </div>
                         </div>
                         <div class="chatbot-questions">
-                            <!-- GOOGLE LOGIN -->
+                            <!-- CLOUD SYNC & GOOGLE LOGIN -->
+                            <button class="question-btn lang-pl" onclick="askQuestion('cloud-sync')">
+                                ☁️ Jak działa synchronizacja w chmurze?
+                            </button>
+                            <button class="question-btn lang-en" onclick="askQuestion('cloud-sync')">
+                                ☁️ How does cloud sync work?
+                            </button>
+                            
+                            <button class="question-btn lang-pl" onclick="askQuestion('stay-logged-in')">
+                                🕐 Pozostań zalogowany przez 24h
+                            </button>
+                            <button class="question-btn lang-en" onclick="askQuestion('stay-logged-in')">
+                                🕐 Stay logged in for 24h
+                            </button>
+
                             <button class="question-btn lang-pl" onclick="askQuestion('google-signin-help')">
                                 🔐 Jak zalogować się przez Google?
                             </button>
@@ -3639,37 +3803,114 @@
 
         // AI responses for different question types
         const aiResponses = {
+            // NEW: CLOUD SYNC
+            'cloud-sync': {
+                pl: `<strong>🤖 Synchronizacja w chmurze</strong><br><br>
+                    <strong>☁️ Jak to działa?</strong><br>
+                    Twoje postępy są automatycznie zapisywane w chmurze Google Firebase!<br><br>
+                    
+                    <strong>✨ Co jest synchronizowane?</strong><br>
+                    • Pobrane gry<br>
+                    • Odblokowane avatary (Premium i Ultra VIP)<br>
+                    • Wybrane avatary<br>
+                    • Ustawienia i preferencje<br><br>
+                    
+                    <strong>📱 Multi-device</strong><br>
+                    Zaloguj się na telefonie, tablecie czy komputerze - wszystkie postępy są zachowane!<br><br>
+                    
+                    <strong>🔐 Bezpieczeństwo</strong><br>
+                    Dane są szyfrowane i przechowywane na serwerach Google.<br><br>
+                    
+                    <em>💡 Wskazówka:</em> Synchronizacja działa tylko dla kont Google!`,
+                
+                en: `<strong>🤖 Cloud Synchronization</strong><br><br>
+                    <strong>☁️ How does it work?</strong><br>
+                    Your progress is automatically saved in Google Firebase cloud!<br><br>
+                    
+                    <strong>✨ What is synchronized?</strong><br>
+                    • Downloaded games<br>
+                    • Unlocked avatars (Premium and Ultra VIP)<br>
+                    • Selected avatars<br>
+                    • Settings and preferences<br><br>
+                    
+                    <strong>📱 Multi-device</strong><br>
+                    Login on phone, tablet or computer - all progress is preserved!<br><br>
+                    
+                    <strong>🔐 Security</strong><br>
+                    Data is encrypted and stored on Google servers.<br><br>
+                    
+                    <em>💡 Tip:</em> Sync only works for Google accounts!`
+            },
+            
+            'stay-logged-in': {
+                pl: `<strong>🤖 Pozostań zalogowany przez 24h</strong><br><br>
+                    <strong>🕐 Jak to działa?</strong><br>
+                    Podczas logowania zaznacz opcję "Pozostań zalogowany przez 24h".<br><br>
+                    
+                    <strong>✅ Korzyści:</strong><br>
+                    • Nie musisz logować się codziennie<br>
+                    • Szybki dostęp do gier<br>
+                    • Automatyczne wczytywanie postępów<br>
+                    • Wygoda na zaufanych urządzeniach<br><br>
+                    
+                    <strong>⚠️ Bezpieczeństwo:</strong><br>
+                    • Używaj tylko na własnych urządzeniach<br>
+                    • Po 24h automatyczne wylogowanie<br>
+                    • Możesz wylogować się ręcznie wcześniej<br><br>
+                    
+                    <em>💡 Rada:</em> Idealne dla komputera domowego!`,
+                
+                en: `<strong>🤖 Stay logged in for 24h</strong><br><br>
+                    <strong>🕐 How does it work?</strong><br>
+                    During login, check "Stay logged in for 24h" option.<br><br>
+                    
+                    <strong>✅ Benefits:</strong><br>
+                    • No need to login daily<br>
+                    • Quick access to games<br>
+                    • Automatic progress loading<br>
+                    • Convenience on trusted devices<br><br>
+                    
+                    <strong>⚠️ Security:</strong><br>
+                    • Use only on your own devices<br>
+                    • Automatic logout after 24h<br>
+                    • You can logout manually earlier<br><br>
+                    
+                    <em>💡 Tip:</em> Perfect for home computer!`
+            },
+            
             // LOGIN & GOOGLE
             'google-signin-help': {
                 pl: `<strong>🤖 Jak zalogować się przez Google?</strong><br><br>
                     <strong>To bardzo proste!</strong><br>
                     1. Kliknij przycisk "Zaloguj się przez Google" 🔐<br>
                     2. Wybierz swoje konto Google<br>
-                    3. Zaakceptuj uprawnienia<br>
-                    4. Gotowe! Jesteś zalogowany 🎉<br><br>
+                    3. Opcjonalnie: Zaznacz "Pozostań zalogowany przez 24h"<br>
+                    4. Zaakceptuj uprawnienia<br>
+                    5. Gotowe! Jesteś zalogowany 🎉<br><br>
                     
                     <strong>Zalety logowania przez Google:</strong><br>
                     • Nie musisz pamiętać hasła<br>
                     • Bezpieczne i szybkie<br>
-                    • Automatyczna synchronizacja<br>
+                    • Automatyczna synchronizacja w chmurze<br>
                     • Dostęp z różnych urządzeń<br><br>
                     
-                    <em>💡 Wskazówka:</em> Google dba o bezpieczeństwo Twojego konta!`,
+                    <em>💡 Wskazówka:</em> Twoje postępy są zapisywane w chmurze!`,
                 
                 en: `<strong>🤖 How to sign in with Google?</strong><br><br>
                     <strong>It's very simple!</strong><br>
                     1. Click "Sign in with Google" button 🔐<br>
                     2. Choose your Google account<br>
-                    3. Accept permissions<br>
-                    4. Done! You're logged in 🎉<br><br>
+                    3. Optional: Check "Stay logged in for 24h"<br>
+                    4. Accept permissions<br>
+                    5. Done! You're logged in 🎉<br><br>
                     
                     <strong>Benefits of Google Sign-In:</strong><br>
                     • No need to remember passwords<br>
                     • Secure and fast<br>
-                    • Automatic synchronization<br>
+                    • Automatic cloud synchronization<br>
                     • Access from multiple devices<br><br>
                     
-                    <em>💡 Tip:</em> Google takes care of your account security!`
+                    <em>💡 Tip:</em> Your progress is saved in the cloud!`
             },
             
             'premium-avatars': {
@@ -3685,7 +3926,8 @@
                     <strong>🔓 Jak odblokować:</strong><br>
                     1. Pobierz grę Labirynt (pierwsza gra)<br>
                     2. Pobierz grę Kółko i krzyżyk (druga gra)<br>
-                    3. Premium avatary zostaną automatycznie odblokowane!<br><br>
+                    3. Premium avatary zostaną automatycznie odblokowane!<br>
+                    4. Synchronizacja w chmurze zachowa je na wszystkich urządzeniach!<br><br>
                     
                     <strong>✨ Korzyści:</strong><br>
                     • Wyróżnij się wśród innych graczy<br>
@@ -3705,7 +3947,8 @@
                     <strong>🔓 How to unlock:</strong><br>
                     1. Download the Maze game (first game)<br>
                     2. Download Tic-tac-toe game (second game)<br>
-                    3. Premium avatars will be automatically unlocked!<br><br>
+                    3. Premium avatars will be automatically unlocked!<br>
+                    4. Cloud sync will keep them on all devices!<br><br>
                     
                     <strong>✨ Benefits:</strong><br>
                     • Stand out among other players<br>
@@ -3725,7 +3968,8 @@
                     2. Przejdź WSZYSTKIE poziomy w grze<br>
                     3. Zrób screenshot ekranu końcowego<br>
                     4. Wyślij screenshot na: <strong>quatar2022@o2.pl</strong><br>
-                    5. Po weryfikacji otrzymasz dostęp!<br><br>
+                    5. Po weryfikacji otrzymasz dostęp!<br>
+                    6. Avatar zostanie zsynchronizowany w chmurze<br><br>
                     
                     <strong>✨ Co otrzymujesz:</strong><br>
                     • Ekskluzywny avatar Ultra VIP Champion<br>
@@ -3743,7 +3987,8 @@
                     2. Complete ALL levels in the game<br>
                     3. Take a screenshot of the final screen<br>
                     4. Send screenshot to: <strong>quatar2022@o2.pl</strong><br>
-                    5. After verification you'll get access!<br><br>
+                    5. After verification you'll get access!<br>
+                    6. Avatar will be synced in the cloud<br><br>
                     
                     <strong>✨ What you get:</strong><br>
                     • Exclusive Ultra VIP Champion avatar<br>
@@ -3762,13 +4007,16 @@
                     2. <strong>Wygoda</strong><br>
                     Jedno kliknięcie i jesteś zalogowany - bez pamiętania haseł!<br><br>
                     
-                    3. <strong>Synchronizacja</strong><br>
-                    Twoje postępy i ustawienia są bezpieczne w chmurze Google.<br><br>
+                    3. <strong>Synchronizacja w chmurze</strong><br>
+                    Twoje postępy, avatary i ustawienia są bezpieczne w Firebase.<br><br>
                     
                     4. <strong>Multi-device</strong><br>
                     Zaloguj się na telefonie, tablecie i komputerze tym samym kontem.<br><br>
                     
-                    5. <strong>Aktualizacje</strong><br>
+                    5. <strong>Pozostań zalogowany 24h</strong><br>
+                    Nowa opcja dla większej wygody!<br><br>
+                    
+                    6. <strong>Aktualizacje</strong><br>
                     Google automatycznie dba o bezpieczeństwo Twojego konta.`,
                 
                 en: `<strong>🤖 Benefits of Google Sign-In</strong><br><br>
@@ -3780,13 +4028,16 @@
                     2. <strong>Convenience</strong><br>
                     One click and you're logged in - no password remembering!<br><br>
                     
-                    3. <strong>Synchronization</strong><br>
-                    Your progress and settings are safe in Google cloud.<br><br>
+                    3. <strong>Cloud synchronization</strong><br>
+                    Your progress, avatars and settings are safe in Firebase.<br><br>
                     
                     4. <strong>Multi-device</strong><br>
                     Login on phone, tablet and computer with the same account.<br><br>
                     
-                    5. <strong>Updates</strong><br>
+                    5. <strong>Stay logged in 24h</strong><br>
+                    New option for more convenience!<br><br>
+                    
+                    6. <strong>Updates</strong><br>
                     Google automatically takes care of your account security.`
             },
             
@@ -3795,21 +4046,23 @@
                     1. <strong>Dostęp do pobierania gier</strong> - tylko zalogowani użytkownicy mogą pobierać<br>
                     2. <strong>Premium Avatary</strong> - odblokuj 5 ekskluzywnych avatarów!<br>
                     3. <strong>Ultra VIP Avatar</strong> - zdobądź najbardziej ekskluzywny avatar!<br>
-                    4. <strong>Zapisywanie preferencji</strong> - Twoje ustawienia są zawsze zachowane<br>
-                    5. <strong>Dostęp do AI asystenta</strong> - korzystaj z mojej pomocy<br>
-                    6. <strong>Bezpieczne logowanie przez Google</strong> - wygoda i bezpieczeństwo<br>
-                    7. <strong>Synchronizacja</strong> - dostęp z każdego urządzenia<br>
-                    8. <strong>Aktualizacje</strong> - bądź na bieżąco z nowościami`,
+                    4. <strong>Synchronizacja w chmurze</strong> - postępy na wszystkich urządzeniach<br>
+                    5. <strong>Zapisywanie preferencji</strong> - Twoje ustawienia są zawsze zachowane<br>
+                    6. <strong>Dostęp do AI asystenta</strong> - korzystaj z mojej pomocy<br>
+                    7. <strong>Bezpieczne logowanie przez Google</strong> - wygoda i bezpieczeństwo<br>
+                    8. <strong>Pozostań zalogowany 24h</strong> - nowa opcja!<br>
+                    9. <strong>Aktualizacje</strong> - bądź na bieżąco z nowościami`,
                 
                 en: `<strong>🤖 Benefits of having an account</strong><br><br>
                     1. <strong>Access to game downloads</strong> - only logged users can download<br>
                     2. <strong>Premium Avatars</strong> - unlock 5 exclusive avatars!<br>
                     3. <strong>Ultra VIP Avatar</strong> - get the most exclusive avatar!<br>
-                    4. <strong>Saving preferences</strong> - your settings are always saved<br>
-                    5. <strong>Access to AI assistant</strong> - use my help<br>
-                    6. <strong>Secure Google Sign-In</strong> - convenience and security<br>
-                    7. <strong>Synchronization</strong> - access from any device<br>
-                    8. <strong>Updates</strong> - stay up to date with news`
+                    4. <strong>Cloud synchronization</strong> - progress on all devices<br>
+                    5. <strong>Saving preferences</strong> - your settings are always saved<br>
+                    6. <strong>Access to AI assistant</strong> - use my help<br>
+                    7. <strong>Secure Google Sign-In</strong> - convenience and security<br>
+                    8. <strong>Stay logged in 24h</strong> - new option!<br>
+                    9. <strong>Updates</strong> - stay up to date with news`
             },
             
             // DOWNLOAD & TECHNICAL
@@ -3930,7 +4183,8 @@
                     
                     <strong>🎁 BONUSY:</strong><br>
                     • Pobierz obie = 5 Premium Avatarów!<br>
-                    • Ukończ Labirynt = Ultra VIP Avatar!`,
+                    • Ukończ Labirynt = Ultra VIP Avatar!<br>
+                    • Synchronizacja postępów w chmurze!`,
                 
                 en: `<strong>🤖 Available game features</strong><br><br>
                     <strong>🎮 Maze - fascinating 3D game:</strong><br>
@@ -3952,7 +4206,8 @@
                     
                     <strong>🎁 BONUSES:</strong><br>
                     • Download both = 5 Premium Avatars!<br>
-                    • Complete Maze = Ultra VIP Avatar!`
+                    • Complete Maze = Ultra VIP Avatar!<br>
+                    • Progress sync in cloud!`
             },
             
             'technical-support': {
@@ -3972,7 +4227,11 @@
                     • Wyczyść ciasteczka<br>
                     • Sprawdź połączenie internetowe<br><br>
                     
-                    4. <strong>Ultra VIP Avatar</strong><br>
+                    4. <strong>Synchronizacja nie działa</strong><br>
+                    • Sprawdź połączenie internetowe<br>
+                    • Zaloguj się ponownie<br><br>
+                    
+                    5. <strong>Ultra VIP Avatar</strong><br>
                     • Wyślij screenshot na: quatar2022@o2.pl<br><br>
                     
                     <strong>💬 Kontakt:</strong> Użyj tego czatu AI do pomocy!`,
@@ -3993,7 +4252,11 @@
                     • Clear cookies<br>
                     • Check internet connection<br><br>
                     
-                    4. <strong>Ultra VIP Avatar</strong><br>
+                    4. <strong>Sync doesn't work</strong><br>
+                    • Check internet connection<br>
+                    • Login again<br><br>
+                    
+                    5. <strong>Ultra VIP Avatar</strong><br>
                     • Send screenshot to: quatar2022@o2.pl<br><br>
                     
                     <strong>💬 Contact:</strong> Use this AI chat for help!`
@@ -4007,7 +4270,12 @@
                     <strong>Co przechowujemy:</strong><br>
                     • Podstawowe informacje z Google (nazwa, email, zdjęcie)<br>
                     • Informacje o pobranych grach<br>
-                    • Preferencje użytkownika<br><br>
+                    • Preferencje użytkownika<br>
+                    • Odblokowane avatary<br><br>
+                    
+                    <strong>Gdzie przechowujemy:</strong><br>
+                    • Firebase (chmura Google) - szyfrowane<br>
+                    • Lokalne dane w przeglądarce<br><br>
                     
                     <strong>Czego NIE robimy:</strong><br>
                     • ❌ Nie sprzedajemy danych<br>
@@ -4018,7 +4286,8 @@
                     <strong>Twoje prawa:</strong><br>
                     • Możesz usunąć konto w każdej chwili<br>
                     • Dane są szyfrowane i bezpieczne<br>
-                    • Zgodność z RODO`,
+                    • Zgodność z RODO<br>
+                    • Synchronizacja tylko dla Twojej wygody`,
                 
                 en: `<strong>🤖 Personal data protection</strong><br><br>
                     <strong>🔒 Your data is safe!</strong><br><br>
@@ -4026,7 +4295,12 @@
                     <strong>What we store:</strong><br>
                     • Basic Google info (name, email, photo)<br>
                     • Downloaded games information<br>
-                    • User preferences<br><br>
+                    • User preferences<br>
+                    • Unlocked avatars<br><br>
+                    
+                    <strong>Where we store:</strong><br>
+                    • Firebase (Google cloud) - encrypted<br>
+                    • Local data in browser<br><br>
                     
                     <strong>What we DON'T do:</strong><br>
                     • ❌ Don't sell data<br>
@@ -4037,7 +4311,8 @@
                     <strong>Your rights:</strong><br>
                     • You can delete account anytime<br>
                     • Data is encrypted and secure<br>
-                    • GDPR compliant`
+                    • GDPR compliant<br>
+                    • Sync only for your convenience`
             },
             
             'settings-help': {
@@ -4055,7 +4330,10 @@
                     
                     <strong>💡 Premium funkcje:</strong><br>
                     • Pobierz obie gry → Odblokuj 5 Premium Avatarów!<br>
-                    • Ukończ Labirynt → Odblokuj Ultra VIP Avatar!`,
+                    • Ukończ Labirynt → Odblokuj Ultra VIP Avatar!<br><br>
+                    
+                    <strong>☁️ Synchronizacja:</strong><br>
+                    Wszystkie zmiany są automatycznie zapisywane w chmurze!`,
                 
                 en: `<strong>🤖 Help with account settings</strong><br><br>
                     <strong>How to change settings:</strong><br>
@@ -4071,7 +4349,10 @@
                     
                     <strong>💡 Premium features:</strong><br>
                     • Download both games → Unlock 5 Premium Avatars!<br>
-                    • Complete Maze → Unlock Ultra VIP Avatar!`
+                    • Complete Maze → Unlock Ultra VIP Avatar!<br><br>
+                    
+                    <strong>☁️ Synchronization:</strong><br>
+                    All changes are automatically saved in the cloud!`
             },
             
             'avatar-customization': {
@@ -4081,7 +4362,7 @@
                     2. Przejdź do Ustawień<br>
                     3. W zakładce "Profil" kliknij "Zmień avatar"<br>
                     4. Wybierz jeden z dostępnych<br>
-                    5. Gotowe!<br><br>
+                    5. Gotowe! Avatar zsynchronizowany w chmurze<br><br>
                     
                     <strong>Dostępne avatary:</strong><br>
                     • 8 standardowych - dostępne od razu<br>
@@ -4094,8 +4375,7 @@
                     <strong>💎 Ultra VIP Avatar:</strong><br>
                     ${ultraVipAvatarName}<br><br>
                     
-                    <em>Pobierz Labirynt + Kółko i krzyżyk = Premium!</em><br>
-                    <em>Ukończ Labirynt = Ultra VIP!</em>`,
+                    <em>Twój avatar jest widoczny na wszystkich urządzeniach!</em>`,
                 
                 en: `<strong>🤖 How to change avatar</strong><br><br>
                     <strong>Changing avatar:</strong><br>
@@ -4103,7 +4383,7 @@
                     2. Go to Settings<br>
                     3. In "Profile" tab click "Change avatar"<br>
                     4. Choose one available<br>
-                    5. Done!<br><br>
+                    5. Done! Avatar synced in cloud<br><br>
                     
                     <strong>Available avatars:</strong><br>
                     • 8 standard - available immediately<br>
@@ -4116,8 +4396,7 @@
                     <strong>💎 Ultra VIP Avatar:</strong><br>
                     ${ultraVipAvatarName}<br><br>
                     
-                    <em>Download Maze + Tic-tac-toe = Premium!</em><br>
-                    <em>Complete Maze = Ultra VIP!</em>`
+                    <em>Your avatar is visible on all devices!</em>`
             },
             
             'user-stats': {
@@ -4141,6 +4420,9 @@
                         • Premium = pobrali obie gry<br>
                         • Ultra VIP = ukończyli Labirynt!<br><br>
                         
+                        <strong>☁️ Synchronizacja:</strong><br>
+                        Wszystkie postępy są zapisywane w chmurze!<br><br>
+                        
                         <em>Dołącz do elity - zdobądź Ultra VIP Avatar!</em>`;
                 },
                 
@@ -4163,6 +4445,9 @@
                         <strong>What does it mean?</strong><br>
                         • Premium = downloaded both games<br>
                         • Ultra VIP = completed Maze!<br><br>
+                        
+                        <strong>☁️ Synchronization:</strong><br>
+                        All progress is saved in the cloud!<br><br>
                         
                         <em>Join the elite - get Ultra VIP Avatar!</em>`;
                 }
@@ -4188,7 +4473,8 @@
                     4. <strong>Trening</strong> - ćwicz strategie<br><br>
                     
                     <em>🎁 Pobierz obie = Premium Avatary!</em><br>
-                    <em>💎 Ukończ Labirynt = Ultra VIP Avatar!</em>`,
+                    <em>💎 Ukończ Labirynt = Ultra VIP Avatar!</em><br>
+                    <em>☁️ Postępy zapisane w chmurze!</em>`,
                 
                 en: `<strong>🤖 Game modes</strong><br><br>
                     <strong>🎮 Maze - 5 modes:</strong><br>
@@ -4208,7 +4494,8 @@
                     4. <strong>Training</strong> - practice strategies<br><br>
                     
                     <em>🎁 Download both = Premium Avatars!</em><br>
-                    <em>💎 Complete Maze = Ultra VIP Avatar!</em>`
+                    <em>💎 Complete Maze = Ultra VIP Avatar!</em><br>
+                    <em>☁️ Progress saved in cloud!</em>`
             },
             
             'achievements': {
@@ -4230,7 +4517,9 @@
                     
                     <strong>🌟 MEGA OSIĄGNIĘCIA:</strong><br>
                     • Premium Kolekcjoner - pobierz obie gry!<br>
-                    • <strong>💎 Ultra VIP Champion - ukończ Labirynt!</strong>`,
+                    • <strong>💎 Ultra VIP Champion - ukończ Labirynt!</strong><br><br>
+                    
+                    <em>☁️ Wszystkie osiągnięcia są synchronizowane!</em>`,
                 
                 en: `<strong>🤖 Achievement system</strong><br><br>
                     <strong>🏆 Maze - achievements:</strong><br>
@@ -4250,7 +4539,9 @@
                     
                     <strong>🌟 MEGA ACHIEVEMENTS:</strong><br>
                     • Premium Collector - download both games!<br>
-                    • <strong>💎 Ultra VIP Champion - complete Maze!</strong>`
+                    • <strong>💎 Ultra VIP Champion - complete Maze!</strong><br><br>
+                    
+                    <em>☁️ All achievements are synchronized!</em>`
             },
             
             'future-updates': {
@@ -4277,7 +4568,12 @@
                     • Globalne rankingi<br>
                     • Turnieje z nagrodami<br><br>
                     
-                    5. <strong>Więcej Ultra VIP nagród</strong><br>
+                    5. <strong>Rozszerzona synchronizacja</strong><br>
+                    • Zapisywanie postępów w grach<br>
+                    • Statystyki na wszystkich urządzeniach<br>
+                    • Backup automatyczny<br><br>
+                    
+                    6. <strong>Więcej Ultra VIP nagród</strong><br>
                     • Ekskluzywne avatary za osiągnięcia<br>
                     • Specjalne odznaki<br><br>
                     
@@ -4306,7 +4602,12 @@
                     • Global rankings<br>
                     • Tournaments with prizes<br><br>
                     
-                    5. <strong>More Ultra VIP rewards</strong><br>
+                    5. <strong>Extended synchronization</strong><br>
+                    • Game progress saving<br>
+                    • Stats on all devices<br>
+                    • Automatic backup<br><br>
+                    
+                    6. <strong>More Ultra VIP rewards</strong><br>
                     • Exclusive avatars for achievements<br>
                     • Special badges<br><br>
                     
@@ -4583,7 +4884,9 @@
                 localStorage.setItem('currentUser', JSON.stringify({
                     id: currentUser.id,
                     username: currentUser.username,
-                    loginTime: new Date().toISOString()
+                    loginTime: new Date().toISOString(),
+                    stayLoggedIn: currentUser.stayLoggedIn,
+                    sessionExpiry: currentUser.sessionExpiry
                 }));
             }
         });
@@ -4615,7 +4918,7 @@
 
                     document.body.classList.add('loaded');
                     
-                    console.log('Enhanced Google Sign-In system loaded');
+                    console.log('Enhanced Google Sign-In system loaded with cloud sync');
                     console.log('Premium avatars system ready');
                     console.log('Ultra VIP avatar system ready');
                     console.log(`Current date and time: ${new Date().toISOString()}`);
@@ -4636,13 +4939,28 @@
         // Session management
         setInterval(function() {
             if (currentUser) {
+                // Check if 24h session has expired
+                if (currentUser.stayLoggedIn && currentUser.sessionExpiry) {
+                    const expiryDate = new Date(currentUser.sessionExpiry);
+                    if (new Date() > expiryDate) {
+                        logout();
+                        showNotification(
+                            'Sesja 24h wygasła. Zaloguj się ponownie.',
+                            '24h session expired. Please login again.',
+                            'info'
+                        );
+                        return;
+                    }
+                }
+                
                 const lastActivity = localStorage.getItem('userLastActivity');
                 if (lastActivity) {
                     const lastActiveTime = new Date(lastActivity);
                     const now = new Date();
                     const inactiveTime = (now - lastActiveTime) / (1000 * 60 * 60); // in hours
                     
-                    if (inactiveTime > 24) {
+                    // If not "stay logged in", logout after 1 hour of inactivity
+                    if (!currentUser.stayLoggedIn && inactiveTime > 1) {
                         logout();
                         const currentLang = document.documentElement.lang;
                         const message = currentLang === 'pl' ? 
@@ -4734,6 +5052,9 @@
             <div class="dropdown-option lang-pl" onclick="askQuestion('ultra-vip-avatar'); toggleChatbot();">💎 Ultra VIP Avatar</div>
             <div class="dropdown-option lang-en" onclick="askQuestion('ultra-vip-avatar'); toggleChatbot();">💎 Ultra VIP Avatar</div>
             
+            <div class="dropdown-option lang-pl" onclick="askQuestion('cloud-sync'); toggleChatbot();">☁️ Synchronizacja w chmurze</div>
+            <div class="dropdown-option lang-en" onclick="askQuestion('cloud-sync'); toggleChatbot();">☁️ Cloud synchronization</div>
+            
             <div class="dropdown-option lang-pl" onclick="askQuestion('user-stats'); toggleChatbot();">📊 Statystyki użytkowników</div>
             <div class="dropdown-option lang-en" onclick="askQuestion('user-stats'); toggleChatbot();">📊 User statistics</div>
         </div>
@@ -4800,14 +5121,24 @@
             <div class="google-signin-section">
                 <div id="googleSignInDiv"></div>
                 
+                <div class="stay-logged-in">
+                    <input type="checkbox" id="stayLoggedIn" name="stayLoggedIn">
+                    <label for="stayLoggedIn">
+                        <span class="lang-pl">Pozostań zalogowany przez 24h</span>
+                        <span class="lang-en">Stay logged in for 24h</span>
+                    </label>
+                </div>
+                
                 <div style="margin-top: 20px; text-align: center; color: rgba(255,255,255,0.7);">
                     <p class="lang-pl">
                         Logując się akceptujesz nasze warunki korzystania.<br>
-                        Twoje dane są bezpieczne i chronione przez Google.
+                        Twoje dane są bezpieczne i chronione przez Google.<br>
+                        <strong>☁️ Postępy są synchronizowane w chmurze!</strong>
                     </p>
                     <p class="lang-en">
                         By signing in you accept our terms of use.<br>
-                        Your data is safe and protected by Google.
+                        Your data is safe and protected by Google.<br>
+                        <strong>☁️ Progress is synced in the cloud!</strong>
                     </p>
                 </div>
             </div>
@@ -4967,8 +5298,8 @@
                 </button>
                 
                 <div style="margin-top: 10px; font-size: 12px; color: rgba(255,255,255,0.6);">
-                    <div class="lang-pl">Ta akcja jest nieodwracalna i usunie wszystkie Twoje dane.</div>
-                    <div class="lang-en">This action is irreversible and will delete all your data.</div>
+                    <div class="lang-pl">Ta akcja jest nieodwracalna i usunie wszystkie Twoje dane z chmury.</div>
+                    <div class="lang-en">This action is irreversible and will delete all your data from cloud.</div>
                 </div>
                 
                 <!-- Account deletion confirmation with CAPTCHA -->
@@ -5050,7 +5381,8 @@
                 <div style="margin-top: 20px; padding: 15px; background: rgba(255, 215, 0, 0.1); border-radius: 8px; border: 1px solid rgba(255, 215, 0, 0.3); animation: premiumGlow 2s ease-in-out infinite;">
                     <strong>👑 BONUS! Pobierz obie gry = 5 Premium Avatarów!</strong><br>
                     Po pobraniu Labiryntu i Kółko i krzyżyk otrzymasz dostęp do ekskluzywnych avatarów:<br>
-                    ⚔️ Cyber Warrior, 🐉 Dragon Master, 🚀 Space Commander, 🧙 Mystic Wizard, 🥷 Shadow Ninja
+                    ⚔️ Cyber Warrior, 🐉 Dragon Master, 🚀 Space Commander, 🧙 Mystic Wizard, 🥷 Shadow Ninja<br>
+                    <strong>☁️ Synchronizacja w chmurze zachowa je na wszystkich urządzeniach!</strong>
                 </div>
                 
                 <div style="margin-top: 20px; padding: 15px; background: rgba(255, 0, 128, 0.1); border-radius: 8px; border: 1px solid rgba(255, 0, 128, 0.3); animation: ultraVipGlow 3s ease-in-out infinite;">
@@ -5079,7 +5411,8 @@
                 <div style="margin-top: 20px; padding: 15px; background: rgba(255, 215, 0, 0.1); border-radius: 8px; border: 1px solid rgba(255, 215, 0, 0.3); animation: premiumGlow 2s ease-in-out infinite;">
                     <strong>👑 BONUS! Download both games = 5 Premium Avatars!</strong><br>
                     After downloading Maze and Tic-tac-toe you'll get access to exclusive avatars:<br>
-                    ⚔️ Cyber Warrior, 🐉 Dragon Master, 🚀 Space Commander, 🧙 Mystic Wizard, 🥷 Shadow Ninja
+                    ⚔️ Cyber Warrior, 🐉 Dragon Master, 🚀 Space Commander, 🧙 Mystic Wizard, 🥷 Shadow Ninja<br>
+                    <strong>☁️ Cloud sync will keep them on all devices!</strong>
                 </div>
                 
                 <div style="margin-top: 20px; padding: 15px; background: rgba(255, 0, 128, 0.1); border-radius: 8px; border: 1px solid rgba(255, 0, 128, 0.3); animation: ultraVipGlow 3s ease-in-out infinite;">
@@ -5101,25 +5434,25 @@
                 <div class="lang-pl">
                     <div class="security-item">Bezpieczne logowanie przez Google OAuth 2.0</div>
                     <div class="security-item">Szyfrowanie danych użytkownika</div>
-                    <div class="security-item">Automatyczna synchronizacja w chmurze Google</div>
+                    <div class="security-item">Automatyczna synchronizacja w Firebase</div>
                     <div class="security-item">Brak przechowywania haseł</div>
                     <div class="security-item">Zgodność z RODO i GDPR</div>
                     <div class="security-item">Minimalne zbieranie danych</div>
                     <div class="security-item">Bezpieczne połączenie HTTPS</div>
                     <div class="security-item">Kontrola dostępu do pobierania</div>
-                    <div class="security-item">Automatyczne wylogowanie po 24h</div>
+                    <div class="security-item">Opcja pozostania zalogowanym 24h</div>
                     <div class="security-item">Możliwość usunięcia konta</div>
                 </div>
                 <div class="lang-en">
                     <div class="security-item">Secure Google OAuth 2.0 login</div>
                     <div class="security-item">User data encryption</div>
-                    <div class="security-item">Automatic Google cloud sync</div>
+                    <div class="security-item">Automatic Firebase sync</div>
                     <div class="security-item">No password storage</div>
                     <div class="security-item">GDPR compliant</div>
                     <div class="security-item">Minimal data collection</div>
                     <div class="security-item">Secure HTTPS connection</div>
                     <div class="security-item">Download access control</div>
-                    <div class="security-item">Auto logout after 24h</div>
+                    <div class="security-item">Stay logged in 24h option</div>
                     <div class="security-item">Account deletion option</div>
                 </div>
             </div>
@@ -5131,6 +5464,15 @@
                     <li>Lista pobranych gier</li>
                     <li>Wybrany avatar</li>
                     <li>Preferencje użytkownika</li>
+                    <li>Odblokowane avatary Premium i Ultra VIP</li>
+                </ul>
+                
+                <h4>☁️ Synchronizacja w chmurze:</h4>
+                <ul>
+                    <li>Dane są synchronizowane między urządzeniami</li>
+                    <li>Postępy są zachowane w Firebase</li>
+                    <li>Automatyczne tworzenie kopii zapasowych</li>
+                    <li>Dostęp z dowolnego urządzenia po zalogowaniu</li>
                 </ul>
                 
                 <h4>🗑️ Twoje prawa:</h4>
@@ -5149,6 +5491,15 @@
                     <li>List of downloaded games</li>
                     <li>Selected avatar</li>
                     <li>User preferences</li>
+                    <li>Unlocked Premium and Ultra VIP avatars</li>
+                </ul>
+                
+                <h4>☁️ Cloud synchronization:</h4>
+                <ul>
+                    <li>Data is synchronized between devices</li>
+                    <li>Progress is saved in Firebase</li>
+                    <li>Automatic backup creation</li>
+                    <li>Access from any device after login</li>
                 </ul>
                 
                 <h4>🗑️ Your rights:</h4>
