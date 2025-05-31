@@ -2454,8 +2454,8 @@
             }
 
             async initializeGoogleSignIn() {
-                // YOUR GOOGLE CLIENT ID - REPLACE WITH YOUR OWN
-                const GOOGLE_CLIENT_ID = 'YOUR_GOOGLE_CLIENT_ID_HERE';
+                // FIXED: Using the correct Google Client ID
+                const GOOGLE_CLIENT_ID = '139779237819-u0v0k1s72a83dmcv7lh9oce9r8d9vaqk.apps.googleusercontent.com';
                 
                 if (window.google && window.google.accounts) {
                     try {
@@ -3101,7 +3101,7 @@
                         }
                     }
                     
-                        const dbUser = gameDB.users.get(userData.id);
+                    const dbUser = gameDB.users.get(userData.id);
                     if (dbUser && dbUser.status === 'active') {
                         currentUser = dbUser;
                         gameDB.currentUser = dbUser;
@@ -5447,4 +5447,3 @@
     </div>
 </body>
 </html>
-
