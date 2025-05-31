@@ -2461,12 +2461,24 @@
                     googleUser.premiumAvatarsUnlocked = existingUser.premiumAvatarsUnlocked || false;
                     googleUser.ultraVipUnlocked = existingUser.ultraVipUnlocked || false;
                     googleUser.preferences = existingUser.preferences || googleUser.preferences;
+                    googleUser.registrationDate = existingUser.registrationDate || googleUser.registrationDate;
                 }
 
                 // Save or update user
                 this.saveGoogleUser(googleUser);
                 this.currentUser = googleUser;
                 this.isGoogleUser = true;
+                
+                // Save to global variables
+                currentUser = googleUser;
+                gameDB.currentUser = googleUser;
+                
+                // Save current user to localStorage
+                localStorage.setItem('currentUser', JSON.stringify({
+                    id: googleUser.id,
+                    username: googleUser.username,
+                    loginTime: new Date().toISOString()
+                }));
                 
                 // Update UI
                 updateUserInterface();
@@ -2476,6 +2488,15 @@
                     `Welcome ${googleUser.username}! Logged in with Google.`,
                     'success'
                 );
+                
+                // Automatically show user panel after login
+                setTimeout(() => {
+                    const userInfo = document.getElementById('userInfo');
+                    if (userInfo) {
+                        userInfo.style.display = 'block';
+                        userInfo.style.animation = 'scaleIn 0.5s ease-out';
+                    }
+                }, 100);
             }
 
             parseJwt(token) {
@@ -2923,7 +2944,9 @@
                     if (dbUser && dbUser.status === 'active') {
                         currentUser = dbUser;
                         gameDB.currentUser = dbUser;
+                        gameDB.isGoogleUser = dbUser.isGoogleUser || false;
                         updateUserInterface();
+                        console.log("Restored user session:", dbUser.username);
                     } else {
                         localStorage.removeItem('currentUser');
                     }
@@ -2983,11 +3006,12 @@
         function logout() {
             currentUser = null;
             gameDB.currentUser = null;
+            gameDB.isGoogleUser = false;
             localStorage.removeItem('currentUser');
             updateUserInterface();
             
             // Sign out from Google if it was a Google user
-            if (gameDB.isGoogleUser && window.google) {
+            if (window.google) {
                 google.accounts.id.disableAutoSelect();
             }
             
@@ -3004,7 +3028,10 @@
             
             if (currentUser) {
                 if (loginButton) loginButton.style.display = 'none';
-                if (userInfo) userInfo.style.display = 'block';
+                if (userInfo) {
+                    userInfo.style.display = 'block';
+                    userInfo.style.animation = 'slideInFromTop 0.5s ease-out';
+                }
                 
                 const usernameDisplay = document.getElementById('usernameDisplay');
                 if (usernameDisplay) {
@@ -3044,6 +3071,15 @@
                 
                 // Initialize avatar grid to show premium status
                 initializeAvatarGrid();
+                
+                // Update chatbot to show it's available
+                const messagesContainer = document.getElementById('chatbotMessages');
+                const chatbotContainer = document.getElementById('chatbotContainer');
+                if (messagesContainer && chatbotContainer && chatbotContainer.style.display === 'flex') {
+                    // Refresh chatbot if it's open
+                    toggleChatbot();
+                    setTimeout(() => toggleChatbot(), 100);
+                }
                 
                 document.body.classList.add('user-logged-in');
             } else {
@@ -4541,7 +4577,7 @@
             }
         });
 
-        // Automatically log out when page is unloaded
+        // Automatically save current session when page is unloaded
         window.addEventListener('beforeunload', function() {
             if (currentUser) {
                 localStorage.setItem('currentUser', JSON.stringify({
