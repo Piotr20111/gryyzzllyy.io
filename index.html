@@ -10,10 +10,8 @@
     <meta name="description" content="Pobierz fascynujące gry - Labirynt pełen wyzwań i Kółko i krzyżyk. Bezpieczne pobieranie gier online.">
     <title>Gry do pobrania!</title>
     
-    <!-- Google Sign-In and API Libraries -->
+    <!-- Google Sign-In -->
     <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <script src="https://apis.google.com/js/api.js"></script>
-    <script src="https://apis.google.com/js/platform.js"></script>
     
     <style>
         /* —— RESET & THEME —— */
@@ -2428,143 +2426,10 @@
         .slider.round:before {
             border-radius: 50%;
         }
-
-        /* —— CLOUD SYNC SYSTEM STYLES —— */
-        .cloud-sync-indicator {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            background: linear-gradient(135deg, rgba(52, 152, 219, 0.2), rgba(52, 152, 219, 0.1));
-            color: var(--primary-blue);
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-size: 12px;
-            margin-top: 10px;
-            border: 1px solid rgba(52, 152, 219, 0.3);
-            position: relative;
-        }
-
-        .sync-status {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .sync-icon {
-            display: inline-block;
-            font-size: 14px;
-        }
-
-        .sync-icon.syncing {
-            animation: spin 1.5s linear infinite;
-        }
-
-        .sync-progress {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            height: 3px;
-            background: linear-gradient(to right, var(--primary-blue), #00bcd4);
-            border-radius: 0 0 0 12px;
-            transition: width 0.3s ease;
-        }
-
-        .sync-time {
-            margin-left: auto;
-            opacity: 0.8;
-            font-size: 10px;
-        }
-
-        .cloud-settings-section {
-            background: linear-gradient(145deg, rgba(52, 152, 219, 0.1), rgba(52, 152, 219, 0.05));
-            border: 1px solid rgba(52, 152, 219, 0.2);
-            border-radius: 12px;
-            padding: 15px;
-            margin: 15px 0;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .cloud-settings-section::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(to right, var(--primary-blue), #00bcd4, var(--primary-blue));
-            background-size: 200% 100%;
-            animation: gradientShift 3s linear infinite;
-        }
-
-        .sync-device-list {
-            margin-top: 15px;
-            max-height: 150px;
-            overflow-y: auto;
-        }
-
-        .sync-device {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 8px 10px;
-            background: rgba(15, 15, 26, 0.4);
-            border-radius: 8px;
-            margin-bottom: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .sync-device:hover {
-            transform: translateX(5px);
-            background: rgba(15, 15, 26, 0.6);
-        }
-
-        .sync-device-name {
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .current-device {
-            color: var(--success-color);
-        }
-
-        .sync-device-time {
-            font-size: 11px;
-            opacity: 0.7;
-        }
-
-        .sync-force-btn {
-            background: linear-gradient(135deg, var(--primary-blue), #2980b9);
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-size: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            margin-top: 10px;
-        }
-
-        .sync-force-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
-        }
-
-        .sync-automatic-toggle {
-            margin-top: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
     </style>
     <script>
-        // Version control - Updated for Cloud Sync
-        const APP_VERSION = '3.0.0';
+        // Version control
+        const APP_VERSION = '2.3.0';
         const LAST_VERSION_KEY = 'last_version_seen';
 
         // Premium avatar names as constant
@@ -2579,137 +2444,13 @@
         // Ultra VIP avatar
         const ultraVipAvatarName = '💎 Ultra VIP Champion';
 
-        // —— ENHANCED DATABASE WITH CLOUD SYNC —— 
-        class CloudSyncDatabase {
+        // —— SIMPLE LOCAL DATABASE (NO FIREBASE) —— 
+        class GameDatabase {
             constructor() {
                 this.users = new Map();
                 this.currentUser = null;
                 this.isGoogleUser = false;
-                this.isSyncing = false;
-                this.lastSyncTime = null;
-                this.cloudConnected = false;
-                this.syncProgress = 0;
-                this.syncInterval = null;
-                this.syncQueue = [];
-                this.deviceId = this.generateDeviceId();
-                this.connectedDevices = new Map();
-                this.syncEnabled = true;
-                
-                // Load local data immediately
                 this.loadFromStorage();
-                
-                // Load known devices from local storage
-                this.loadConnectedDevices();
-                
-                console.log(`Cloud database initialized with device ID: ${this.deviceId}`);
-                console.log(`Current date and time: 2025-05-31 07:49:59`);
-                console.log(`Current user: Piotr20111`);
-            }
-
-            // Generate a unique device identifier
-            generateDeviceId() {
-                const storedId = localStorage.getItem('device_id');
-                if (storedId) return storedId;
-                
-                const newId = 'device_' + Date.now() + '_' + Math.random().toString(36).substring(2, 15);
-                localStorage.setItem('device_id', newId);
-                return newId;
-            }
-            
-            // Load connected devices from storage
-            loadConnectedDevices() {
-                try {
-                    const devicesJson = localStorage.getItem('connected_devices');
-                    if (devicesJson) {
-                        const devicesArray = JSON.parse(devicesJson);
-                        devicesArray.forEach(device => {
-                            this.connectedDevices.set(device.id, device);
-                        });
-                    }
-                    
-                    // Register current device if not exists
-                    if (!this.connectedDevices.has(this.deviceId)) {
-                        this.registerCurrentDevice();
-                    } else {
-                        // Update last seen for current device
-                        const device = this.connectedDevices.get(this.deviceId);
-                        device.lastSeen = new Date().toISOString();
-                        this.connectedDevices.set(this.deviceId, device);
-                        this.saveConnectedDevices();
-                    }
-                } catch (error) {
-                    console.error("Error loading connected devices:", error);
-                }
-            }
-            
-            // Register current device in connected devices list
-            registerCurrentDevice() {
-                const deviceName = this.getDeviceName();
-                const device = {
-                    id: this.deviceId,
-                    name: deviceName,
-                    type: this.getDeviceType(),
-                    firstSeen: new Date().toISOString(),
-                    lastSeen: new Date().toISOString(),
-                    browser: this.getBrowser(),
-                    os: this.getOS()
-                };
-                
-                this.connectedDevices.set(this.deviceId, device);
-                this.saveConnectedDevices();
-            }
-            
-            // Save connected devices to storage
-            saveConnectedDevices() {
-                try {
-                    const devicesArray = Array.from(this.connectedDevices.values());
-                    localStorage.setItem('connected_devices', JSON.stringify(devicesArray));
-                } catch (error) {
-                    console.error("Error saving connected devices:", error);
-                }
-            }
-            
-            // Get device type
-            getDeviceType() {
-                const ua = navigator.userAgent;
-                if (/Mobile|Android|iPhone|iPad|iPod/i.test(ua)) {
-                    return 'mobile';
-                } else if (/Tablet/i.test(ua) || /iPad/i.test(ua)) {
-                    return 'tablet';
-                } else {
-                    return 'desktop';
-                }
-            }
-            
-            // Get browser name
-            getBrowser() {
-                const ua = navigator.userAgent;
-                if (ua.indexOf("Chrome") > -1) return "Chrome";
-                if (ua.indexOf("Safari") > -1) return "Safari";
-                if (ua.indexOf("Firefox") > -1) return "Firefox";
-                if (ua.indexOf("MSIE") > -1 || ua.indexOf("Trident") > -1) return "IE";
-                if (ua.indexOf("Edge") > -1) return "Edge";
-                return "Unknown";
-            }
-            
-            // Get OS name
-            getOS() {
-                const ua = navigator.userAgent;
-                if (ua.indexOf("Win") > -1) return "Windows";
-                if (ua.indexOf("Mac") > -1) return "macOS";
-                if (ua.indexOf("Linux") > -1) return "Linux";
-                if (ua.indexOf("Android") > -1) return "Android";
-                if (ua.indexOf("iPhone") > -1 || ua.indexOf("iPad") > -1) return "iOS";
-                return "Unknown";
-            }
-            
-            // Get friendly device name
-            getDeviceName() {
-                const type = this.getDeviceType();
-                const browser = this.getBrowser();
-                const os = this.getOS();
-                
-                return `${os} ${type} (${browser})`;
             }
 
             async initializeGoogleSignIn() {
@@ -2722,9 +2463,7 @@
                             client_id: GOOGLE_CLIENT_ID,
                             callback: this.handleGoogleSignIn.bind(this),
                             auto_select: false,
-                            cancel_on_tap_outside: true,
-                            // Add scope for Drive API to store user data
-                            scope: 'email profile https://www.googleapis.com/auth/drive.appdata'
+                            cancel_on_tap_outside: true
                         });
                         
                         // Render Google Sign-In button
@@ -2739,10 +2478,7 @@
                                 logo_alignment: "left"
                             }
                         );
-                        console.log("Google Sign-In button rendered with Cloud Sync scope");
-                        
-                        // Load Google Drive API
-                        this.loadGoogleDriveAPI();
+                        console.log("Google Sign-In button rendered");
                     } catch (error) {
                         console.error("Google Sign-In initialization error:", error);
                         this.showDemoLoginButton();
@@ -2750,32 +2486,6 @@
                 } else {
                     console.error("Google Sign-In library not loaded");
                     this.showDemoLoginButton();
-                }
-            }
-            
-            // Load Google Drive API for cloud sync
-            loadGoogleDriveAPI() {
-                try {
-                    if (window.gapi) {
-                        gapi.load('client', () => {
-                            gapi.client.init({
-                                apiKey: 'YOUR_API_KEY_HERE',
-                                discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/drive/v3/rest"],
-                            }).then(() => {
-                                console.log("Google Drive API loaded");
-                                this.cloudConnected = true;
-                                this.updateSyncStatus('connected');
-                            }).catch(error => {
-                                console.error("Error initializing Drive API", error);
-                                this.cloudConnected = false;
-                                this.updateSyncStatus('error');
-                            });
-                        });
-                    } else {
-                        console.warn("Google API client not available");
-                    }
-                } catch (error) {
-                    console.error("Error loading Google Drive API:", error);
                 }
             }
 
@@ -2814,11 +2524,8 @@
                         notifications: true,
                         highContrast: false,
                         fontSize: 'medium',
-                        autoSave: true,
-                        cloudSync: true
-                    },
-                    lastSyncTime: null,
-                    syncDevices: [this.deviceId]
+                        autoSave: true
+                    }
                 };
 
                 if (demoUser.stayLoggedIn) {
@@ -2839,8 +2546,6 @@
                 
                 updateUserInterface();
                 closeAuthModal();
-                this.startBackgroundSync();
-                
                 showNotification(
                     `Witaj ${demoUser.username}! (Tryb Demo)`,
                     `Welcome ${demoUser.username}! (Demo Mode)`,
@@ -2875,46 +2580,28 @@
                             notifications: true,
                             highContrast: false,
                             fontSize: 'medium',
-                            autoSave: true,
-                            cloudSync: true
-                        },
-                        lastSyncTime: null,
-                        syncDevices: [this.deviceId],
-                        cloudAccessToken: response.credential
+                            autoSave: true
+                        }
                     };
 
-                    // Store the token for API access
-                    this.googleAccessToken = response.credential;
-
-                    // Check if user already exists locally
+                    // Check if user already exists
                     const existingUser = this.users.get(googleUser.id);
                     if (existingUser) {
-                        // Preserve existing data locally
+                        // Preserve existing data
                         googleUser.downloadedGames = existingUser.downloadedGames || [];
                         googleUser.premiumAvatarsUnlocked = existingUser.premiumAvatarsUnlocked || false;
                         googleUser.ultraVipUnlocked = existingUser.ultraVipUnlocked || false;
                         googleUser.preferences = existingUser.preferences || googleUser.preferences;
                         googleUser.registrationDate = existingUser.registrationDate || googleUser.registrationDate;
-                        googleUser.lastSyncTime = existingUser.lastSyncTime;
-                        googleUser.syncDevices = existingUser.syncDevices || [this.deviceId];
-                        
-                        // Add current device if not in list
-                        if (!googleUser.syncDevices.includes(this.deviceId)) {
-                            googleUser.syncDevices.push(this.deviceId);
-                        }
-                        
                         if (existingUser.avatar && existingUser.avatar !== userInfo.picture) {
                             googleUser.avatar = existingUser.avatar; // Preserve custom avatar
                         }
                     }
 
-                    // Save user locally
+                    // Save user
                     this.saveUser(googleUser);
                     this.currentUser = googleUser;
                     this.isGoogleUser = true;
-                    
-                    // Initialize cloud sync after login
-                    await this.initCloudSync(googleUser);
                     
                     // Save current user to localStorage
                     localStorage.setItem('currentUser', JSON.stringify({
@@ -2928,15 +2615,11 @@
                     // Update UI
                     updateUserInterface();
                     closeAuthModal();
-                    
                     showNotification(
                         `Witaj ${googleUser.username}! Zalogowano przez Google.`,
                         `Welcome ${googleUser.username}! Logged in with Google.`,
                         'success'
                     );
-                    
-                    // Start background sync
-                    this.startBackgroundSync();
                     
                     // Automatically show user panel after login
                     setTimeout(() => {
@@ -2956,416 +2639,6 @@
                 }
             }
 
-            async initCloudSync(user) {
-                if (!user.isGoogleUser) {
-                    console.log("Skipping cloud sync for demo user");
-                    return;
-                }
-                
-                try {
-                    this.updateSyncStatus('syncing');
-                    
-                    // Try to fetch user data from cloud
-                    const cloudData = await this.fetchCloudData(user);
-                    
-                    if (cloudData) {
-                        // Merge cloud data with local data
-                        await this.mergeUserData(user, cloudData);
-                    } else {
-                        // First time sync, upload local data
-                        await this.uploadUserData(user);
-                    }
-                    
-                    this.updateSyncStatus('synced');
-                    this.lastSyncTime = new Date().toISOString();
-                    
-                    if (user.id === this.currentUser?.id) {
-                        this.currentUser.lastSyncTime = this.lastSyncTime;
-                        this.saveUser(this.currentUser);
-                    }
-                } catch (error) {
-                    console.error("Cloud sync initialization failed:", error);
-                    this.updateSyncStatus('error');
-                    
-                    showNotification(
-                        'Synchronizacja z chmurą nieudana. Działamy w trybie lokalnym.',
-                        'Cloud synchronization failed. Working in local mode.',
-                        'error'
-                    );
-                }
-            }
-            
-            // Start background sync process
-            startBackgroundSync() {
-                if (this.syncInterval) {
-                    clearInterval(this.syncInterval);
-                }
-                
-                // Sync every 5 minutes
-                this.syncInterval = setInterval(() => {
-                    if (this.currentUser && this.syncEnabled && 
-                        this.currentUser.preferences?.cloudSync !== false) {
-                        this.syncUserData();
-                    }
-                }, 5 * 60 * 1000);
-                
-                // Initial sync
-                setTimeout(() => {
-                    if (this.currentUser && this.syncEnabled && 
-                        this.currentUser.preferences?.cloudSync !== false) {
-                        this.syncUserData();
-                    }
-                }, 5000);
-            }
-            
-            // Stop background sync
-            stopBackgroundSync() {
-                if (this.syncInterval) {
-                    clearInterval(this.syncInterval);
-                    this.syncInterval = null;
-                }
-            }
-            
-            // Manually trigger sync
-            async forceSync() {
-                if (!this.currentUser) return;
-                
-                try {
-                    this.updateSyncStatus('syncing');
-                    await this.syncUserData(true);
-                    showNotification(
-                        'Synchronizacja zakończona pomyślnie!',
-                        'Synchronization completed successfully!',
-                        'success'
-                    );
-                } catch (error) {
-                    console.error("Force sync failed:", error);
-                    this.updateSyncStatus('error');
-                    
-                    showNotification(
-                        'Synchronizacja nieudana. Spróbuj ponownie później.',
-                        'Synchronization failed. Try again later.',
-                        'error'
-                    );
-                }
-            }
-            
-            // Toggle cloud sync
-            toggleCloudSync(enabled) {
-                this.syncEnabled = enabled;
-                
-                if (this.currentUser) {
-                    if (!this.currentUser.preferences) {
-                        this.currentUser.preferences = {};
-                    }
-                    
-                    this.currentUser.preferences.cloudSync = enabled;
-                    this.saveUser(this.currentUser);
-                    
-                    if (enabled) {
-                        this.startBackgroundSync();
-                        this.updateSyncStatus('syncing');
-                        setTimeout(() => this.syncUserData(), 1000);
-                    } else {
-                        this.stopBackgroundSync();
-                        this.updateSyncStatus('disabled');
-                    }
-                }
-            }
-
-            // Update sync status indicator
-            updateSyncStatus(status, progress = null) {
-                const syncIcon = document.getElementById('syncIcon');
-                const syncText = document.getElementById('syncStatus');
-                const syncProgress = document.getElementById('syncProgress');
-                const syncTime = document.getElementById('syncTime');
-                
-                if (!syncIcon || !syncText) return;
-                
-                syncIcon.classList.remove('syncing');
-                
-                switch (status) {
-                    case 'syncing':
-                        syncIcon.textContent = '🔄';
-                        syncIcon.classList.add('syncing');
-                        syncText.textContent = document.documentElement.lang === 'pl' ? 
-                            'Synchronizacja...' : 'Synchronizing...';
-                        
-                        if (progress !== null && syncProgress) {
-                            this.syncProgress = progress;
-                            syncProgress.style.width = `${progress}%`;
-                        }
-                        break;
-                        
-                    case 'synced':
-                        syncIcon.textContent = '✅';
-                        syncText.textContent = document.documentElement.lang === 'pl' ? 
-                            'Zsynchronizowano' : 'Synced';
-                        
-                        if (syncProgress) {
-                            syncProgress.style.width = '100%';
-                            setTimeout(() => {
-                                syncProgress.style.width = '0%';
-                            }, 1000);
-                        }
-                        
-                        if (syncTime) {
-                            syncTime.textContent = this.getFormattedTime();
-                        }
-                        break;
-                        
-                    case 'error':
-                        syncIcon.textContent = '❌';
-                        syncText.textContent = document.documentElement.lang === 'pl' ? 
-                            'Błąd synchronizacji' : 'Sync error';
-                        
-                        if (syncProgress) {
-                            syncProgress.style.width = '0%';
-                        }
-                        break;
-                        
-                    case 'disabled':
-                        syncIcon.textContent = '⛔';
-                        syncText.textContent = document.documentElement.lang === 'pl' ? 
-                            'Synchronizacja wyłączona' : 'Sync disabled';
-                        
-                        if (syncProgress) {
-                            syncProgress.style.width = '0%';
-                        }
-                        break;
-                        
-                    case 'connected':
-                        syncIcon.textContent = '☁️';
-                        syncText.textContent = document.documentElement.lang === 'pl' ? 
-                            'Połączono z chmurą' : 'Cloud connected';
-                        
-                        if (syncProgress) {
-                            syncProgress.style.width = '0%';
-                        }
-                        break;
-                }
-                
-                const indicator = document.querySelector('.cloud-sync-indicator');
-                if (indicator) {
-                    // Apply highlight animation when sync status changes
-                    indicator.style.animation = 'none';
-                    setTimeout(() => {
-                        indicator.style.animation = 'pulse 2s';
-                    }, 10);
-                }
-            }
-            
-            // Get formatted time for sync indicator
-            getFormattedTime() {
-                const now = new Date();
-                const hours = now.getHours().toString().padStart(2, '0');
-                const minutes = now.getMinutes().toString().padStart(2, '0');
-                return `${hours}:${minutes}`;
-            }
-            
-            // Simulated fetch from cloud
-            async fetchCloudData(user) {
-                if (!user.isGoogleUser) return null;
-                
-                // Simulate network delay
-                await this.delay(1000);
-                
-                try {
-                    // Check if user data exists in cloud storage
-                    const cloudKey = `cloud_data_${user.id}`;
-                    const cloudData = localStorage.getItem(cloudKey);
-                    
-                    if (cloudData) {
-                        return JSON.parse(cloudData);
-                    }
-                    
-                    return null;
-                } catch (error) {
-                    console.error("Error fetching cloud data:", error);
-                    throw error;
-                }
-            }
-            
-            // Simulated upload to cloud
-            async uploadUserData(user) {
-                if (!user.isGoogleUser) return;
-                
-                try {
-                    // Update sync progress
-                    this.updateSyncStatus('syncing', 30);
-                    await this.delay(500);
-                    
-                    // Prepare user data for cloud
-                    const userData = { ...user };
-                    delete userData.cloudAccessToken; // Don't store token in cloud
-                    
-                    this.updateSyncStatus('syncing', 60);
-                    await this.delay(500);
-                    
-                    // Store in simulated cloud
-                    const cloudKey = `cloud_data_${user.id}`;
-                    localStorage.setItem(cloudKey, JSON.stringify({
-                        userData: userData,
-                        lastModified: new Date().toISOString(),
-                        deviceId: this.deviceId
-                    }));
-                    
-                    this.updateSyncStatus('syncing', 100);
-                    await this.delay(300);
-                    
-                    // Update last sync time
-                    user.lastSyncTime = new Date().toISOString();
-                    this.saveUser(user);
-                } catch (error) {
-                    console.error("Error uploading user data:", error);
-                    throw error;
-                }
-            }
-            
-            // Merge cloud data with local data
-            async mergeUserData(localUser, cloudData) {
-                try {
-                    const cloudUser = cloudData.userData;
-                    
-                    // Update sync progress
-                    this.updateSyncStatus('syncing', 40);
-                    await this.delay(300);
-                    
-                    // Compare data to determine which is newer
-                    const localLastModified = new Date(localUser.lastSyncTime || localUser.lastLogin);
-                    const cloudLastModified = new Date(cloudData.lastModified);
-                    
-                    // Merge data - cloud has priority on conflict unless local is newer
-                    const mergedUser = { ...localUser };
-                    
-                    // Merge downloaded games (combine both)
-                    mergedUser.downloadedGames = [...new Set([
-                        ...(localUser.downloadedGames || []),
-                        ...(cloudUser.downloadedGames || [])
-                    ])];
-                    
-                    // Unlock premium if either has it unlocked
-                    mergedUser.premiumAvatarsUnlocked = 
-                        localUser.premiumAvatarsUnlocked || cloudUser.premiumAvatarsUnlocked;
-                    
-                    // Unlock Ultra VIP if either has it unlocked
-                    mergedUser.ultraVipUnlocked = 
-                        localUser.ultraVipUnlocked || cloudUser.ultraVipUnlocked;
-                    
-                    this.updateSyncStatus('syncing', 70);
-                    await this.delay(300);
-                    
-                    // Choose avatar based on most recent data
-                    if (localLastModified > cloudLastModified) {
-                        // Local data is newer, keep local avatar
-                    } else if (cloudUser.avatar && cloudUser.avatar !== localUser.avatar) {
-                        mergedUser.avatar = cloudUser.avatar;
-                    }
-                    
-                    // Merge sync devices from both
-                    mergedUser.syncDevices = [...new Set([
-                        ...(localUser.syncDevices || []),
-                        ...(cloudUser.syncDevices || []),
-                        this.deviceId
-                    ])];
-                    
-                    // Merge preferences - local has priority for UI preferences
-                    mergedUser.preferences = {
-                        ...(cloudUser.preferences || {}),
-                        ...(localUser.preferences || {})
-                    };
-                    
-                    // Update user with merged data
-                    this.saveUser(mergedUser);
-                    
-                    if (localUser.id === this.currentUser?.id) {
-                        this.currentUser = mergedUser;
-                    }
-                    
-                    this.updateSyncStatus('syncing', 90);
-                    await this.delay(300);
-                    
-                    // Upload merged data back to cloud
-                    await this.uploadUserData(mergedUser);
-                    
-                    // Update UI if current user
-                    if (localUser.id === this.currentUser?.id) {
-                        updateUserInterface();
-                    }
-                } catch (error) {
-                    console.error("Error merging user data:", error);
-                    throw error;
-                }
-            }
-            
-            // Sync user data with cloud
-            async syncUserData(force = false) {
-                if (!this.currentUser) return;
-                if (!this.syncEnabled && !force) return;
-                
-                // Skip sync if disabled in preferences
-                if (this.currentUser.preferences?.cloudSync === false && !force) {
-                    return;
-                }
-                
-                // Prevent multiple sync operations
-                if (this.isSyncing) {
-                    this.queueSync(force);
-                    return;
-                }
-                
-                this.isSyncing = true;
-                
-                try {
-                    this.updateSyncStatus('syncing', 10);
-                    
-                    // Fetch cloud data
-                    const cloudData = await this.fetchCloudData(this.currentUser);
-                    
-                    if (cloudData) {
-                        // Update progress
-                        this.updateSyncStatus('syncing', 30);
-                        
-                        // Merge with cloud data
-                        await this.mergeUserData(this.currentUser, cloudData);
-                    } else {
-                        // No cloud data yet, upload current data
-                        this.updateSyncStatus('syncing', 50);
-                        await this.uploadUserData(this.currentUser);
-                    }
-                    
-                    // Update last sync time
-                    this.lastSyncTime = new Date().toISOString();
-                    this.currentUser.lastSyncTime = this.lastSyncTime;
-                    this.saveUser(this.currentUser);
-                    
-                    this.updateSyncStatus('synced');
-                } catch (error) {
-                    console.error("Error during data sync:", error);
-                    this.updateSyncStatus('error');
-                } finally {
-                    this.isSyncing = false;
-                    
-                    // Process queued sync requests
-                    this.processNextSync();
-                }
-            }
-            
-            // Queue a sync operation if one is already in progress
-            queueSync(force = false) {
-                this.syncQueue.push({ force });
-            }
-            
-            // Process next sync in the queue
-            processNextSync() {
-                if (this.syncQueue.length === 0) return;
-                
-                const nextSync = this.syncQueue.shift();
-                setTimeout(() => {
-                    this.syncUserData(nextSync.force);
-                }, 1000);
-            }
-
             parseJwt(token) {
                 try {
                     const base64Url = token.split('.')[1];
@@ -3383,17 +2656,11 @@
             saveUser(user) {
                 this.users.set(user.id, user);
                 this.saveToStorage();
-                
-                // Queue data for cloud sync
-                if (user.isGoogleUser && user.id === this.currentUser?.id && 
-                    user.preferences?.cloudSync !== false) {
-                    this.queueSync();
-                }
             }
 
             loadFromStorage() {
                 try {
-                    const usersJson = localStorage.getItem('gameDB_users_v4');
+                    const usersJson = localStorage.getItem('gameDB_users_v3');
                     if (usersJson) {
                         const usersArray = JSON.parse(usersJson);
                         usersArray.forEach(user => {
@@ -3408,7 +2675,7 @@
             saveToStorage() {
                 try {
                     const usersArray = Array.from(this.users.values());
-                    localStorage.setItem('gameDB_users_v4', JSON.stringify(usersArray));
+                    localStorage.setItem('gameDB_users_v3', JSON.stringify(usersArray));
                 } catch (error) {
                     console.error("Error saving to localStorage:", error);
                 }
@@ -3423,16 +2690,11 @@
                 
                 if (!this.currentUser.downloadedGames.includes(gameType)) {
                     this.currentUser.downloadedGames.push(gameType);
-                    this.saveUser(this.currentUser);
+                    this.saveToStorage();
                     
                     // Check if user should unlock premium avatars
                     if (this.currentUser.downloadedGames.length >= 2) {
                         await this.unlockPremiumAvatars();
-                    }
-                    
-                    // Trigger cloud sync after game download
-                    if (this.syncEnabled && this.currentUser.preferences?.cloudSync !== false) {
-                        setTimeout(() => this.syncUserData(), 2000);
                     }
                 }
             }
@@ -3441,7 +2703,7 @@
                 if (!this.currentUser) return;
                 
                 this.currentUser.premiumAvatarsUnlocked = true;
-                this.saveUser(this.currentUser);
+                this.saveToStorage();
                 
                 // Show premium notification
                 showPremiumUnlockNotification();
@@ -3453,8 +2715,7 @@
                     activeUsers: 0,
                     googleUsers: 0,
                     premiumUsers: 0,
-                    ultraVipUsers: 0,
-                    syncedDevices: 0
+                    ultraVipUsers: 0
                 };
                 
                 this.users.forEach(user => {
@@ -3462,15 +2723,9 @@
                     if (user.isGoogleUser) stats.googleUsers++;
                     if (user.premiumAvatarsUnlocked) stats.premiumUsers++;
                     if (user.ultraVipUnlocked) stats.ultraVipUsers++;
-                    if (user.syncDevices) stats.syncedDevices += user.syncDevices.length;
                 });
                 
                 return stats;
-            }
-            
-            // Helper method to introduce delay (for simulating network latency)
-            delay(ms) {
-                return new Promise(resolve => setTimeout(resolve, ms));
             }
         }
 
@@ -3520,8 +2775,7 @@
                 wasVisitedBefore = localStorage.getItem('visited_before') === 'true';
                 localStorage.setItem('visited_before', 'true');
                 
-                // Updated to use CloudSyncDatabase instead of GameDatabase
-                gameDB = new CloudSyncDatabase();
+                gameDB = new GameDatabase();
                 
                 // Initialize Google Sign-In after database is ready
                 setTimeout(() => {
@@ -3847,18 +3101,12 @@
                         }
                     }
                     
-                    const dbUser = gameDB.users.get(userData.id);
+                        const dbUser = gameDB.users.get(userData.id);
                     if (dbUser && dbUser.status === 'active') {
                         currentUser = dbUser;
                         gameDB.currentUser = dbUser;
                         gameDB.isGoogleUser = dbUser.isGoogleUser || false;
                         updateUserInterface();
-                        
-                        // Start cloud sync if user is logged in
-                        if (dbUser.isGoogleUser) {
-                            gameDB.startBackgroundSync();
-                        }
-                        
                         console.log("Restored user session:", dbUser.username);
                     } else {
                         localStorage.removeItem('currentUser');
@@ -3917,18 +3165,9 @@
         }
 
         function logout() {
-            // Stop background sync when logging out
-            if (gameDB) {
-                gameDB.stopBackgroundSync();
-            }
-            
             currentUser = null;
-            
-            if (gameDB) {
-                gameDB.currentUser = null;
-                gameDB.isGoogleUser = false;
-            }
-            
+            gameDB.currentUser = null;
+            gameDB.isGoogleUser = false;
             localStorage.removeItem('currentUser');
             updateUserInterface();
             
@@ -3979,7 +3218,7 @@
                 
                 const statusEl = document.getElementById('userStatus');
                 if (statusEl) {
-                    statusEl.className = 'user-status';
+                    statusEl.className =  'user-status';
                 }
                 
                 // Update avatar
@@ -3987,9 +3226,6 @@
                 if (userAvatar && currentUser.avatar) {
                     userAvatar.innerHTML = `<img src="${currentUser.avatar}" alt="Avatar" onerror="this.src='https://api.dicebear.com/7.x/avataaars/svg?seed=default'">`;
                 }
-                
-                // Update cloud sync indicator
-                updateCloudSyncUI();
                 
                 // Update settings
                 updateSettingsInfo();
@@ -4011,45 +3247,6 @@
                 if (loginButton) loginButton.style.display = 'block';
                 if (userInfo) userInfo.style.display = 'none';
                 document.body.classList.remove('user-logged-in');
-            }
-        }
-        
-        // Update cloud sync UI elements
-        function updateCloudSyncUI() {
-            if (!currentUser || !currentUser.isGoogleUser) return;
-            
-            // Add or update sync indicator in user info panel
-            const userInfo = document.getElementById('userInfo');
-            if (userInfo) {
-                // Remove existing indicator if any
-                const existingIndicator = userInfo.querySelector('.cloud-sync-indicator');
-                if (existingIndicator) {
-                    existingIndicator.remove();
-                }
-                
-                // Create new indicator
-                const syncIndicator = document.createElement('div');
-                syncIndicator.className = 'cloud-sync-indicator';
-                syncIndicator.innerHTML = `
-                    <div class="sync-status">
-                        <span id="syncIcon" class="sync-icon">☁️</span>
-                        <span id="syncStatus">${document.documentElement.lang === 'pl' ? 
-                            'Połączono z chmurą' : 'Cloud connected'}</span>
-                    </div>
-                    <span id="syncTime" class="sync-time">${gameDB.getFormattedTime()}</span>
-                    <div id="syncProgress" class="sync-progress" style="width: 0%;"></div>
-                `;
-                
-                userInfo.appendChild(syncIndicator);
-                
-                // Show initial sync status
-                if (gameDB && gameDB.isSyncing) {
-                    gameDB.updateSyncStatus('syncing');
-                } else if (currentUser.lastSyncTime) {
-                    gameDB.updateSyncStatus('synced');
-                } else {
-                    gameDB.updateSyncStatus('connected');
-                }
             }
         }
 
@@ -4088,76 +3285,6 @@
             
             if (tab) tab.classList.add('active');
             if (section) section.style.display = 'block';
-            
-            // If showing cloud tab, update devices list
-            if (tabId === 'cloud' && currentUser && gameDB) {
-                updateCloudDevicesUI();
-            }
-        }
-        
-        // Update cloud devices UI
-        function updateCloudDevicesUI() {
-            if (!currentUser || !gameDB || !currentUser.isGoogleUser) return;
-            
-            const deviceList = document.getElementById('syncDeviceList');
-            if (!deviceList) return;
-            
-            deviceList.innerHTML = '';
-            
-            // Get devices from user data or DB
-            const syncDevices = currentUser.syncDevices || [];
-            const connectedDevices = gameDB.connectedDevices || new Map();
-            
-            syncDevices.forEach(deviceId => {
-                const deviceInfo = connectedDevices.get(deviceId) || {
-                    id: deviceId,
-                    name: 'Unknown Device',
-                    lastSeen: 'Unknown'
-                };
-                
-                const deviceEl = document.createElement('div');
-                deviceEl.className = 'sync-device';
-                
-                // Format last seen date
-                let lastSeen = 'Unknown';
-                if (deviceInfo.lastSeen && deviceInfo.lastSeen !== 'Unknown') {
-                    try {
-                        const date = new Date(deviceInfo.lastSeen);
-                        lastSeen = date.toLocaleDateString();
-                    } catch (e) {
-                        lastSeen = deviceInfo.lastSeen;
-                    }
-                }
-                
-                // Indicate if this is current device
-                const isCurrentDevice = deviceId === gameDB.deviceId;
-                
-                deviceEl.innerHTML = `
-                    <div class="sync-device-name ${isCurrentDevice ? 'current-device' : ''}">
-                        ${isCurrentDevice ? '📱' : '💻'} ${deviceInfo.name}
-                        ${isCurrentDevice ? '<span style="margin-left: 5px; font-size: 10px; color: var(--success-color);">(Current)</span>' : ''}
-                    </div>
-                    <div class="sync-device-time">${lastSeen}</div>
-                `;
-                
-                deviceList.appendChild(deviceEl);
-            });
-            
-            if (syncDevices.length === 0) {
-                deviceList.innerHTML = `
-                    <div style="text-align: center; padding: 15px; color: rgba(255,255,255,0.7);">
-                        ${document.documentElement.lang === 'pl' ? 
-                        'Brak zsynchronizowanych urządzeń' : 
-                        'No synchronized devices'}
-                    </div>
-                `;
-            }
-            
-            // Update cloud sync toggle
-            const cloudSyncToggle = document.getElementById('cloudSyncToggle');
-            if (cloudSyncToggle && currentUser.preferences) {
-                cloudSyncToggle.checked = currentUser.preferences.cloudSync !== false;
-            }
         }
 
         function updateSettingsInfo() {
@@ -4197,8 +3324,7 @@
                 const toggles = {
                     'notificationsToggle': 'notifications',
                     'highContrastToggle': 'highContrast',
-                    'autoSaveToggle': 'autoSave',
-                    'cloudSyncToggle': 'cloudSync'
+                    'autoSaveToggle': 'autoSave'
                 };
                 
                 Object.entries(toggles).forEach(([elementId, preferenceKey]) => {
@@ -4236,92 +3362,6 @@
                         </div>
                     `;
                     profileSection.insertBefore(premiumStatus, profileSection.querySelector('h4'));
-                }
-            }
-            
-            // Add Cloud Sync section if user is logged in with Google
-            if (currentUser.isGoogleUser) {
-                const cloudTab = document.getElementById('cloudTab');
-                if (!cloudTab) {
-                    // Add cloud tab
-                    const tabsContainer = document.querySelector('.settings-tabs');
-                    if (tabsContainer) {
-                        const cloudTabEl = document.createElement('button');
-                        cloudTabEl.id = 'cloudTab';
-                        cloudTabEl.className = 'setting-tab';
-                        cloudTabEl.onclick = function() { showSettingsTab('cloud'); };
-                        cloudTabEl.innerHTML = `
-                            <span class="lang-pl">☁️ Synchronizacja</span>
-                            <span class="lang-en">☁️ Synchronization</span>
-                        `;
-                        tabsContainer.appendChild(cloudTabEl);
-                    }
-                    
-                    // Add cloud section
-                    const settingsContent = document.querySelector('.settings-content');
-                    if (settingsContent) {
-                        const cloudSection = document.createElement('div');
-                        cloudSection.id = 'cloudSection';
-                        cloudSection.className = 'settings-section cloud-settings-section';
-                        cloudSection.style.display = 'none';
-                        
-                        cloudSection.innerHTML = `
-                            <h3 class="lang-pl">☁️ Synchronizacja w chmurze</h3>
-                            <h3 class="lang-en">☁️ Cloud Synchronization</h3>
-                            
-                            <p class="lang-pl">
-                                Twoje avatary, odznaki i postępy są synchronizowane między urządzeniami.
-                                Dzięki temu masz dostęp do swoich danych na każdym komputerze i telefonie.
-                            </p>
-                            <p class="lang-en">
-                                Your avatars, badges, and progress are synchronized between devices.
-                                This gives you access to your data on every computer and phone.
-                            </p>
-                            
-                            <div class="sync-automatic-toggle">
-                                <div>
-                                    <div class="lang-pl"><strong>Automatyczna synchronizacja:</strong></div>
-                                    <div class="lang-en"><strong>Automatic synchronization:</strong></div>
-                                </div>
-                                <label class="switch">
-                                    <input type="checkbox" id="cloudSyncToggle" checked 
-                                           onchange="gameDB.toggleCloudSync(this.checked)">
-                                    <span class="slider round"></span>
-                                </label>
-                            </div>
-                            
-                            <button class="sync-force-btn" onclick="gameDB.forceSync()">
-                                <span class="sync-icon">🔄</span>
-                                <span class="lang-pl">Wymuś synchronizację teraz</span>
-                                <span class="lang-en">Force sync now</span>
-                            </button>
-                            
-                            <div style="margin-top: 20px;">
-                                <div class="lang-pl"><strong>Zsynchronizowane urządzenia:</strong></div>
-                                <div class="lang-en"><strong>Synchronized devices:</strong></div>
-                                <div id="syncDeviceList" class="sync-device-list">
-                                    <!-- Devices will be loaded here -->
-                                </div>
-                            </div>
-                            
-                            <div style="margin-top: 20px; padding: 10px; background: rgba(107, 70, 193, 0.1); border-radius: 8px;">
-                                <div class="lang-pl">
-                                    <strong>ℹ️ Informacja o synchronizacji:</strong><br>
-                                    • Zmiany są automatycznie synchronizowane co 5 minut<br>
-                                    • Twoje dane są bezpiecznie przechowywane w Twojej chmurze<br>
-                                    • Synchronizacja działa na wszystkich urządzeniach z dostępem do internetu
-                                </div>
-                                <div class="lang-en">
-                                    <strong>ℹ️ Synchronization information:</strong><br>
-                                    • Changes are automatically synchronized every 5 minutes<br>
-                                    • Your data is securely stored in your cloud<br>
-                                    • Synchronization works on all devices with internet access
-                                </div>
-                            </div>
-                        `;
-                        
-                        settingsContent.appendChild(cloudSection);
-                    }
                 }
             }
             
@@ -4363,7 +3403,8 @@
             
             try {
                 currentUser.avatar = newAvatar;
-                gameDB.saveUser(currentUser);
+                gameDB.users.set(currentUser.id, currentUser);
+                gameDB.saveToStorage();
                 
                 updateUserInterface();
                 
@@ -4394,7 +3435,8 @@
             
             try {
                 currentUser.preferences[key] = value;
-                gameDB.saveUser(currentUser);
+                gameDB.users.set(currentUser.id, currentUser);
+                gameDB.saveToStorage();
                 
                 updateSettingsInfo();
                 
@@ -4778,47 +3820,39 @@
             'cloud-sync': {
                 pl: `<strong>🤖 Synchronizacja w chmurze</strong><br><br>
                     <strong>☁️ Jak to działa?</strong><br>
-                    Twoje postępy są automatycznie zapisywane w chmurze Google!<br><br>
+                    Twoje postępy są zapisywane lokalnie w przeglądarce!<br><br>
                     
-                    <strong>✨ Co jest synchronizowane?</strong><br>
+                    <strong>✨ Co jest zapisywane?</strong><br>
                     • Pobrane gry<br>
                     • Odblokowane avatary (Premium i Ultra VIP)<br>
                     • Wybrane avatary<br>
                     • Ustawienia i preferencje<br><br>
                     
                     <strong>📱 Multi-device</strong><br>
-                    Masz dostęp do swoich danych na wszystkich urządzeniach!<br>
-                    Zaloguj się na telefonie, tablecie lub innym komputerze - wszystkie Twoje postępy będą dostępne.<br><br>
-                    
-                    <strong>🔄 Automatyczna synchronizacja</strong><br>
-                    Dane są synchronizowane co 5 minut lub możesz wymusić synchronizację ręcznie w Ustawieniach.<br><br>
+                    Dane są przechowywane lokalnie na każdym urządzeniu.<br><br>
                     
                     <strong>🔐 Bezpieczeństwo</strong><br>
-                    Dane są bezpieczne w Twojej prywatnej chmurze Google.<br><br>
+                    Dane są bezpieczne w Twojej przeglądarce.<br><br>
                     
-                    <em>💡 Wskazówka:</em> Sprawdź zakładkę "Synchronizacja" w Ustawieniach konta!`,
+                    <em>💡 Wskazówka:</em> Nie czyść danych przeglądarki!`,
                 
                 en: `<strong>🤖 Cloud Synchronization</strong><br><br>
                     <strong>☁️ How does it work?</strong><br>
-                    Your progress is automatically saved to Google Cloud!<br><br>
+                    Your progress is saved locally in the browser!<br><br>
                     
-                    <strong>✨ What is synchronized?</strong><br>
+                    <strong>✨ What is saved?</strong><br>
                     • Downloaded games<br>
                     • Unlocked avatars (Premium and Ultra VIP)<br>
                     • Selected avatars<br>
                     • Settings and preferences<br><br>
                     
                     <strong>📱 Multi-device</strong><br>
-                    Access your data on all your devices!<br>
-                    Log in on your phone, tablet, or another computer - all your progress will be available.<br><br>
-                    
-                    <strong>🔄 Automatic synchronization</strong><br>
-                    Data is synchronized every 5 minutes or you can force synchronization manually in Settings.<br><br>
+                    Data is stored locally on each device.<br><br>
                     
                     <strong>🔐 Security</strong><br>
-                    Data is safe in your private Google cloud.<br><br>
+                    Data is safe in your browser.<br><br>
                     
-                    <em>💡 Tip:</em> Check the "Synchronization" tab in Account Settings!`
+                    <em>💡 Tip:</em> Don't clear browser data!`
             },
             
             'stay-logged-in': {
@@ -4870,10 +3904,9 @@
                     <strong>Zalety logowania przez Google:</strong><br>
                     • Nie musisz pamiętać hasła<br>
                     • Bezpieczne i szybkie<br>
-                    • Dostęp z różnych urządzeń<br>
-                    • Synchronizacja w chmurze<br><br>
+                    • Dostęp z różnych urządzeń<br><br>
                     
-                    <em>💡 Wskazówka:</em> Twoje postępy są zapisywane w chmurze!`,
+                    <em>💡 Wskazówka:</em> Twoje postępy są zapisywane!`,
                 
                 en: `<strong>🤖 How to sign in with Google?</strong><br><br>
                     <strong>It's very simple!</strong><br>
@@ -4886,10 +3919,9 @@
                     <strong>Benefits of Google Sign-In:</strong><br>
                     • No need to remember passwords<br>
                     • Secure and fast<br>
-                    • Access from multiple devices<br>
-                    • Cloud synchronization<br><br>
+                    • Access from multiple devices<br><br>
                     
-                    <em>💡 Tip:</em> Your progress is saved in the cloud!`
+                    <em>💡 Tip:</em> Your progress is saved!`
             },
             
             'premium-avatars': {
@@ -4911,10 +3943,7 @@
                     • Wyróżnij się wśród innych graczy<br>
                     • Pokaż swoje osiągnięcia<br>
                     • Dostęp do ekskluzywnych avatarów<br>
-                    • Status Premium przy nazwie użytkownika<br><br>
-                    
-                    <strong>☁️ NOWOŚĆ: Synchronizacja w chmurze!</strong><br>
-                    Twoje Premium Avatary są teraz dostępne na wszystkich Twoich urządzeniach!`,
+                    • Status Premium przy nazwie użytkownika`,
                 
                 en: `<strong>🤖 Premium Avatars - How to unlock them?</strong><br><br>
                     <strong>🎮 What are Premium Avatars?</strong><br>
@@ -4934,10 +3963,7 @@
                     • Stand out among other players<br>
                     • Show your achievements<br>
                     • Access to exclusive avatars<br>
-                    • Premium status next to username<br><br>
-                    
-                    <strong>☁️ NEW: Cloud synchronization!</strong><br>
-                    Your Premium Avatars are now available on all your devices!`
+                    • Premium status next to username`
             },
             
             'ultra-vip-avatar': {
@@ -4957,10 +3983,7 @@
                     • Ekskluzywny avatar Ultra VIP Champion<br>
                     • Specjalną odznakę przy nazwie użytkownika<br>
                     • Dołączasz do elitarnego grona graczy<br>
-                    • Szacunek całej społeczności!<br><br>
-                    
-                    <strong>☁️ NOWOŚĆ: Synchronizacja w chmurze!</strong><br>
-                    Twój Ultra VIP Avatar będzie dostępny na wszystkich Twoich urządzeniach!`,
+                    • Szacunek całej społeczności!`,
                 
                 en: `<strong>🤖 Ultra VIP Avatar - How to get it?</strong><br><br>
                     <strong>💎 What is Ultra VIP Avatar?</strong><br>
@@ -4978,10 +4001,7 @@
                     • Exclusive Ultra VIP Champion avatar<br>
                     • Special badge next to username<br>
                     • Join the elite group of players<br>
-                    • Respect from the entire community!<br><br>
-                    
-                    <strong>☁️ NEW: Cloud synchronization!</strong><br>
-                    Your Ultra VIP Avatar will be available on all your devices!`
+                    • Respect from the entire community!`
             },
             
             'google-signin-benefits': {
@@ -5000,10 +4020,7 @@
                     4. <strong>Pozostań zalogowany 24h</strong><br>
                     Nowa opcja dla większej wygody!<br><br>
                     
-                    5. <strong>Synchronizacja w chmurze</strong><br>
-                    Twoje dane, avatary i postępy są automatycznie synchronizowane między urządzeniami.<br><br>
-                    
-                    6. <strong>Aktualizacje</strong><br>
+                    5. <strong>Aktualizacje</strong><br>
                     Google automatycznie dba o bezpieczeństwo Twojego konta.`,
                 
                 en: `<strong>🤖 Benefits of Google Sign-In</strong><br><br>
@@ -5021,10 +4038,7 @@
                     4. <strong>Stay logged in 24h</strong><br>
                     New option for more convenience!<br><br>
                     
-                    5. <strong>Cloud synchronization</strong><br>
-                    Your data, avatars and progress are automatically synchronized between devices.<br><br>
-                    
-                    6. <strong>Updates</strong><br>
+                    5. <strong>Updates</strong><br>
                     Google automatically takes care of your account security.`
             },
             
@@ -5037,8 +4051,7 @@
                     5. <strong>Dostęp do AI asystenta</strong> - korzystaj z mojej pomocy<br>
                     6. <strong>Bezpieczne logowanie przez Google</strong> - wygoda i bezpieczeństwo<br>
                     7. <strong>Pozostań zalogowany 24h</strong> - nowa opcja!<br>
-                    8. <strong>Synchronizacja w chmurze</strong> - dostęp do danych na wszystkich urządzeniach<br>
-                    9. <strong>Aktualizacje</strong> - bądź na bieżąco z nowościami`,
+                    8. <strong>Aktualizacje</strong> - bądź na bieżąco z nowościami`,
                 
                 en: `<strong>🤖 Benefits of having an account</strong><br><br>
                     1. <strong>Access to game downloads</strong> - only logged users can download<br>
@@ -5048,8 +4061,7 @@
                     5. <strong>Access to AI assistant</strong> - use my help<br>
                     6. <strong>Secure Google Sign-In</strong> - convenience and security<br>
                     7. <strong>Stay logged in 24h</strong> - new option!<br>
-                    8. <strong>Cloud synchronization</strong> - access your data on all devices<br>
-                    9. <strong>Updates</strong> - stay up to date with news`
+                    8. <strong>Updates</strong> - stay up to date with news`
             },
             
             // DOWNLOAD & TECHNICAL
@@ -5170,8 +4182,7 @@
                     
                     <strong>🎁 BONUSY:</strong><br>
                     • Pobierz obie = 5 Premium Avatarów!<br>
-                    • Ukończ Labirynt = Ultra VIP Avatar!<br>
-                    • Synchronizacja postępów między urządzeniami!`,
+                    • Ukończ Labirynt = Ultra VIP Avatar!`,
                 
                 en: `<strong>🤖 Available game features</strong><br><br>
                     <strong>🎮 Maze - fascinating 3D game:</strong><br>
@@ -5193,8 +4204,7 @@
                     
                     <strong>🎁 BONUSES:</strong><br>
                     • Download both = 5 Premium Avatars!<br>
-                    • Complete Maze = Ultra VIP Avatar!<br>
-                    • Progress synchronization between devices!`
+                    • Complete Maze = Ultra VIP Avatar!`
             },
             
             'technical-support': {
@@ -5214,12 +4224,7 @@
                     • Wyczyść ciasteczka<br>
                     • Sprawdź połączenie internetowe<br><br>
                     
-                    4. <strong>Problemy z synchronizacją</strong><br>
-                    • Sprawdź połączenie z internetem<br>
-                    • Wymuś synchronizację w zakładce Synchronizacja w Ustawieniach<br>
-                    • Wyloguj się i zaloguj ponownie<br><br>
-                    
-                    5. <strong>Ultra VIP Avatar</strong><br>
+                    4. <strong>Ultra VIP Avatar</strong><br>
                     • Wyślij screenshot na: quatar2022@o2.pl<br><br>
                     
                     <strong>💬 Kontakt:</strong> Użyj tego czatu AI do pomocy!`,
@@ -5240,12 +4245,7 @@
                     • Clear cookies<br>
                     • Check internet connection<br><br>
                     
-                    4. <strong>Synchronization issues</strong><br>
-                    • Check internet connection<br>
-                    • Force synchronization in the Synchronization tab in Settings<br>
-                    • Log out and log in again<br><br>
-                    
-                    5. <strong>Ultra VIP Avatar</strong><br>
+                    4. <strong>Ultra VIP Avatar</strong><br>
                     • Send screenshot to: quatar2022@o2.pl<br><br>
                     
                     <strong>💬 Contact:</strong> Use this AI chat for help!`
@@ -5260,12 +4260,10 @@
                     • Podstawowe informacje z Google (nazwa, email, zdjęcie)<br>
                     • Informacje o pobranych grach<br>
                     • Preferencje użytkownika<br>
-                    • Odblokowane avatary<br>
-                    • Lista urządzeń<br><br>
+                    • Odblokowane avatary<br><br>
                     
                     <strong>Gdzie przechowujemy:</strong><br>
-                    • W chmurze Google (dla zalogowanych użytkowników)<br>
-                    • Lokalnie w przeglądarce (kopia zapasowa)<br><br>
+                    • Lokalne dane w przeglądarce<br><br>
                     
                     <strong>Czego NIE robimy:</strong><br>
                     • ❌ Nie sprzedajemy danych<br>
@@ -5277,7 +4275,7 @@
                     • Możesz usunąć konto w każdej chwili<br>
                     • Dane są szyfrowane i bezpieczne<br>
                     • Zgodność z RODO`,
-
+                
                 en: `<strong>🤖 Personal data protection</strong><br><br>
                     <strong>🔒 Your data is safe!</strong><br><br>
                     
@@ -5285,12 +4283,10 @@
                     • Basic Google info (name, email, photo)<br>
                     • Downloaded games information<br>
                     • User preferences<br>
-                    • Unlocked avatars<br>
-                    • Device list<br><br>
+                    • Unlocked avatars<br><br>
                     
                     <strong>Where we store:</strong><br>
-                    • In Google Cloud (for logged in users)<br>
-                    • Locally in browser (backup)<br><br>
+                    • Local data in browser<br><br>
                     
                     <strong>What we DON'T do:</strong><br>
                     • ❌ Don't sell data<br>
@@ -5315,14 +4311,11 @@
                     • <strong>Profil</strong> - zmiana avatara (Premium po pobraniu gier!)<br>
                     • <strong>Wygląd</strong> - język i powiadomienia<br>
                     • <strong>Dostępność</strong> - rozmiar czcionki, kontrast<br>
-                    • <strong>Synchronizacja</strong> - zarządzanie synchronizacją w chmurze<br>
                     • <strong>Zagrożenia</strong> - usuwanie konta<br><br>
                     
-                    <strong>💡 Synchronizacja:</strong><br>
-                    • Włącz/wyłącz automatyczną synchronizację<br>
-                    • Wymuś synchronizację teraz<br>
-                    • Zobacz listę urządzeń synchronizowanych<br>
-                    • Twoje dane są dostępne na wszystkich urządzeniach!`,
+                    <strong>💡 Premium funkcje:</strong><br>
+                    • Pobierz obie gry → Odblokuj 5 Premium Avatarów!<br>
+                    • Ukończ Labirynt → Odblokuj Ultra VIP Avatar!`,
                 
                 en: `<strong>🤖 Help with account settings</strong><br><br>
                     <strong>How to change settings:</strong><br>
@@ -5334,14 +4327,11 @@
                     • <strong>Profile</strong> - change avatar (Premium after downloading games!)<br>
                     • <strong>Appearance</strong> - language and notifications<br>
                     • <strong>Accessibility</strong> - font size, contrast<br>
-                    • <strong>Synchronization</strong> - manage cloud synchronization<br>
                     • <strong>Danger Zone</strong> - account deletion<br><br>
                     
-                    <strong>💡 Synchronization:</strong><br>
-                    • Enable/disable automatic synchronization<br>
-                    • Force synchronization now<br>
-                    • See list of synchronized devices<br>
-                    • Your data is available on all devices!`
+                    <strong>💡 Premium features:</strong><br>
+                    • Download both games → Unlock 5 Premium Avatars!<br>
+                    • Complete Maze → Unlock Ultra VIP Avatar!`
             },
             
             'avatar-customization': {
@@ -5362,10 +4352,7 @@
                     ${premiumAvatarNames.join('<br>')}<br><br>
                     
                     <strong>💎 Ultra VIP Avatar:</strong><br>
-                    ${ultraVipAvatarName}<br><br>
-                    
-                    <strong>☁️ NOWOŚĆ: Synchronizacja w chmurze!</strong><br>
-                    Twój avatar jest teraz automatycznie synchronizowany między urządzeniami!`,
+                    ${ultraVipAvatarName}`,
                 
                 en: `<strong>🤖 How to change avatar</strong><br><br>
                     <strong>Changing avatar:</strong><br>
@@ -5384,10 +4371,7 @@
                     ${premiumAvatarNames.join('<br>')}<br><br>
                     
                     <strong>💎 Ultra VIP Avatar:</strong><br>
-                    ${ultraVipAvatarName}<br><br>
-                    
-                    <strong>☁️ NEW: Cloud synchronization!</strong><br>
-                    Your avatar is now automatically synchronized between devices!`
+                    ${ultraVipAvatarName}`
             },
             
             'user-stats': {
@@ -5405,15 +4389,13 @@
                         • Aktywni użytkownicy: ${stats.activeUsers}<br>
                         • Użytkownicy Google: ${stats.googleUsers}<br>
                         • Użytkownicy Premium: ${stats.premiumUsers}<br>
-                        • Użytkownicy Ultra VIP: ${stats.ultraVipUsers}<br>
-                        • Zsynchronizowane urządzenia: ${stats.syncedDevices}<br><br>
+                        • Użytkownicy Ultra VIP: ${stats.ultraVipUsers}<br><br>
                         
                         <strong>Co to znaczy?</strong><br>
                         • Premium = pobrali obie gry<br>
                         • Ultra VIP = ukończyli Labirynt!<br><br>
                         
-                        <em>Dołącz do elity - zdobądź Ultra VIP Avatar!</em><br>
-                        <em>Data aktualizacji: ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}</em>`;
+                        <em>Dołącz do elity - zdobądź Ultra VIP Avatar!</em>`;
                 },
                 
                 en: function() {
@@ -5430,15 +4412,13 @@
                         • Active users: ${stats.activeUsers}<br>
                         • Google users: ${stats.googleUsers}<br>
                         • Premium users: ${stats.premiumUsers}<br>
-                        • Ultra VIP users: ${stats.ultraVipUsers}<br>
-                        • Synchronized devices: ${stats.syncedDevices}<br><br>
+                        • Ultra VIP users: ${stats.ultraVipUsers}<br><br>
                         
                         <strong>What does it mean?</strong><br>
                         • Premium = downloaded both games<br>
                         • Ultra VIP = completed Maze!<br><br>
                         
-                        <em>Join the elite - get Ultra VIP Avatar!</em><br>
-                        <em>Last updated: ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}</em>`;
+                        <em>Join the elite - get Ultra VIP Avatar!</em>`;
                 }
             },
             
@@ -5462,8 +4442,7 @@
                     4. <strong>Trening</strong> - ćwicz strategie<br><br>
                     
                     <em>🎁 Pobierz obie = Premium Avatary!</em><br>
-                    <em>💎 Ukończ Labirynt = Ultra VIP Avatar!</em><br>
-                    <em>☁️ Synchronizacja postępów między urządzeniami!</em>`,
+                    <em>💎 Ukończ Labirynt = Ultra VIP Avatar!</em>`,
                 
                 en: `<strong>🤖 Game modes</strong><br><br>
                     <strong>🎮 Maze - 5 modes:</strong><br>
@@ -5483,8 +4462,7 @@
                     4. <strong>Training</strong> - practice strategies<br><br>
                     
                     <em>🎁 Download both = Premium Avatars!</em><br>
-                    <em>💎 Complete Maze = Ultra VIP Avatar!</em><br>
-                    <em>☁️ Progress synchronization between devices!</em>`
+                    <em>💎 Complete Maze = Ultra VIP Avatar!</em>`
             },
             
             'achievements': {
@@ -5506,10 +4484,7 @@
                     
                     <strong>🌟 MEGA OSIĄGNIĘCIA:</strong><br>
                     • Premium Kolekcjoner - pobierz obie gry!<br>
-                    • <strong>💎 Ultra VIP Champion - ukończ Labirynt!</strong><br><br>
-                    
-                    <strong>☁️ NOWOŚĆ: Synchronizacja osiągnięć!</strong><br>
-                    Twój postęp jest synchronizowany między urządzeniami.`,
+                    • <strong>💎 Ultra VIP Champion - ukończ Labirynt!</strong>`,
                 
                 en: `<strong>🤖 Achievement system</strong><br><br>
                     <strong>🏆 Maze - achievements:</strong><br>
@@ -5529,10 +4504,7 @@
                     
                     <strong>🌟 MEGA ACHIEVEMENTS:</strong><br>
                     • Premium Collector - download both games!<br>
-                    • <strong>💎 Ultra VIP Champion - complete Maze!</strong><br><br>
-                    
-                    <strong>☁️ NEW: Achievement synchronization!</strong><br>
-                    Your progress is synchronized between devices.`
+                    • <strong>💎 Ultra VIP Champion - complete Maze!</strong>`
             },
             
             'future-updates': {
@@ -5559,13 +4531,11 @@
                     • Globalne rankingi<br>
                     • Turnieje z nagrodami<br><br>
                     
-                    5. <strong>Udoskonalona synchronizacja</strong><br>
-                    • Szybsza synchronizacja<br>
-                    • Synchronizacja postępów w grze<br>
-                    • Udostępnianie postępów znajomym<br><br>
+                    5. <strong>Więcej Ultra VIP nagród</strong><br>
+                    • Ekskluzywne avatary za osiągnięcia<br>
+                    • Specjalne odznaki<br><br>
                     
-                    <em>Bądź na bieżąco - loguj się przez Google!</em><br>
-                    <em>Data aktualizacji: ${new Date().toLocaleDateString()} (wersja ${APP_VERSION})</em>`,
+                    <em>Bądź na bieżąco - loguj się przez Google!</em>`,
                 
                 en: `<strong>🤖 Planned updates</strong><br><br>
                     <strong>🚀 What we're planning:</strong><br><br>
@@ -5590,13 +4560,11 @@
                     • Global rankings<br>
                     • Tournaments with prizes<br><br>
                     
-                    5. <strong>Enhanced synchronization</strong><br>
-                    • Faster synchronization<br>
-                    • Game progress synchronization<br>
-                    • Share progress with friends<br><br>
+                    5. <strong>More Ultra VIP rewards</strong><br>
+                    • Exclusive avatars for achievements<br>
+                    • Special badges<br><br>
                     
-                    <em>Stay updated - sign in with Google!</em><br>
-                    <em>Last updated: ${new Date().toLocaleDateString()} (version ${APP_VERSION})</em>`
+                    <em>Stay updated - sign in with Google!</em>`
             }
         };
 
@@ -5906,10 +4874,9 @@
                     console.log('Enhanced Google Sign-In system loaded');
                     console.log('Premium avatars system ready');
                     console.log('Ultra VIP avatar system ready');
-                    console.log('Cloud synchronization system ready');
-                    console.log(`Current date and time: 2025-05-31 08:02:43`);
-                    console.log(`Current user: Piotr20111`);
+                    console.log(`Current date and time: ${new Date().toISOString()}`);
                     console.log(`Database contains ${gameDB?.users?.size || 0} users`);
+                    console.log(`Current user: ${currentUser?.username || 'Not logged in'}`);
                 }, 300);
             } catch (error) {
                 console.error("Error during initialization:", error);
@@ -5945,6 +4912,7 @@
                     const now = new Date();
                     const inactiveTime = (now - lastActiveTime) / (1000 * 60 * 60); // in hours
                     
+                    // If not "stay logged in", logout after 1 hour of inactivity
                     if (!currentUser.stayLoggedIn && inactiveTime > 1) {
                         logout();
                         const currentLang = document.documentElement.lang;
@@ -6371,12 +5339,6 @@
                     <strong>💎 ULTRA VIP! Ukończ Labirynt = Ultra VIP Avatar!</strong><br>
                     Przejdź wszystkie poziomy gry Labirynt i wyślij screenshot na: quatar2022@o2.pl
                 </div>
-                
-                <div style="margin-top: 20px; padding: 15px; background: rgba(52, 152, 219, 0.1); border-radius: 8px; border: 1px solid rgba(52, 152, 219, 0.3);">
-                    <strong>☁️ NOWOŚĆ! Synchronizacja w chmurze</strong><br>
-                    Twoje avatary, odznaki i postępy są automatycznie synchronizowane między urządzeniami!<br>
-                    Zaloguj się na dowolnym urządzeniu, aby mieć dostęp do swoich Premium Avatarów!
-                </div>
             </div>
             
             <div class="lang-en">
@@ -6406,12 +5368,6 @@
                     <strong>💎 ULTRA VIP! Complete Maze = Ultra VIP Avatar!</strong><br>
                     Complete all levels in Maze game and send screenshot to: quatar2022@o2.pl
                 </div>
-                
-                <div style="margin-top: 20px; padding: 15px; background: rgba(52, 152, 219, 0.1); border-radius: 8px; border: 1px solid rgba(52, 152, 219, 0.3);">
-                    <strong>☁️ NEW! Cloud synchronization</strong><br>
-                    Your avatars, badges and progress are automatically synchronized between devices!<br>
-                    Sign in on any device to access your Premium Avatars!
-                </div>
             </div>
         </div>
     </div>
@@ -6427,7 +5383,7 @@
                 <div class="lang-pl">
                     <div class="security-item">Bezpieczne logowanie przez Google OAuth 2.0</div>
                     <div class="security-item">Szyfrowanie danych użytkownika</div>
-                    <div class="security-item">Synchronizacja w chmurze Google</div>
+                    <div class="security-item">Lokalne przechowywanie danych</div>
                     <div class="security-item">Brak przechowywania haseł</div>
                     <div class="security-item">Zgodność z RODO i GDPR</div>
                     <div class="security-item">Minimalne zbieranie danych</div>
@@ -6439,7 +5395,7 @@
                 <div class="lang-en">
                     <div class="security-item">Secure Google OAuth 2.0 login</div>
                     <div class="security-item">User data encryption</div>
-                    <div class="security-item">Google Cloud synchronization</div>
+                    <div class="security-item">Local data storage</div>
                     <div class="security-item">No password storage</div>
                     <div class="security-item">GDPR compliant</div>
                     <div class="security-item">Minimal data collection</div>
@@ -6458,15 +5414,6 @@
                     <li>Wybrany avatar</li>
                     <li>Preferencje użytkownika</li>
                     <li>Odblokowane avatary Premium i Ultra VIP</li>
-                    <li>Lista urządzeń dla synchronizacji w chmurze</li>
-                </ul>
-                
-                <h4>☁️ Synchronizacja w chmurze:</h4>
-                <ul>
-                    <li>Twoje dane są bezpiecznie przechowywane w chmurze Google</li>
-                    <li>Automatyczna synchronizacja co 5 minut</li>
-                    <li>Dostęp do danych na wszystkich urządzeniach</li>
-                    <li>Pełna kontrola - możesz wyłączyć synchronizację</li>
                 </ul>
                 
                 <h4>🗑️ Twoje prawa:</h4>
@@ -6486,15 +5433,6 @@
                     <li>Selected avatar</li>
                     <li>User preferences</li>
                     <li>Unlocked Premium and Ultra VIP avatars</li>
-                    <li>Device list for cloud synchronization</li>
-                </ul>
-                
-                <h4>☁️ Cloud synchronization:</h4>
-                <ul>
-                    <li>Your data is securely stored in Google Cloud</li>
-                    <li>Automatic synchronization every 5 minutes</li>
-                    <li>Access to data on all devices</li>
-                    <li>Full control - you can disable synchronization</li>
                 </ul>
                 
                 <h4>🗑️ Your rights:</h4>
@@ -6509,3 +5447,4 @@
     </div>
 </body>
 </html>
+
