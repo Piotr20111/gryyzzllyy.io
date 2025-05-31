@@ -2454,8 +2454,8 @@
             }
 
             async initializeGoogleSignIn() {
-                // YOUR GOOGLE CLIENT ID - REPLACE WITH YOUR OWN
-                const GOOGLE_CLIENT_ID = 'YOUR_GOOGLE_CLIENT_ID_HERE';
+                // FIXED: Using the correct Google Client ID
+                const GOOGLE_CLIENT_ID = '139779237819-u0v0k1s72a83dmcv7lh9oce9r8d9vaqk.apps.googleusercontent.com';
                 
                 if (window.google && window.google.accounts) {
                     try {
@@ -2730,29 +2730,29 @@
         }
 
         // —— AVATAR SYSTEM WITH ENHANCED PREMIUM AVATARS —— 
-        // Enhanced standard avatars with better variety
+        // Enhanced standard avatars with EXCLUSIVE DESIGN
         const standardAvatars = [
-            'https://api.dicebear.com/7.x/avataaars/svg?seed=Felix&backgroundColor=b6e3f4,c0aede&accessories=prescription02&clothesColor=3c4f5c',
-            'https://api.dicebear.com/7.x/avataaars/svg?seed=Aneka&backgroundColor=ffd5dc,ffdfbf&accessories=sunglasses&clothesColor=ff5c5c',
-            'https://api.dicebear.com/7.x/avataaars/svg?seed=Garfield&backgroundColor=d1d4f9,c0aede&accessories=wayfarers&clothesColor=5199e4',
-            'https://api.dicebear.com/7.x/avataaars/svg?seed=Leo&backgroundColor=ffd5dc,ffe0bd&facialHair=beardMedium&clothesColor=e6e6e6',
-            'https://api.dicebear.com/7.x/avataaars/svg?seed=Nala&backgroundColor=b6e3f4,ffd5dc&accessories=round&clothesColor=ff5c5c',
-            'https://api.dicebear.com/7.x/avataaars/svg?seed=Simba&backgroundColor=ffdfbf,d1d4f9&facialHair=moustacheFancy&clothesColor=3c4f5c',
-            'https://api.dicebear.com/7.x/avataaars/svg?seed=Milo&backgroundColor=c0aede,ffe0bd&accessories=kurt&clothesColor=929598',
-            'https://api.dicebear.com/7.x/avataaars/svg?seed=Sassy&backgroundColor=ffd5dc,b6e3f4&accessories=prescription01&clothesColor=65c9ff'
+            'https://api.dicebear.com/7.x/avataaars/svg?seed=Elite1&backgroundColor=b6e3f4,c0aede&accessories=prescription02&top=shortHairShortWaved&clothesColor=3c4f5c&facialHair=beardLight&hairColor=BrownDark',
+            'https://api.dicebear.com/7.x/avataaars/svg?seed=Elite2&backgroundColor=ffd5dc,ffdfbf&accessories=sunglasses&top=longHairBigHair&clothesColor=ff5c5c&hairColor=Blonde',
+            'https://api.dicebear.com/7.x/avataaars/svg?seed=Elite3&backgroundColor=d1d4f9,c0aede&accessories=wayfarers&top=hat&clothesColor=5199e4&hatColor=Blue03',
+            'https://api.dicebear.com/7.x/avataaars/svg?seed=Elite4&backgroundColor=ffd5dc,ffe0bd&facialHair=beardMedium&top=shortHairDreads01&clothesColor=e6e6e6&hairColor=Black',
+            'https://api.dicebear.com/7.x/avataaars/svg?seed=Elite5&backgroundColor=b6e3f4,ffd5dc&accessories=round&top=hijab&clothesColor=ff5c5c&clotheType=hoodie',
+            'https://api.dicebear.com/7.x/avataaars/svg?seed=Elite6&backgroundColor=ffdfbf,d1d4f9&facialHair=moustacheFancy&top=turban&clothesColor=3c4f5c&hatColor=Red',
+            'https://api.dicebear.com/7.x/avataaars/svg?seed=Elite7&backgroundColor=c0aede,ffe0bd&accessories=kurt&top=winterHat1&clothesColor=929598&hatColor=PastelOrange',
+            'https://api.dicebear.com/7.x/avataaars/svg?seed=Elite8&backgroundColor=ffd5dc,b6e3f4&accessories=prescription01&top=eyepatch&clothesColor=65c9ff&facialHairColor=BrownDark'
         ];
 
-        // Enhanced premium avatars - more vibrant and unique
+        // Enhanced premium avatars - ULTRA EXCLUSIVE DESIGN
         const premiumAvatars = [
-            'https://api.dicebear.com/7.x/adventurer-neutral/svg?seed=CyberWarrior&backgroundColor=b6e3f4,c0aede,d1d4f9&eyes=variant26&mouth=variant24&eyebrows=variant13&glassesProbability=100',
-            'https://api.dicebear.com/7.x/big-ears-neutral/svg?seed=DragonMaster&backgroundColor=ffd5dc,ffdfbf,d1d4f9&eyes=variant24&mouth=variant19&hair=variant02',
-            'https://api.dicebear.com/7.x/adventurer/svg?seed=SpaceCommander&backgroundColor=c0aede,d1d4f9,ffd5dc&eyes=variant17&mouth=variant28&hair=long16&skinColor=f2d3b1',
-            'https://api.dicebear.com/7.x/pixel-art-neutral/svg?seed=MysticWizard&backgroundColor=b6e3f4,ffdfbf&mood=happy&glassesProbability=100&accessories=sunglasses',
-            'https://api.dicebear.com/7.x/adventurer-neutral/svg?seed=ShadowNinja&backgroundColor=1a1a1a,2a2a2a,3a3a3a&eyes=variant04&mouth=variant30&eyebrows=variant10&skinColor=614335'
+            'https://api.dicebear.com/7.x/adventurer-neutral/svg?seed=CyberWarriorX&backgroundColor=1a1a1a,2d2d2d&eyes=variant26&mouth=variant24&eyebrows=variant13&glassesProbability=100&features=blush&featuresProbability=100',
+            'https://api.dicebear.com/7.x/big-ears-neutral/svg?seed=DragonMasterZ&backgroundColor=ff0000,ff6600,ffaa00&eyes=variant24&mouth=variant19&hair=variant02&hairProbability=100',
+            'https://api.dicebear.com/7.x/adventurer/svg?seed=SpaceCommanderY&backgroundColor=0000ff,0066ff,00aaff&eyes=variant17&mouth=variant28&hair=long16&skinColor=f2d3b1&frecklesProbability=100',
+            'https://api.dicebear.com/7.x/pixel-art-neutral/svg?seed=MysticWizardW&backgroundColor=9400d3,7b68ee,9370db&mood=happy&glassesProbability=100&accessories=sunglasses&hair=short',
+            'https://api.dicebear.com/7.x/adventurer-neutral/svg?seed=ShadowNinjaV&backgroundColor=000000,1a1a1a,333333&eyes=variant04&mouth=variant30&eyebrows=variant10&skinColor=614335'
         ];
 
-        // Enhanced Ultra VIP avatar
-        const ultraVipAvatar = 'https://api.dicebear.com/7.x/lorelei-neutral/svg?seed=UltraVIPChampion&backgroundColor=ff0080,ff1493,ff69b4&eyes=variant24&mouth=happy01&flip=true';
+        // Enhanced Ultra VIP avatar - ULTIMATE EXCLUSIVE
+        const ultraVipAvatar = 'https://api.dicebear.com/7.x/lorelei-neutral/svg?seed=UltraVIPChampionMAX&backgroundColor=ff0080,ff1493,ff69b4,ffd700,ffff00&eyes=variant24&mouth=happy01&flip=true&frecklesProbability=100&glassesProbability=100';
 
         // Global variables
         let gameDB = null;
@@ -3101,7 +3101,7 @@
                         }
                     }
                     
-                        const dbUser = gameDB.users.get(userData.id);
+                    const dbUser = gameDB.users.get(userData.id);
                     if (dbUser && dbUser.status === 'active') {
                         currentUser = dbUser;
                         gameDB.currentUser = dbUser;
@@ -3156,11 +3156,9 @@
 
         function selectAvatar(avatarUrl, element) {
             selectedAvatar = avatarUrl;
-            document.querySelectorAll('.avatar-option').forEach(option => option.classList.remove('selected'));
+            document.querySelectorAll('#avatarGrid .avatar-option').forEach(option => option.classList.remove('selected'));
             if (element) {
                 element.classList.add('selected');
-            } else if (event && event.target) {
-                event.target.closest('.avatar-option').classList.add('selected');
             }
         }
 
@@ -3188,6 +3186,7 @@
             const userInfo = document.getElementById('userInfo');
             
             if (currentUser) {
+                // FIXED: Hide login button when user is logged in
                 if (loginButton) loginButton.style.display = 'none';
                 if (userInfo) {
                     userInfo.style.display = 'block';
@@ -3233,17 +3232,18 @@
                 // Initialize avatar grid to show premium status
                 initializeAvatarGrid();
                 
-                // Update chatbot to show it's available
+                // FIXED: Update chatbot to show it's available when user is logged in
                 const messagesContainer = document.getElementById('chatbotMessages');
                 const chatbotContainer = document.getElementById('chatbotContainer');
                 if (messagesContainer && chatbotContainer && chatbotContainer.style.display === 'flex') {
                     // Refresh chatbot if it's open
-                    toggleChatbot();
+                    closeChatbot();
                     setTimeout(() => toggleChatbot(), 100);
                 }
                 
                 document.body.classList.add('user-logged-in');
             } else {
+                // FIXED: Show login button when user is not logged in
                 if (loginButton) loginButton.style.display = 'block';
                 if (userInfo) userInfo.style.display = 'none';
                 document.body.classList.remove('user-logged-in');
@@ -3415,8 +3415,6 @@
                 
                 if (element) {
                     element.classList.add('selected');
-                } else if (event && event.target) {
-                    event.target.closest('.avatar-option').classList.add('selected');
                 }
                 
                 showNotification(
@@ -3615,181 +3613,181 @@
             const isVisible = container.style.display === 'flex';
             container.style.display = isVisible ? 'none' : 'flex';
             
-            // Show login required message if not logged in
-            if (!isVisible && !currentUser) {
+            // FIXED: Show proper content based on login status
+            if (!isVisible) {
                 const messagesContainer = document.getElementById('chatbotMessages');
                 if (messagesContainer) {
-                    messagesContainer.innerHTML = `
-                        <div class="ai-login-required">
-                            <div class="lang-pl">
-                                <strong>🔒 Wymagane logowanie</strong><br><br>
-                                Aby korzystać z AI Asystenta, musisz się zalogować przez Google.
+                    if (!currentUser) {
+                        // Show login required message
+                        messagesContainer.innerHTML = `
+                            <div class="ai-login-required">
+                                <div class="lang-pl">
+                                    <strong>🔒 Wymagane logowanie</strong><br><br>
+                                    Aby korzystać z AI Asystenta, musisz się zalogować przez Google.
+                                </div>
+                                <div class="lang-en">
+                                    <strong>🔒 Login Required</strong><br><br>
+                                    To use AI Assistant, you need to sign in with Google.
+                                </div>
+                                <button class="auth-btn" style="margin-top: 15px;" onclick="openAuthModal(); closeChatbot();">
+                                    <span class="lang-pl">Zaloguj się przez Google</span>
+                                    <span class="lang-en">Sign in with Google</span>
+                                </button>
                             </div>
-                            <div class="lang-en">
-                                <strong>🔒 Login Required</strong><br><br>
-                                To use AI Assistant, you need to sign in with Google.
+                        `;
+                    } else {
+                        // Show welcome message with questions
+                        messagesContainer.innerHTML = `
+                            <div class="chatbot-welcome">
+                                <div class="lang-pl">
+                                    <strong>🤖 Cześć ${currentUser.username}!</strong><br>
+                                    Pomogę Ci z pytaniami dotyczącymi gier, logowania i Premium Avatarów!
+                                </div>
+                                <div class="lang-en">
+                                    <strong>🤖 Hi ${currentUser.username}!</strong><br>
+                                    I'll help you with questions about games, login and Premium Avatars!
+                                </div>
                             </div>
-                            <button class="auth-btn" style="margin-top: 15px;" onclick="openAuthModal(); closeChatbot();">
-                                <span class="lang-pl">Zaloguj się przez Google</span>
-                                <span class="lang-en">Sign in with Google</span>
-                            </button>
-                        </div>
-                    `;
-                }
-            } else if (!isVisible && currentUser) {
-                // Reset chatbot to welcome state when logged in
-                const messagesContainer = document.getElementById('chatbotMessages');
-                if (messagesContainer) {
-                    messagesContainer.innerHTML = `
-                        <div class="chatbot-welcome">
-                            <div class="lang-pl">
-                                <strong>🤖 Cześć ${currentUser.username}!</strong><br>
-                                Pomogę Ci z pytaniami dotyczącymi gier, logowania i Premium Avatarów!
+                            <div class="chatbot-questions">
+                                <!-- CLOUD SYNC & GOOGLE LOGIN -->
+                                <button class="question-btn lang-pl" onclick="askQuestion('cloud-sync')">
+                                    ☁️ Jak działa synchronizacja w chmurze?
+                                </button>
+                                <button class="question-btn lang-en" onclick="askQuestion('cloud-sync')">
+                                    ☁️ How does cloud sync work?
+                                </button>
+                                
+                                <button class="question-btn lang-pl" onclick="askQuestion('stay-logged-in')">
+                                    🕐 Pozostań zalogowany przez 24h
+                                </button>
+                                <button class="question-btn lang-en" onclick="askQuestion('stay-logged-in')">
+                                    🕐 Stay logged in for 24h
+                                </button>
+
+                                <button class="question-btn lang-pl" onclick="askQuestion('google-signin-help')">
+                                    🔐 Jak zalogować się przez Google?
+                                </button>
+                                <button class="question-btn lang-en" onclick="askQuestion('google-signin-help')">
+                                    🔐 How to sign in with Google?
+                                </button>
+                                
+                                <button class="question-btn lang-pl" onclick="askQuestion('google-signin-benefits')">
+                                    🌐 Korzyści z logowania przez Google
+                                </button>
+                                <button class="question-btn lang-en" onclick="askQuestion('google-signin-benefits')">
+                                    🌐 Benefits of Google Sign-In
+                                </button>
+
+                                <button class="question-btn lang-pl" onclick="askQuestion('premium-avatars')">
+                                    👑 Premium Avatary - jak odblokować?
+                                </button>
+                                <button class="question-btn lang-en" onclick="askQuestion('premium-avatars')">
+                                    👑 Premium Avatars - how to unlock?
+                                </button>
+                                
+                                <button class="question-btn lang-pl" onclick="askQuestion('ultra-vip-avatar')">
+                                    💎 Ultra VIP Avatar - jak zdobyć?
+                                </button>
+                                <button class="question-btn lang-en" onclick="askQuestion('ultra-vip-avatar')">
+                                    💎 Ultra VIP Avatar - how to get?
+                                </button>
+
+                                <button class="question-btn lang-pl" onclick="askQuestion('account-benefits')">
+                                    ✨ Jakie korzyści daje konto?
+                                </button>
+                                <button class="question-btn lang-en" onclick="askQuestion('account-benefits')">
+                                    ✨ What benefits does account provide?
+                                </button>
+
+                                <!-- DOWNLOAD & TECHNICAL -->
+                                <button class="question-btn lang-pl" onclick="askQuestion('download-not-started')">
+                                    🔧 Co zrobić gdy pobieranie się nie zaczęło?
+                                </button>
+                                <button class="question-btn lang-en" onclick="askQuestion('download-not-started')">
+                                    🔧 What to do when download doesn't start?
+                                </button>
+                                
+                                <button class="question-btn lang-pl" onclick="askQuestion('file-safety')">
+                                    🛡️ Czy pliki są bezpieczne?
+                                </button>
+                                <button class="question-btn lang-en" onclick="askQuestion('file-safety')">
+                                    🛡️ Are the files safe?
+                                </button>
+
+                                <button class="question-btn lang-pl" onclick="askQuestion('system-requirements')">
+                                    💻 Wymagania systemowe gier
+                                </button>
+                                <button class="question-btn lang-en" onclick="askQuestion('system-requirements')">
+                                    💻 Game system requirements
+                                </button>
+
+                                <button class="question-btn lang-pl" onclick="askQuestion('game-features')">
+                                    🎮 Jakie funkcje mają gry?
+                                </button>
+                                <button class="question-btn lang-en" onclick="askQuestion('game-features')">
+                                    🎮 What features do games have?
+                                </button>
+
+                                <button class="question-btn lang-pl" onclick="askQuestion('technical-support')">
+                                    🔧 Wsparcie techniczne
+                                </button>
+                                <button class="question-btn lang-en" onclick="askQuestion('technical-support')">
+                                    🔧 Technical support
+                                </button>
+
+                                <!-- PRIVACY & SETTINGS -->
+                                <button class="question-btn lang-pl" onclick="askQuestion('privacy-security')">
+                                    🔐 Jak chronicie moje dane?
+                                </button>
+                                <button class="question-btn lang-en" onclick="askQuestion('privacy-security')">
+                                    🔐 How do you protect my data?
+                                </button>
+
+                                <button class="question-btn lang-pl" onclick="askQuestion('settings-help')">
+                                    ⚙️ Pomoc z ustawieniami
+                                </button>
+                                <button class="question-btn lang-en" onclick="askQuestion('settings-help')">
+                                    ⚙️ Help with settings
+                                </button>
+
+                                <button class="question-btn lang-pl" onclick="askQuestion('avatar-customization')">
+                                    🎭 Jak zmienić avatar?
+                                </button>
+                                <button class="question-btn lang-en" onclick="askQuestion('avatar-customization')">
+                                    🎭 How to change avatar?
+                                </button>
+
+                                <button class="question-btn lang-pl" onclick="askQuestion('user-stats')">
+                                    📊 Statystyki społeczności
+                                </button>
+                                <button class="question-btn lang-en" onclick="askQuestion('user-stats')">
+                                    📊 Community statistics
+                                </button>
+                                
+                                <!-- ADDITIONAL QUESTIONS -->
+                                <button class="question-btn lang-pl" onclick="askQuestion('game-modes')">
+                                    🎲 Tryby gry
+                                </button>
+                                <button class="question-btn lang-en" onclick="askQuestion('game-modes')">
+                                    🎲 Game modes
+                                </button>
+                                
+                                <button class="question-btn lang-pl" onclick="askQuestion('achievements')">
+                                    🏆 System osiągnięć
+                                </button>
+                                <button class="question-btn lang-en" onclick="askQuestion('achievements')">
+                                    🏆 Achievement system
+                                </button>
+                                
+                                <button class="question-btn lang-pl" onclick="askQuestion('future-updates')">
+                                    🚀 Planowane aktualizacje
+                                </button>
+                                <button class="question-btn lang-en" onclick="askQuestion('future-updates')">
+                                    🚀 Planned updates
+                                </button>
                             </div>
-                            <div class="lang-en">
-                                <strong>🤖 Hi ${currentUser.username}!</strong><br>
-                                I'll help you with questions about games, login and Premium Avatars!
-                            </div>
-                        </div>
-                        <div class="chatbot-questions">
-                            <!-- CLOUD SYNC & GOOGLE LOGIN -->
-                            <button class="question-btn lang-pl" onclick="askQuestion('cloud-sync')">
-                                ☁️ Jak działa synchronizacja w chmurze?
-                            </button>
-                            <button class="question-btn lang-en" onclick="askQuestion('cloud-sync')">
-                                ☁️ How does cloud sync work?
-                            </button>
-                            
-                            <button class="question-btn lang-pl" onclick="askQuestion('stay-logged-in')">
-                                🕐 Pozostań zalogowany przez 24h
-                            </button>
-                            <button class="question-btn lang-en" onclick="askQuestion('stay-logged-in')">
-                                🕐 Stay logged in for 24h
-                            </button>
-
-                            <button class="question-btn lang-pl" onclick="askQuestion('google-signin-help')">
-                                🔐 Jak zalogować się przez Google?
-                            </button>
-                            <button class="question-btn lang-en" onclick="askQuestion('google-signin-help')">
-                                🔐 How to sign in with Google?
-                            </button>
-                            
-                            <button class="question-btn lang-pl" onclick="askQuestion('google-signin-benefits')">
-                                🌐 Korzyści z logowania przez Google
-                            </button>
-                            <button class="question-btn lang-en" onclick="askQuestion('google-signin-benefits')">
-                                🌐 Benefits of Google Sign-In
-                            </button>
-
-                            <button class="question-btn lang-pl" onclick="askQuestion('premium-avatars')">
-                                👑 Premium Avatary - jak odblokować?
-                            </button>
-                            <button class="question-btn lang-en" onclick="askQuestion('premium-avatars')">
-                                👑 Premium Avatars - how to unlock?
-                            </button>
-                            
-                            <button class="question-btn lang-pl" onclick="askQuestion('ultra-vip-avatar')">
-                                💎 Ultra VIP Avatar - jak zdobyć?
-                            </button>
-                            <button class="question-btn lang-en" onclick="askQuestion('ultra-vip-avatar')">
-                                💎 Ultra VIP Avatar - how to get?
-                            </button>
-
-                            <button class="question-btn lang-pl" onclick="askQuestion('account-benefits')">
-                                ✨ Jakie korzyści daje konto?
-                            </button>
-                            <button class="question-btn lang-en" onclick="askQuestion('account-benefits')">
-                                ✨ What benefits does account provide?
-                            </button>
-
-                            <!-- DOWNLOAD & TECHNICAL -->
-                            <button class="question-btn lang-pl" onclick="askQuestion('download-not-started')">
-                                🔧 Co zrobić gdy pobieranie się nie zaczęło?
-                            </button>
-                            <button class="question-btn lang-en" onclick="askQuestion('download-not-started')">
-                                🔧 What to do when download doesn't start?
-                            </button>
-                            
-                            <button class="question-btn lang-pl" onclick="askQuestion('file-safety')">
-                                🛡️ Czy pliki są bezpieczne?
-                            </button>
-                            <button class="question-btn lang-en" onclick="askQuestion('file-safety')">
-                                🛡️ Are the files safe?
-                            </button>
-
-                            <button class="question-btn lang-pl" onclick="askQuestion('system-requirements')">
-                                💻 Wymagania systemowe gier
-                            </button>
-                            <button class="question-btn lang-en" onclick="askQuestion('system-requirements')">
-                                💻 Game system requirements
-                            </button>
-
-                            <button class="question-btn lang-pl" onclick="askQuestion('game-features')">
-                                🎮 Jakie funkcje mają gry?
-                            </button>
-                            <button class="question-btn lang-en" onclick="askQuestion('game-features')">
-                                🎮 What features do games have?
-                            </button>
-
-                            <button class="question-btn lang-pl" onclick="askQuestion('technical-support')">
-                                🔧 Wsparcie techniczne
-                            </button>
-                            <button class="question-btn lang-en" onclick="askQuestion('technical-support')">
-                                🔧 Technical support
-                            </button>
-
-                            <!-- PRIVACY & SETTINGS -->
-                            <button class="question-btn lang-pl" onclick="askQuestion('privacy-security')">
-                                🔐 Jak chronicie moje dane?
-                            </button>
-                            <button class="question-btn lang-en" onclick="askQuestion('privacy-security')">
-                                🔐 How do you protect my data?
-                            </button>
-
-                            <button class="question-btn lang-pl" onclick="askQuestion('settings-help')">
-                                ⚙️ Pomoc z ustawieniami
-                            </button>
-                            <button class="question-btn lang-en" onclick="askQuestion('settings-help')">
-                                ⚙️ Help with settings
-                            </button>
-
-                            <button class="question-btn lang-pl" onclick="askQuestion('avatar-customization')">
-                                🎭 Jak zmienić avatar?
-                            </button>
-                            <button class="question-btn lang-en" onclick="askQuestion('avatar-customization')">
-                                🎭 How to change avatar?
-                            </button>
-
-                            <button class="question-btn lang-pl" onclick="askQuestion('user-stats')">
-                                📊 Statystyki społeczności
-                            </button>
-                            <button class="question-btn lang-en" onclick="askQuestion('user-stats')">
-                                📊 Community statistics
-                            </button>
-                            
-                            <!-- ADDITIONAL QUESTIONS -->
-                            <button class="question-btn lang-pl" onclick="askQuestion('game-modes')">
-                                🎲 Tryby gry
-                            </button>
-                            <button class="question-btn lang-en" onclick="askQuestion('game-modes')">
-                                🎲 Game modes
-                            </button>
-                            
-                            <button class="question-btn lang-pl" onclick="askQuestion('achievements')">
-                                🏆 System osiągnięć
-                            </button>
-                            <button class="question-btn lang-en" onclick="askQuestion('achievements')">
-                                🏆 Achievement system
-                            </button>
-                            
-                            <button class="question-btn lang-pl" onclick="askQuestion('future-updates')">
-                                🚀 Planowane aktualizacje
-                            </button>
-                            <button class="question-btn lang-en" onclick="askQuestion('future-updates')">
-                                🚀 Planned updates
-                            </button>
-                        </div>
-                    `;
+                        `;
+                    }
                 }
             }
             
@@ -4580,6 +4578,7 @@
                 }
             }
 
+            // FIXED: Remove login check for AI questions when user is already logged in
             if (!currentUser) {
                 const currentLang = document.documentElement.lang;
                 const message = currentLang === 'pl' ? 
@@ -5093,6 +5092,15 @@
                     </p>
                 </div>
             </div>
+            
+            <!-- Avatar selection during registration -->
+            <div id="avatarSelection" class="avatar-selection" style="display: none;">
+                <h3 class="lang-pl">Wybierz avatar</h3>
+                <h3 class="lang-en">Choose avatar</h3>
+                <div id="avatarGrid" class="avatar-grid">
+                    <!-- Avatar options will be loaded here -->
+                </div>
+            </div>
         </div>
     </div>
 
@@ -5447,4 +5455,3 @@
     </div>
 </body>
 </html>
-
