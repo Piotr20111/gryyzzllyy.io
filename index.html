@@ -2433,20 +2433,23 @@
         }
     </style>
     <script>
-        // Firebase configuration
+        // Firebase configuration - FIXED
         const firebaseConfig = {
-            apiKey: "AIzaSyC9UYncsqCqz0hfwVjOJBhVl4rZHU-Xzds",
-            authDomain: "game-hub-cloud-sync.firebaseapp.com",
-            projectId: "game-hub-cloud-sync",
-            storageBucket: "game-hub-cloud-sync.appspot.com",
-            messagingSenderId: "284759631589",
-            appId: "1:284759631589:web:8a2b5e7c3f9d2e4a1b3c4d"
+            apiKey: "AIzaSyBcL8sSjM4xF-uV4LRPJEh_54N0cFfNXHs",
+            authDomain: "game-hub-auth-89e21.firebaseapp.com",
+            projectId: "game-hub-auth-89e21",
+            storageBucket: "game-hub-auth-89e21.appspot.com",
+            messagingSenderId: "752299520873",
+            appId: "1:752299520873:web:c5a8c3d9f4e2b7d9a8e2f6"
         };
 
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
+
+        // Google Auth Provider
+        const googleProvider = new firebase.auth.GoogleAuthProvider();
 
         // Version control
         const APP_VERSION = '3.0.0';
@@ -2473,70 +2476,18 @@
                 this.syncInProgress = false;
             }
 
-            async initializeGoogleSignIn() {
-                const GOOGLE_CLIENT_ID = '139779237819-u0v0k1s72a83dmcv7lh9oce9r8d9vaqk.apps.googleusercontent.com';
-                
-                if (window.google && window.google.accounts) {
-                    try {
-                        google.accounts.id.initialize({
-                            client_id: GOOGLE_CLIENT_ID,
-                            callback: this.handleGoogleSignIn.bind(this),
-                            auto_select: false,
-                            cancel_on_tap_outside: true
-                        });
-                        
-                        google.accounts.id.renderButton(
-                            document.getElementById("googleSignInDiv"),
-                            { 
-                                theme: "filled_blue",
-                                size: "large",
-                                width: "300",
-                                text: "signin_with",
-                                shape: "rectangular",
-                                logo_alignment: "left"
-                            }
-                        );
-                        console.log("Google Sign-In button rendered");
-                    } catch (error) {
-                        console.error("Google Sign-In initialization error:", error);
-                        this.showDemoLoginButton();
-                    }
-                } else {
-                    console.error("Google Sign-In library not loaded");
-                    this.showDemoLoginButton();
-                }
-            }
-
-            showDemoLoginButton() {
-                const googleDiv = document.getElementById("googleSignInDiv");
-                if (googleDiv) {
-                    googleDiv.innerHTML = `
-                        <button class="demo-login-btn" onclick="gameDB.demoLogin()">
-                            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" 
-                                 width="18" height="18" style="margin-right: 8px;">
-                            <span class="lang-pl">Zaloguj się (Demo)</span>
-                            <span class="lang-en">Sign in (Demo)</span>
-                        </button>
-                    `;
-                }
-            }
-
-            async handleGoogleSignIn(response) {
+            async signInWithGoogle() {
                 try {
-                    showLoading('Logowanie... / Signing in...');
+                    showLoading('Logowanie przez Google... / Signing in with Google...');
                     
-                    // Decode JWT token to get user info
-                    const userInfo = this.parseJwt(response.credential);
-                    
-                    // Sign in to Firebase with Google credential
-                    const credential = firebase.auth.GoogleAuthProvider.credential(response.credential);
-                    const firebaseAuth = await auth.signInWithCredential(credential);
+                    const result = await auth.signInWithPopup(googleProvider);
+                    const user = result.user;
                     
                     // Check if user wants to stay logged in for 24h
                     const stayLoggedIn = document.getElementById('stayLoggedIn')?.checked || false;
                     
                     // Load or create user data from Firestore
-                    const userDoc = await db.collection('users').doc(firebaseAuth.user.uid).get();
+                    const userDoc = await db.collection('users').doc(user.uid).get();
                     let userData;
                     
                     if (userDoc.exists) {
@@ -2548,10 +2499,10 @@
                     } else {
                         // New user - create data
                         userData = {
-                            id: firebaseAuth.user.uid,
-                            username: userInfo.name,
-                            email: userInfo.email,
-                            avatar: userInfo.picture,
+                            id: user.uid,
+                            username: user.displayName,
+                            email: user.email,
+                            avatar: user.photoURL,
                             isGoogleUser: true,
                             registrationDate: new Date().toISOString(),
                             lastLogin: new Date().toISOString(),
@@ -2597,14 +2548,25 @@
                         'success'
                     );
                     
+                    return userData;
+                    
                 } catch (error) {
-                    console.error("Error handling Google Sign-In:", error);
+                    console.error("Error during Google Sign-In:", error);
                     hideLoading();
-                    showNotification(
-                        'Błąd logowania. Spróbuj ponownie.',
-                        'Login error. Please try again.',
-                        'error'
-                    );
+                    
+                    let errorMessage = 'Błąd logowania. Spróbuj ponownie.';
+                    let errorMessageEn = 'Login error. Please try again.';
+                    
+                    if (error.code === 'auth/popup-closed-by-user') {
+                        errorMessage = 'Anulowano logowanie.';
+                        errorMessageEn = 'Login cancelled.';
+                    } else if (error.code === 'auth/network-request-failed') {
+                        errorMessage = 'Błąd połączenia. Sprawdź internet.';
+                        errorMessageEn = 'Connection error. Check internet.';
+                    }
+                    
+                    showNotification(errorMessage, errorMessageEn, 'error');
+                    throw error;
                 }
             }
 
@@ -2635,20 +2597,6 @@
                     console.error("Error loading from cloud:", error);
                     // Try to load from local cache
                     return this.localCache.get(userId) || null;
-                }
-            }
-
-            parseJwt(token) {
-                try {
-                    const base64Url = token.split('.')[1];
-                    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-                    const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-                        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-                    }).join(''));
-                    return JSON.parse(jsonPayload);
-                } catch (error) {
-                    console.error("Error parsing JWT:", error);
-                    return null;
                 }
             }
 
@@ -2706,9 +2654,6 @@
             async logout() {
                 try {
                     await auth.signOut();
-                    if (window.google && window.google.accounts) {
-                        google.accounts.id.disableAutoSelect();
-                    }
                     this.currentUser = null;
                     this.isGoogleUser = false;
                     localStorage.removeItem('currentUser');
@@ -2783,11 +2728,6 @@
                 localStorage.setItem('visited_before', 'true');
                 
                 gameDB = new CloudGameDatabase();
-                
-                // Initialize Google Sign-In after database is ready
-                setTimeout(() => {
-                    gameDB.initializeGoogleSignIn();
-                }, 100);
                 
                 checkLoginStatus();
                 
@@ -3143,13 +3083,6 @@
             if (authModal) {
                 authModal.style.display = 'block';
                 document.body.style.overflow = 'hidden';
-                
-                // Re-initialize Google Sign-In when modal opens
-                if (gameDB) {
-                    setTimeout(() => {
-                        gameDB.initializeGoogleSignIn();
-                    }, 100);
-                }
             }
             
             // Make sure avatar grid is initialized
@@ -4383,7 +4316,6 @@
                     <strong>💡 Premium features:</strong><br>
                     • Download both games → Unlock 5 Premium Avatars!<br>
                     • Complete Maze → Unlock Ultra VIP Avatar!<br><br>
-                    
                     <strong>☁️ Synchronization:</strong><br>
                     All changes are automatically saved to Firebase!`
             },
@@ -5158,7 +5090,11 @@
             
             <!-- Google Sign-In Button -->
             <div class="google-signin-section">
-                <div id="googleSignInDiv"></div>
+                <button class="auth-btn" onclick="gameDB.signInWithGoogle()">
+                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18" height="18" style="margin-right: 8px;">
+                    <span class="lang-pl">Zaloguj się przez Google</span>
+                    <span class="lang-en">Sign in with Google</span>
+                </button>
                 
                 <div class="stay-logged-in">
                     <input type="checkbox" id="stayLoggedIn" name="stayLoggedIn">
@@ -5520,7 +5456,6 @@
                     <li>Dostęp do swoich danych z każdego urządzenia</li>
                 </ul>
             </div>
-            
             <div class="lang-en">
                 <h4>🔒 What we store in Firebase:</h4>
                 <ul>
